@@ -8,7 +8,7 @@ import { verificarToken } from "./middleware/authMiddleware.js";
 
 const app = express();
 
-// 🔥 MIDDLEWARES PRIMEIRO
+// 🔥 MIDDLEWARES
 app.use(cors());
 app.use(express.json());
 
@@ -22,28 +22,35 @@ app.get("/protegido", verificarToken, (req, res) => {
   res.json("Você está autenticado!");
 });
 
-// 🗄️ CONEXÃO COM MYSQL
+// 🗄️ CONEXÃO COM MYSQL (com fallback)
 export const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "S0l4321.",
-  database: "marcenaria",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "S0l4321.",
+  database: process.env.DB_NAME || "marcenaria",
 });
 
-db.connect((err) => {
-  if (err) {
-    console.log("Erro ao conectar:", err);
-  } else {
-    console.log("MySQL conectado");
-  }
-});
+// 🔥 CONECTA SÓ SE TIVER CONFIG (evita erro no Render)
+if (process.env.DB_HOST) {
+  db.connect((err) => {
+    if (err) {
+      console.log("Erro ao conectar:", err);
+    } else {
+      console.log("MySQL conectado");
+    }
+  });
+} else {
+  console.log("Banco não configurado (modo deploy)");
+}
 
 // 🌐 ROTA TESTE
 app.get("/", (req, res) => {
   res.send("Backend RODANDooO");
 });
 
-// 🚀 SERVER
-app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000");
+// 🚀 SERVER (porta dinâmica)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Servidor rodando na porta " + PORT);
 });
