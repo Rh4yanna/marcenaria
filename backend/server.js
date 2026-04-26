@@ -22,16 +22,26 @@ app.get("/protegido", verificarToken, (req, res) => {
   res.json("Você está autenticado!");
 });
 
-// 🗄️ CONEXÃO COM MYSQL (com fallback)
-export const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "S0l4321.",
-  database: process.env.DB_NAME || "marcenaria",
-});
+// 🗄️ CONEXÃO COM MYSQL (sem quebrar no deploy)
+const dbConfig = {
+  host: "localhost",
+  user: "root",
+  password: "S0l4321.",
+  database: "marcenaria",
+};
 
-// 🔥 CONECTA SÓ SE TIVER CONFIG (evita erro no Render)
-if (process.env.DB_HOST) {
+// só usa env se existir (evita erro estranho)
+if (typeof process !== "undefined" && process.env && process.env.DB_HOST) {
+  dbConfig.host = process.env.DB_HOST;
+  dbConfig.user = process.env.DB_USER;
+  dbConfig.password = process.env.DB_PASSWORD;
+  dbConfig.database = process.env.DB_NAME;
+}
+
+export const db = mysql.createConnection(dbConfig);
+
+// 🔥 conecta só se NÃO estiver no deploy
+if (dbConfig.host !== "localhost") {
   db.connect((err) => {
     if (err) {
       console.log("Erro ao conectar:", err);
@@ -40,7 +50,7 @@ if (process.env.DB_HOST) {
     }
   });
 } else {
-  console.log("Banco não configurado (modo deploy)");
+  console.log("Banco local (ou não configurado no Render)");
 }
 
 // 🌐 ROTA TESTE
@@ -48,8 +58,9 @@ app.get("/", (req, res) => {
   res.send("Backend RODANDooO");
 });
 
-// 🚀 SERVER (porta dinâmica)
-const PORT = process.env.PORT || 3000;
+// 🚀 SERVER
+const PORT =
+  (typeof process !== "undefined" && process.env && process.env.PORT) || 3000;
 
 app.listen(PORT, () => {
   console.log("Servidor rodando na porta " + PORT);
