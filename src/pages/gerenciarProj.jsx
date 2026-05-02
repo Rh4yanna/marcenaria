@@ -22,12 +22,12 @@ function GerenciarProj() {
     "Outro",
   ];
 
-  // 🔄 BUSCAR PROJETOS
+  //  BUSCAR PROJETOS
   useEffect(() => {
     fetch("http://localhost:3000/projetos")
       .then((res) => res.json())
       .then((data) => {
-        console.log("📦 PROJETOS:", data);
+        console.log(" PROJETOS:", data);
         setProjetos(data);
       })
       .catch((err) => console.log(err));
@@ -42,7 +42,7 @@ function GerenciarProj() {
     </button>
   );
 
-  // 📦 AGRUPAR PROJETOS POR TIPO
+  //  AGRUPAR PROJETOS POR TIPO
   const projetosPorTipo = tipos.map((tipo) => ({
     tipo,
     itens: projetos.filter((p) => p.tipo === tipo),
@@ -154,13 +154,13 @@ function GerenciarProj() {
                           imagens = proj.imagens;
                         }
 
-                        // 🔥 limpa lixo (null, vazio)
+                        //  limpa lixo (null, vazio)
                         imagens = imagens.filter(
                           (img) => img && img !== "null"
                         );
 
                       } catch (err) {
-                        console.log("❌ erro imagens:", err);
+                        console.log(" erro imagens:", err);
                         imagens = [];
                       }
                     }

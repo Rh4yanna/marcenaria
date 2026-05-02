@@ -58,7 +58,7 @@ function CriarOrc() {
 
       if (res.ok) {
         setTipoMsg("success");
-        setMensagem("Orçamento salvo com sucesso! 🎉");
+        setMensagem("Orçamento salvo com sucesso! ");
 
         // limpa form
         setForm({
@@ -84,7 +84,7 @@ function CriarOrc() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center p-6">
-      {/* 🔥 POPUP */}
+      {/*  POPUP */}
       {mensagem && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           <div className="bg-white p-6 rounded-xl shadow-xl w-80 text-center">
@@ -203,7 +203,7 @@ function CriarOrc() {
           </span>
         </div>
 
-        {/* 🔥 BOTÕES */}
+        {/*  BOTÕES */}
         <div className="flex gap-3">
           <button
             type="submit"

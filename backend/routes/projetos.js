@@ -4,9 +4,9 @@ import { db } from "../server.js";
 const router = express.Router();
 
 
-// 💾 CRIAR PROJETO
+//  CRIAR PROJETO
 router.post("/", (req, res) => {
-  console.log("🔥 CHEGOU PROJETO:", req.body);
+  console.log(" CHEGOU PROJETO:", req.body);
 
   const { tipo, descricao, imagens } = req.body;
 
@@ -20,24 +20,24 @@ router.post("/", (req, res) => {
     [tipo, descricao, JSON.stringify(imagens)],
     (err, result) => {
       if (err) {
-        console.error("❌ ERRO MYSQL:", err);
+        console.error("ERRO MYSQL:", err);
         return res.status(500).json({ message: "Erro ao salvar projeto" });
       }
 
-      console.log("✅ PROJETO SALVO");
+      console.log(" PROJETO SALVO");
       res.json({ message: "Projeto salvo com sucesso" });
     }
   );
 });
 
 
-// 📄 LISTAR TODOS
+//  LISTAR TODOS
 router.get("/", (req, res) => {
   const sql = "SELECT * FROM projetos ORDER BY id DESC";
 
   db.query(sql, (err, result) => {
     if (err) {
-      console.error("❌ ERRO AO BUSCAR:", err);
+      console.error(" ERRO AO BUSCAR:", err);
       return res.status(500).json({ message: "Erro ao buscar projetos" });
     }
 
@@ -54,7 +54,7 @@ router.get("/:id", (req, res) => {
 
   db.query(sql, [id], (err, result) => {
     if (err) {
-      console.error("❌ ERRO AO BUSCAR POR ID:", err);
+      console.error(" ERRO AO BUSCAR POR ID:", err);
       return res.status(500).json({ message: "Erro ao buscar projeto" });
     }
 
@@ -67,7 +67,7 @@ router.get("/:id", (req, res) => {
 });
 
 
-// ✏️ ATUALIZAR PROJETO
+//  ATUALIZAR PROJETO
 router.put("/:id", (req, res) => {
   const { id } = req.params;
   const { tipo, descricao, imagens } = req.body;
@@ -83,18 +83,18 @@ router.put("/:id", (req, res) => {
     [tipo, descricao, JSON.stringify(imagens), id],
     (err) => {
       if (err) {
-        console.error("❌ ERRO AO ATUALIZAR:", err);
+        console.error(" ERRO AO ATUALIZAR:", err);
         return res.status(500).json({ message: "Erro ao atualizar projeto" });
       }
 
-      console.log("✏️ PROJETO ATUALIZADO");
+      console.log(" PROJETO ATUALIZADO");
       res.json({ message: "Projeto atualizado com sucesso" });
     }
   );
 });
 
 
-// 🗑️ EXCLUIR PROJETO
+//  EXCLUIR PROJETO
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
 
@@ -102,11 +102,11 @@ router.delete("/:id", (req, res) => {
 
   db.query(sql, [id], (err) => {
     if (err) {
-      console.error("❌ ERRO AO EXCLUIR:", err);
+      console.error(" ERRO AO EXCLUIR:", err);
       return res.status(500).json({ message: "Erro ao excluir projeto" });
     }
 
-    console.log("🗑️ PROJETO EXCLUÍDO");
+    console.log(" PROJETO EXCLUÍDO");
     res.json({ message: "Projeto excluído com sucesso" });
   });
 });

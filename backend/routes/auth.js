@@ -8,7 +8,7 @@ const router = express.Router();
 const SECRET = "segredo123";
 
 
-// ✅ CADASTRO
+//  CADASTRO
 router.post("/register", async (req, res) => {
   const { nome, email, senha } = req.body;
 
@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
 });
 
 
-// ✅ LOGIN
+//  LOGIN
 router.post("/login", (req, res) => {
   const { email, senha } = req.body;
 

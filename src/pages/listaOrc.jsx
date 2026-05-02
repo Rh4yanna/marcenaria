@@ -6,26 +6,26 @@ function ListaOrc() {
   const [orcamentos, setOrcamentos] = useState([]);
   const navigate = useNavigate();
 
-  // 🔄 BUSCAR DADOS
+  //  BUSCAR DADOS
   useEffect(() => {
     fetch("http://localhost:3000/orcamentos")
       .then((res) => res.json())
       .then((data) => {
-        console.log("📦 Dados recebidos:", data);
+        console.log(" Dados recebidos:", data);
         setOrcamentos(data);
       })
       .catch((err) => {
-        console.log("❌ Erro ao buscar:", err);
+        console.log(" Erro ao buscar:", err);
       });
   }, []);
 
-  // 🗑️ EXCLUIR COM VERIFICAÇÃO REAL
+  //  EXCLUIR COM VERIFICAÇÃO REAL
   const excluirOrcamento = async (id) => {
     const confirmar = window.confirm("Deseja excluir este orçamento?");
     if (!confirmar) return;
 
     try {
-      console.log("🔵 Enviando DELETE:", id);
+      console.log(" Enviando DELETE:", id);
 
       const res = await fetch(`http://localhost:3000/orcamentos/${id}`, {
         method: "DELETE",
@@ -38,21 +38,21 @@ function ListaOrc() {
         data = null;
       }
 
-      console.log("🟢 RESPOSTA:", res.status, data);
+      console.log(" RESPOSTA:", res.status, data);
 
       if (res.ok) {
-        // 🔥 Só remove da tela se backend confirmou
+        //  Só remove da tela se backend confirmou
         setOrcamentos((prev) => prev.filter((orc) => orc.id !== id));
       } else {
         alert(data?.message || "Erro ao excluir");
       }
     } catch (err) {
-      console.log("❌ ERRO:", err);
+      console.log(" ERRO:", err);
       alert("Erro ao conectar com servidor");
     }
   };
 
-  // 📄 GERAR PDF
+  //  GERAR PDF
   const gerarPDF = (orc) => {
     const doc = new jsPDF();
 
@@ -124,7 +124,7 @@ function ListaOrc() {
                   Total: R$ {orc.total}
                 </p>
 
-                {/* 🔥 BOTÕES */}
+                {/*  BOTÕES */}
                 <div className="flex gap-3 mt-4">
                   <button
                     onClick={() => gerarPDF(orc)}

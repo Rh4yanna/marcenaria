@@ -36,7 +36,7 @@ function EditarProj() {
     </button>
   );
 
-  // 🔄 CARREGAR DADOS
+  //  CARREGAR DADOS
   useEffect(() => {
     if (!projeto) return;
 
@@ -55,7 +55,7 @@ function EditarProj() {
     }
   }, [projeto]);
 
-  // ☁️ UPLOAD CLOUDINARY
+  //  UPLOAD CLOUDINARY
   const uploadImagem = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -73,7 +73,7 @@ function EditarProj() {
     return result.secure_url;
   };
 
-  // ➕ ADICIONAR NOVAS IMAGENS
+  //  ADICIONAR NOVAS IMAGENS
   const adicionarImagens = async (e) => {
     const files = Array.from(e.target.files);
 
@@ -87,14 +87,14 @@ function EditarProj() {
     setImagens((prev) => [...prev, ...novasUrls]);
   };
 
-  // ❌ REMOVER IMAGEM
+  //  REMOVER IMAGEM
   const removerImagem = (index) => {
     const novas = [...imagens];
     novas.splice(index, 1);
     setImagens(novas);
   };
 
-  // 💾 SALVAR ALTERAÇÕES
+  //  SALVAR ALTERAÇÕES
   const salvarAlteracoes = async () => {
     try {
       const res = await fetch(
@@ -113,7 +113,7 @@ function EditarProj() {
       );
 
       if (res.ok) {
-        alert("✅ Projeto atualizado!");
+        alert(" Projeto atualizado!");
         navigate("/controleProj");
       } else {
         alert("Erro ao salvar");

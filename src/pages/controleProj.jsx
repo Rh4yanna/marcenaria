@@ -20,7 +20,7 @@ function ControleProj() {
     </button>
   );
 
-  // 🔄 BUSCAR PROJETOS
+  //  BUSCAR PROJETOS
   const buscarProjetos = () => {
     fetch("http://localhost:3000/projetos")
       .then((res) => res.json())
@@ -40,7 +40,7 @@ function ControleProj() {
     buscarProjetos();
   }, []);
 
-  // 🗑️ EXCLUIR
+  //  EXCLUIR
   const excluirProjeto = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir?")) return;
 

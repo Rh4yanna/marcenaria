@@ -20,12 +20,12 @@ function AdicionarProj() {
     </button>
   );
 
-  // 📸 CAPTURA IMAGENS
+  //  CAPTURA IMAGENS
   const handleImagens = (e) => {
     setImagens(Array.from(e.target.files));
   };
 
-  // ☁️ UPLOAD PARA CLOUDINARY
+  //  UPLOAD PARA CLOUDINARY
   const uploadImagem = async (file) => {
   const data = new FormData();
   data.append("file", file);
@@ -41,7 +41,7 @@ function AdicionarProj() {
 
   const result = await res.json();
 
-  // 🔥 PROTEÇÃO CONTRA ERRO
+  // PROTEÇÃO CONTRA ERRO
   if (!result.secure_url) {
     console.log("❌ ERRO CLOUDINARY:", result);
     throw new Error("Erro no upload da imagem");
@@ -50,7 +50,7 @@ function AdicionarProj() {
   return result.secure_url;
 };
 
-  // 💾 SALVAR PROJETO
+  //  SALVAR PROJETO
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -64,7 +64,7 @@ function AdicionarProj() {
     setLoading(true);
 
     try {
-      // 🔥 Upload das imagens
+      //  Upload das imagens
       const urls = [];
 
       for (let img of imagens) {
@@ -74,7 +74,7 @@ function AdicionarProj() {
 
       console.log("📸 URLs:", urls);
 
-      // 🔥 Envia para backend
+      //  Envia para backend
       const res = await fetch("http://localhost:3000/projetos", {
         method: "POST",
         headers: {
@@ -90,7 +90,7 @@ function AdicionarProj() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("✅ Projeto salvo com sucesso!");
+        alert(" Projeto salvo com sucesso!");
         navigate("/gerenciarProj");
       } else {
         alert(data.message || "Erro ao salvar");
