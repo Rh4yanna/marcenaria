@@ -48,27 +48,63 @@ function ListaOrc() {
     }
   };
 
-  // PDF
+  // PDF MELHORADO
   const gerarPDF = (orc) => {
     const doc = new jsPDF();
 
-    doc.setFontSize(16);
-    doc.text("Orçamento", 20, 20);
-
-    doc.setFontSize(12);
-    doc.text(`Cliente: ${orc.nome}`, 20, 40);
-    doc.text(`Telefone: ${orc.telefone}`, 20, 50);
-    doc.text(`Tipo do móvel: ${orc.tipo}`, 20, 60);
-
-    doc.text("Descrição:", 20, 80);
-    doc.text(orc.descricao || "-", 20, 90);
-
-    doc.text(`Material: R$ ${orc.material}`, 20, 120);
-    doc.text(`Serviço: R$ ${orc.servico}`, 20, 130);
+    // ===== TÍTULO =====
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("Bassani Móveis", 105, 20, { align: "center" });
 
     doc.setFontSize(14);
-    doc.text(`Total: R$ ${orc.total}`, 20, 150);
+    doc.text("Orçamento", 105, 28, { align: "center" });
 
+    // ===== CONTORNO =====
+    doc.setDrawColor(0);
+    doc.rect(15, 35, 180, 120);
+
+    // ===== CONTEÚDO =====
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+
+    let y = 45;
+
+    doc.text(`Cliente: ${orc.nome}`, 20, y);
+    y += 10;
+
+    doc.text(`Telefone: ${orc.telefone}`, 20, y);
+    y += 10;
+
+    doc.text(`Tipo do móvel: ${orc.tipo}`, 20, y);
+    y += 10;
+
+    // ===== DESCRIÇÃO COM QUEBRA =====
+    doc.text("Descrição:", 20, y);
+    y += 8;
+
+    const descricaoQuebrada = doc.splitTextToSize(
+      orc.descricao || "-",
+      170
+    );
+
+    doc.text(descricaoQuebrada, 20, y);
+    y += descricaoQuebrada.length * 7;
+
+    // ===== VALORES =====
+    y += 5;
+    doc.text(`Material: R$ ${orc.material}`, 20, y);
+    y += 10;
+
+    doc.text(`Serviço: R$ ${orc.servico}`, 20, y);
+    y += 15;
+
+    // ===== TOTAL =====
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text(`Total: R$ ${orc.total}`, 20, y);
+
+    // ===== SALVAR =====
     doc.save(`orcamento_${orc.nome}.pdf`);
   };
 
