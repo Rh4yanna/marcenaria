@@ -13,86 +13,93 @@ import EditarProj from "./pages/editarProj.jsx";
 import AdicionarProj from "./pages/adicionarProj.jsx";
 import GerenciarPerfil from "./pages/gerenciarPerfil.jsx";
 
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
+
+// verifica se está logado
+const isAuth = () => localStorage.getItem("token");
 
 const router = createBrowserRouter([
-    // REDIRECIONA PRA LOGIN
-    {
-      path: "/",
-      element: <Navigate to="/login" />,
-    },
+  // 🔥 ROTA PRINCIPAL (LOGIN)
+  {
+    path: "/",
+    element: isAuth() ? <Navigate to="/home" /> : <App />,
+  },
 
-    // PAG LOGIN
-    {
-      path: "/login",
-      element: <App />,
-    },
+  // LOGIN (opcional manter)
+  {
+    path: "/login",
+    element: <App />,
+  },
 
-    // PAGS PROTEGIDAS
-    {
-      path: "/home",
-      element: (
-        <PrivateRoute>
-          <Home />
-        </PrivateRoute>
-      ),
-    },
-    {
-      path: "/criarOrc",
-      element: (
-        <PrivateRoute>
-          <CriarOrc />
-        </PrivateRoute>
-      ),
-    },
-    {
-      path: "/listaOrc",
-      element: (
-        <PrivateRoute>
-          <ListaOrc />
-        </PrivateRoute>
-      ),
-    },
-    {
-      path: "/gerenciarProj",
-      element: (
-        <PrivateRoute>
-          <GerenciarProj />
-        </PrivateRoute>
-      ),
-    },
-    {
-      path: "/controleProj",
-      element: (
-        <PrivateRoute>
-          <ControleProj />
-        </PrivateRoute>
-      ),
-    },
-    {
-      path: "/editarProj",
-      element: (
-        <PrivateRoute>
-          <EditarProj />
-        </PrivateRoute>
-      ),
-    },
-    {
-      path: "/adicionarProj",
-      element: (
-        <PrivateRoute>
-          <AdicionarProj />
-        </PrivateRoute>
-      ),
-    },
-    {
-      path: "/gerenciarPerfil",
-      element: (
-        <PrivateRoute>
-          <GerenciarPerfil />
-        </PrivateRoute>
-      ),
-    },
+  // 🔒 ROTAS PROTEGIDAS
+  {
+    path: "/home",
+    element: (
+      <PrivateRoute>
+        <Home />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/criarOrc",
+    element: (
+      <PrivateRoute>
+        <CriarOrc />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/listaOrc",
+    element: (
+      <PrivateRoute>
+        <ListaOrc />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/gerenciarProj",
+    element: (
+      <PrivateRoute>
+        <GerenciarProj />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/controleProj",
+    element: (
+      <PrivateRoute>
+        <ControleProj />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/editarProj",
+    element: (
+      <PrivateRoute>
+        <EditarProj />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/adicionarProj",
+    element: (
+      <PrivateRoute>
+        <AdicionarProj />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/gerenciarPerfil",
+    element: (
+      <PrivateRoute>
+        <GerenciarPerfil />
+      </PrivateRoute>
+    ),
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
