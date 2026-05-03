@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/logo.jpg";
-import { API_URL } from "../services/api"; // ✅ IMPORTANTE
+import { API_URL } from "../services/api"; 
 
 function ControleProj() {
   const [projetos, setProjetos] = useState([]);
