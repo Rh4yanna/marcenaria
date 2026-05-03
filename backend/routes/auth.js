@@ -61,7 +61,7 @@ router.post("/login", (req, res) => {
     const usuario = result[0];
 
     try {
-      const senhaValida = await bcrypt.compare(senha, usuario.senha);
+      const senhaValida = senha === usuario.senha;
 
       if (!senhaValida) {
         return res.status(401).json("Senha incorreta");
