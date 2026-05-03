@@ -34,7 +34,7 @@ function GerenciarProj() {
     </button>
   );
 
-  // ✅ BUSCAR PROJETOS
+  // BUSCAR PROJETOS
   useEffect(() => {
     const buscar = async () => {
       try {
@@ -52,7 +52,7 @@ function GerenciarProj() {
     buscar();
   }, []);
 
-  // ✅ AGRUPAR POR TIPO
+  // AGRUPAR POR TIPO
   const projetosPorTipo = tipos.map((tipo) => ({
     tipo,
     itens: projetos.filter((p) => p.tipo === tipo),
@@ -101,6 +101,14 @@ function GerenciarProj() {
 
       {/* CONTEÚDO */}
       <main className="p-6 max-w-6xl mx-auto w-full">
+
+        {/* BOTÃO VOLTAR */}
+        <button
+          onClick={() => navigate("/home")}
+          className="mb-4 text-white bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+        >
+          ← Voltar
+        </button>
 
         {/* TOPO */}
         <div className="flex items-center justify-between mb-6">
