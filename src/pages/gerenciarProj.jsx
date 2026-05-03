@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
+import { API_URL } from "../services/api";
 
 function GerenciarProj() {
   const [projetos, setProjetos] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [filtro, setFiltro] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   const tipos = [
@@ -22,17 +25,6 @@ function GerenciarProj() {
     "Outro",
   ];
 
-  //  BUSCAR PROJETOS
-  useEffect(() => {
-    fetch("http://localhost:3000/projetos")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(" PROJETOS:", data);
-        setProjetos(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   const MenuItem = ({ label, path }) => (
     <button
       onClick={() => navigate(path)}
@@ -42,7 +34,25 @@ function GerenciarProj() {
     </button>
   );
 
-  //  AGRUPAR PROJETOS POR TIPO
+  // ✅ BUSCAR PROJETOS
+  useEffect(() => {
+    const buscar = async () => {
+      try {
+        const res = await fetch(`${API_URL}/projetos`);
+        const data = await res.json();
+
+        setProjetos(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.log("Erro ao buscar projetos:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    buscar();
+  }, []);
+
+  // ✅ AGRUPAR POR TIPO
   const projetosPorTipo = tipos.map((tipo) => ({
     tipo,
     itens: projetos.filter((p) => p.tipo === tipo),
@@ -53,36 +63,31 @@ function GerenciarProj() {
 
       {/* HEADER */}
       <header className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="flex flex-col gap-1"
-        >
-          <span className="w-6 h-0.5 bg-gray-800"></span>
-          <span className="w-6 h-0.5 bg-gray-800"></span>
-          <span className="w-6 h-0.5 bg-gray-800"></span>
+        <button onClick={() => setMenuOpen(!menuOpen)}>
+          ☰
         </button>
 
         <div className="flex items-center gap-3">
           <img
             src={logo}
             alt="logo"
-            className="w-12 h-12 rounded-full object-cover border-2 border-orange-500 shadow"
+            className="w-12 h-12 rounded-full object-cover border-2 border-orange-500"
           />
-          <span className="font-semibold text-gray-800 text-lg">
+          <span className="font-semibold text-gray-800">
             Marcio Bassani
           </span>
         </div>
 
-        <div className="w-6"></div>
+        <div />
       </header>
 
-      {/* MENU LATERAL */}
+      {/* MENU */}
       {menuOpen && (
         <>
           <div
             className="fixed inset-0 bg-black/30 z-40"
             onClick={() => setMenuOpen(false)}
-          ></div>
+          />
 
           <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-xl p-4 z-50">
             <MenuItem label="Criar Orçamentos" path="/criarOrc" />
@@ -97,17 +102,17 @@ function GerenciarProj() {
       {/* CONTEÚDO */}
       <main className="p-6 max-w-6xl mx-auto w-full">
 
-        {/* FILTRO + BOTÃO */}
+        {/* TOPO */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex flex-col">
-            <span className="text-gray-700 font-semibold mb-1">
-              Filtre por móvel
+          <div>
+            <span className="text-gray-700 font-semibold">
+              Filtrar por móvel
             </span>
 
             <select
               value={filtro}
               onChange={(e) => setFiltro(e.target.value)}
-              className="p-2 border rounded-lg"
+              className="p-2 border rounded-lg ml-2"
             >
               <option value="">Todos</option>
               {tipos.map((t, i) => (
@@ -124,80 +129,79 @@ function GerenciarProj() {
           </button>
         </div>
 
-        {/* LISTA POR TIPO */}
-        {projetosPorTipo
-          .filter((grupo) => !filtro || grupo.tipo === filtro)
-          .map((grupo, index) => {
+        {/* LOADING */}
+        {loading && <p>Carregando projetos...</p>}
 
-            if (grupo.itens.length === 0) return null;
+        {/* LISTA */}
+        {!loading &&
+          projetosPorTipo
+            .filter((grupo) => !filtro || grupo.tipo === filtro)
+            .map((grupo, index) => {
 
-            return (
-              <div key={index} className="mb-10">
+              if (grupo.itens.length === 0) return null;
 
-                {/* TITULO */}
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  {grupo.tipo}
-                </h3>
+              return (
+                <div key={index} className="mb-10">
 
-                {/* SCROLL HORIZONTAL */}
-                <div className="flex gap-4 overflow-x-auto pb-2">
+                  {/* TÍTULO */}
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">
+                    {grupo.tipo}
+                  </h3>
 
-                  {grupo.itens.map((proj) => {
+                  {/* SCROLL */}
+                  <div className="flex gap-4 overflow-x-auto pb-2">
 
-                    let imagens = [];
+                    {grupo.itens.map((proj) => {
+                      let imagens = [];
 
-                    if (proj.imagens) {
                       try {
-                        if (typeof proj.imagens === "string") {
-                          imagens = JSON.parse(proj.imagens);
-                        } else if (Array.isArray(proj.imagens)) {
-                          imagens = proj.imagens;
-                        }
+                        imagens =
+                          typeof proj.imagens === "string"
+                            ? JSON.parse(proj.imagens)
+                            : proj.imagens;
 
-                        //  limpa lixo (null, vazio)
-                        imagens = imagens.filter(
+                        imagens = (imagens || []).filter(
                           (img) => img && img !== "null"
                         );
-
-                      } catch (err) {
-                        console.log(" erro imagens:", err);
+                      } catch {
                         imagens = [];
                       }
+
+                      return (
+                        <div
+                          key={proj.id}
+                          className="min-w-[200px] bg-white p-3 rounded-xl shadow"
+                        >
+                          {imagens.length > 0 ? (
+                            <img
+                              src={imagens[0]}
+                              alt="projeto"
+                              className="w-full h-32 object-cover rounded-lg"
+                            />
+                          ) : (
+                            <div className="w-full h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+                              Sem imagem
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* BOTÃO */}
+                  <button
+                    onClick={() =>
+                      navigate("/controleProj", {
+                        state: { tipo: grupo.tipo },
+                      })
                     }
-
-                    return (
-                      <div
-                        key={proj.id}
-                        className="min-w-[200px] bg-white p-3 rounded-xl shadow"
-                      >
-                        {imagens.length > 0 ? (
-                          <img
-                            src={imagens[0]?.trim()}
-                            alt="projeto"
-                            className="w-full h-32 object-cover rounded-lg"
-                          />
-                        ) : (
-                          <div className="w-full h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-                            Sem imagem
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-
+                    className="mt-3 bg-gray-800 text-white px-4 py-2 rounded-lg"
+                  >
+                    Gerenciar
+                  </button>
                 </div>
-
-                {/* BOTÃO GERENCIAR */}
-                <button
-                  onClick={() => navigate("/controleProj", { state: { tipo: grupo.tipo } })}
-                  className="mt-3 bg-gray-800 text-white px-4 py-2 rounded-lg"
-                >
-                  Gerenciar
-                </button>
-
-              </div>
-            );
-          })}
+              );
+            })}
       </main>
     </div>
   );

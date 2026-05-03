@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../services/api";
 import logo from "../assets/logo.jpg";
 
 function AdicionarProj() {
@@ -20,37 +21,36 @@ function AdicionarProj() {
     </button>
   );
 
-  //  CAPTURA IMAGENS
+  // 📸 CAPTURA IMAGENS
   const handleImagens = (e) => {
     setImagens(Array.from(e.target.files));
   };
 
-  //  UPLOAD PARA CLOUDINARY
+  // ☁️ UPLOAD PARA CLOUDINARY
   const uploadImagem = async (file) => {
-  const data = new FormData();
-  data.append("file", file);
-  data.append("upload_preset", "meu_upload");
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "meu_upload");
 
-  const res = await fetch(
-    "https://api.cloudinary.com/v1_1/drrmyedhr/image/upload",
-    {
-      method: "POST",
-      body: data,
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/drrmyedhr/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const result = await res.json();
+
+    if (!result.secure_url) {
+      console.log("❌ ERRO CLOUDINARY:", result);
+      throw new Error("Erro no upload da imagem");
     }
-  );
 
-  const result = await res.json();
+    return result.secure_url;
+  };
 
-  // PROTEÇÃO CONTRA ERRO
-  if (!result.secure_url) {
-    console.log("❌ ERRO CLOUDINARY:", result);
-    throw new Error("Erro no upload da imagem");
-  }
-
-  return result.secure_url;
-};
-
-  //  SALVAR PROJETO
+  // 💾 SALVAR PROJETO
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -64,7 +64,7 @@ function AdicionarProj() {
     setLoading(true);
 
     try {
-      //  Upload das imagens
+      // Upload das imagens
       const urls = [];
 
       for (let img of imagens) {
@@ -74,8 +74,8 @@ function AdicionarProj() {
 
       console.log("📸 URLs:", urls);
 
-      //  Envia para backend
-      const res = await fetch("http://localhost:3000/projetos", {
+      // 🔥 ENVIO PARA BACKEND (CORRIGIDO)
+      const res = await fetch(`${API_URL}/projetos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ function AdicionarProj() {
       const data = await res.json();
 
       if (res.ok) {
-        alert(" Projeto salvo com sucesso!");
+        alert("Projeto salvo com sucesso!");
         navigate("/gerenciarProj");
       } else {
         alert(data.message || "Erro ao salvar");
@@ -158,7 +158,6 @@ function AdicionarProj() {
             Adicionar Projeto
           </h2>
 
-          {/* TIPO */}
           <select
             value={tipo}
             onChange={(e) => setTipo(e.target.value)}
@@ -179,7 +178,6 @@ function AdicionarProj() {
             <option>Outro</option>
           </select>
 
-          {/* IMAGENS */}
           <input
             type="file"
             multiple
@@ -187,7 +185,6 @@ function AdicionarProj() {
             className="p-2 border rounded-lg w-full"
           />
 
-          {/* PREVIEW */}
           <div className="flex gap-2 flex-wrap">
             {imagens.map((img, index) => (
               <img
@@ -199,19 +196,13 @@ function AdicionarProj() {
             ))}
           </div>
 
-          {/* DESCRIÇÃO */}
           <textarea
             value={descricao}
-            placeholder="Descrição do Material
-          - Medidas (altura, largura, profundidade) 
-          - Material (MDF, madeira, etc) 
-          - Cor 
-          - Detalhes adicionais"
+            placeholder="Descrição do Material..."
             onChange={(e) => setDescricao(e.target.value)}
             className="p-3 border rounded-lg resize-y min-h-[120px]"
           />
 
-          {/* BOTÕES */}
           <div className="flex gap-3">
             <button
               type="button"

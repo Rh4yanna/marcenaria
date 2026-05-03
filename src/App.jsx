@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../services/api";
 
 function App() {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ function App() {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://marcenaria-luvr.onrender.com/auth/login", {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,10 +37,8 @@ function App() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 bg-[url('https://images.unsplash.com/photo-1581090700227-4c4c9b5e6c8a')] bg-cover bg-center">
-      {/* Overlay escuro */}
       <div className="absolute inset-0 bg-black/60"></div>
 
-      {/* Card */}
       <div className="relative bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           Login

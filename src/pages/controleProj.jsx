@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/logo.jpg";
+import { API_URL } from "../services/api"; // ✅ IMPORTANTE
 
 function ControleProj() {
   const [projetos, setProjetos] = useState([]);
@@ -20,9 +21,9 @@ function ControleProj() {
     </button>
   );
 
-  //  BUSCAR PROJETOS
+  // ✅ BUSCAR PROJETOS (AGORA USANDO API_URL)
   const buscarProjetos = () => {
-    fetch("http://localhost:3000/projetos")
+    fetch(`${API_URL}/projetos`)
       .then((res) => res.json())
       .then((data) => {
         const filtrados = tipoSelecionado
@@ -40,12 +41,12 @@ function ControleProj() {
     buscarProjetos();
   }, []);
 
-  //  EXCLUIR
+  // ✅ EXCLUIR (AGORA USANDO API_URL)
   const excluirProjeto = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir?")) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/projetos/${id}`, {
+      const res = await fetch(`${API_URL}/projetos/${id}`, {
         method: "DELETE",
       });
 
@@ -61,7 +62,6 @@ function ControleProj() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-
       {/* HEADER */}
       <header className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
         <button
@@ -107,10 +107,8 @@ function ControleProj() {
 
       {/* CONTEÚDO */}
       <main className="p-6 max-w-6xl mx-auto w-full">
-
         {/* TOPO */}
         <div className="flex justify-between items-center mb-6">
-
           {/* ESQUERDA */}
           <div className="flex items-center gap-4">
             <button
@@ -132,7 +130,6 @@ function ControleProj() {
           >
             +
           </button>
-
         </div>
 
         {/* LISTA */}

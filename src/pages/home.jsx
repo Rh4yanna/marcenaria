@@ -6,9 +6,14 @@ function Home() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const irPara = (path) => {
+    setMenuOpen(false);
+    navigate(path);
+  };
+
   const MenuItem = ({ label, path }) => (
     <button
-      onClick={() => navigate(path)}
+      onClick={() => irPara(path)}
       className="w-full text-left px-4 py-3 hover:bg-gray-100 rounded-lg transition"
     >
       {label}
@@ -27,9 +32,11 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
+      
       {/* HEADER */}
       <header className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-        {/* MENU HAMBURGUER */}
+        
+        {/* MENU */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="flex flex-col gap-1"
@@ -39,45 +46,42 @@ function Home() {
           <span className="w-6 h-0.5 bg-gray-800"></span>
         </button>
 
-        {/* LOGO + NOME */}
+        {/* LOGO */}
         <div className="flex items-center gap-3">
           <img
             src={logo}
             alt="logo"
-            className="w-12 h-12 rounded-full object-cover border-2 border-orange-500 shadow"
+            className="w-12 h-12 rounded-full object-cover border-2 border-orange-500"
           />
           <span className="font-semibold text-gray-800 text-lg">
             Marcio Bassani
           </span>
         </div>
 
-        {/* espaço direito */}
         <div className="w-6"></div>
       </header>
 
       {/* MENU LATERAL */}
       {menuOpen && (
         <>
-          {/* OVERLAY (clicou fora fecha) */}
           <div
             className="fixed inset-0 bg-black/30 z-40"
             onClick={() => setMenuOpen(false)}
-          ></div>
+          />
 
-          {/* MENU */}
           <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-xl p-4 z-50">
             <MenuItem label="Criar Orçamentos" path="/criarOrc" />
             <MenuItem label="Lista de Orçamentos" path="/listaOrc" />
-            <MenuItem label="Controle de Projetos" path="/controleProj" />
+            <MenuItem label="Gerenciar Projetos" path="/gerenciarProj" />
             <MenuItem label="Adicionar Projeto" path="/adicionarProj" />
-            <MenuItem label="Editar Projeto" path="/editarProj" />
-            <MenuItem label="Gerenciar Perfil" path="/perfil" />
+            <MenuItem label="Gerenciar Perfil" path="/gerenciarPerfil" />
           </div>
         </>
       )}
 
-      {/* BODY */}
-      <main className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      {/* CONTEÚDO */}
+      <main className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        
         <CardButton
           title="Criar Orçamentos"
           desc="Monte novos orçamentos rapidamente"
@@ -101,6 +105,7 @@ function Home() {
           desc="Altere seus dados"
           path="/gerenciarPerfil"
         />
+
       </main>
     </div>
   );

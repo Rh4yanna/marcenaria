@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../services/api"; // ✅ IMPORTANTE
 
 function CriarOrc() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function CriarOrc() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/orcamentos", {
+      const res = await fetch(`${API_URL}/orcamentos`, { // ✅ CORRIGIDO
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +59,7 @@ function CriarOrc() {
 
       if (res.ok) {
         setTipoMsg("success");
-        setMensagem("Orçamento salvo com sucesso! ");
+        setMensagem("Orçamento salvo com sucesso!");
 
         // limpa form
         setForm({
@@ -84,7 +85,7 @@ function CriarOrc() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center p-6">
-      {/*  POPUP */}
+      {/* POPUP */}
       {mensagem && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           <div className="bg-white p-6 rounded-xl shadow-xl w-80 text-center">
@@ -167,10 +168,10 @@ function CriarOrc() {
         <textarea
           name="descricao"
           placeholder="Descrição do Material
-          - Medidas (altura, largura, profundidade) 
-          - Material (MDF, madeira, etc) 
-          - Cor 
-          - Detalhes adicionais"
+- Medidas (altura, largura, profundidade) 
+- Material (MDF, madeira, etc) 
+- Cor 
+- Detalhes adicionais"
           value={form.descricao}
           onChange={handleChange}
           className="p-3 border rounded-lg resize-y min-h-[120px]"
@@ -203,7 +204,7 @@ function CriarOrc() {
           </span>
         </div>
 
-        {/*  BOTÕES */}
+        {/* BOTÕES */}
         <div className="flex gap-3">
           <button
             type="submit"
