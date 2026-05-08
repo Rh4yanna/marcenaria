@@ -472,10 +472,6 @@ function GerenciarProj() {
                               {proj.nome || grupo.tipo}
                             </h3>
 
-                            <p className="text-gray-500 mt-2 text-sm">
-                              Projeto cadastrado no sistema
-                            </p>
-
                           </div>
                         </div>
                       );
