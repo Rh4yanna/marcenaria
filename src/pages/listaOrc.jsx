@@ -12,8 +12,7 @@ function ListaOrc() {
     fetch(`${API_URL}/orcamentos`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Dados recebidos:", data);
-        setOrcamentos(data);
+        setOrcamentos(data.reverse());
       })
       .catch((err) => {
         console.log("Erro ao buscar:", err);
@@ -22,7 +21,10 @@ function ListaOrc() {
 
   // EXCLUIR
   const excluirOrcamento = async (id) => {
-    const confirmar = window.confirm("Deseja excluir este orçamento?");
+    const confirmar = window.confirm(
+      "Deseja excluir este orçamento?"
+    );
+
     if (!confirmar) return;
 
     try {
@@ -31,6 +33,7 @@ function ListaOrc() {
       });
 
       let data;
+
       try {
         data = await res.json();
       } catch {
@@ -38,7 +41,9 @@ function ListaOrc() {
       }
 
       if (res.ok) {
-        setOrcamentos((prev) => prev.filter((orc) => orc.id !== id));
+        setOrcamentos((prev) =>
+          prev.filter((orc) => orc.id !== id)
+        );
       } else {
         alert(data?.message || "Erro ao excluir");
       }
@@ -48,125 +53,305 @@ function ListaOrc() {
     }
   };
 
-  // PDF MELHORADO
+  // GERAR PDF
   const gerarPDF = (orc) => {
     const doc = new jsPDF();
 
-    // ===== TÍTULO =====
+    // DATA AUTOMÁTICA
+    const dataAtual = new Date();
+
+    const dataFormatada = dataAtual.toLocaleDateString("pt-BR");
+    const horaFormatada = dataAtual.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    // FUNDO HEADER
+    doc.setFillColor(239, 246, 255);
+    doc.rect(0, 0, 210, 40, "F");
+
+    // TITULO
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    doc.text("Bassani Móveis", 105, 20, { align: "center" });
+    doc.setTextColor(31, 41, 55);
+    doc.setFontSize(24);
 
-    doc.setFontSize(14);
-    doc.text("Orçamento", 105, 28, { align: "center" });
+    doc.text("Bassani Móveis", 105, 20, {
+      align: "center",
+    });
 
-    // ===== CONTORNO =====
-    doc.setDrawColor(0);
-    doc.rect(15, 35, 180, 120);
+    doc.setFontSize(13);
+    doc.setTextColor(107, 114, 128);
 
-    // ===== CONTEÚDO =====
+    doc.text("Orçamento Personalizado", 105, 29, {
+      align: "center",
+    });
+
+    // DATA
+    doc.setFontSize(10);
+    doc.text(
+      `Gerado em ${dataFormatada} às ${horaFormatada}`,
+      105,
+      36,
+      {
+        align: "center",
+      }
+    );
+
+    // CARD
+    doc.setDrawColor(220, 220, 220);
+    doc.roundedRect(15, 50, 180, 180, 6, 6);
+
+    let y = 65;
+
+    // CLIENTE
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(59, 130, 246);
+    doc.setFontSize(13);
+
+    doc.text("Informações do Cliente", 20, y);
+
+    y += 12;
+
     doc.setFont("helvetica", "normal");
+    doc.setTextColor(55, 65, 81);
     doc.setFontSize(12);
 
-    let y = 45;
+    doc.text(`Nome: ${orc.nome}`, 20, y);
 
-    doc.text(`Cliente: ${orc.nome}`, 20, y);
     y += 10;
 
     doc.text(`Telefone: ${orc.telefone}`, 20, y);
-    y += 10;
+
+    y += 18;
+
+    // PROJETO
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(59, 130, 246);
+
+    doc.text("Detalhes do Projeto", 20, y);
+
+    y += 12;
+
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(55, 65, 81);
 
     doc.text(`Tipo do móvel: ${orc.tipo}`, 20, y);
-    y += 10;
 
-    // ===== DESCRIÇÃO COM QUEBRA =====
+    y += 12;
+
+    doc.setFont("helvetica", "bold");
     doc.text("Descrição:", 20, y);
+
     y += 8;
+
+    doc.setFont("helvetica", "normal");
 
     const descricaoQuebrada = doc.splitTextToSize(
       orc.descricao || "-",
-      170
+      165
     );
 
     doc.text(descricaoQuebrada, 20, y);
-    y += descricaoQuebrada.length * 7;
 
-    // ===== VALORES =====
-    y += 5;
+    y += descricaoQuebrada.length * 7 + 12;
+
+    // VALORES
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(59, 130, 246);
+
+    doc.text("Valores", 20, y);
+
+    y += 12;
+
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(55, 65, 81);
+
     doc.text(`Material: R$ ${orc.material}`, 20, y);
+
     y += 10;
 
     doc.text(`Serviço: R$ ${orc.servico}`, 20, y);
-    y += 15;
 
-    // ===== TOTAL =====
+    y += 18;
+
+    // TOTAL
+    doc.setFillColor(239, 246, 255);
+    doc.roundedRect(20, y - 8, 170, 20, 4, 4, "F");
+
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.text(`Total: R$ ${orc.total}`, 20, y);
+    doc.setTextColor(37, 99, 235);
+    doc.setFontSize(16);
 
-    // ===== SALVAR =====
+    doc.text(`Total: R$ ${orc.total}`, 25, y + 5);
+
+    // FOOTER
+    doc.setFontSize(10);
+    doc.setTextColor(150);
+
+    doc.text(
+      "Bassani Móveis • Qualidade e sofisticação em móveis planejados",
+      105,
+      285,
+      {
+        align: "center",
+      }
+    );
+
+    // SALVAR
     doc.save(`orcamento_${orc.nome}.pdf`);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50 p-6">
+      <div className="max-w-5xl mx-auto">
 
-        <button
-          onClick={() => navigate("/home")}
-          className="mb-4 bg-gray-800 text-white px-4 py-2 rounded-lg"
-        >
-          ← Voltar
-        </button>
+        {/* TOPO */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
 
-        <h2 className="text-2xl font-bold mb-6">
-          Lista de Orçamentos
-        </h2>
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800">
+              Lista de Orçamentos
+            </h1>
 
+            <p className="text-gray-500 mt-2">
+              Visualize, exporte e gerencie seus orçamentos.
+            </p>
+          </div>
+
+          <div className="flex gap-3">
+
+            <button
+              onClick={() => navigate("/home")}
+              className="bg-white border border-gray-200 hover:bg-gray-100 transition text-gray-700 px-5 py-3 rounded-2xl shadow-sm"
+            >
+              ← Voltar
+            </button>
+
+            <button
+              onClick={() => navigate("/criarOrc")}
+              className="bg-blue-500 hover:bg-blue-600 transition text-white px-5 py-3 rounded-2xl shadow-lg"
+            >
+              + Criar Orçamento
+            </button>
+
+          </div>
+        </div>
+
+        {/* LISTA */}
         {orcamentos.length === 0 ? (
-          <p>Nenhum orçamento encontrado.</p>
+
+          <div className="bg-white border border-gray-200 rounded-3xl p-12 text-center shadow-sm">
+            <h2 className="text-2xl font-semibold text-gray-700">
+              Nenhum orçamento encontrado
+            </h2>
+
+            <p className="text-gray-500 mt-3">
+              Crie seu primeiro orçamento para começar.
+            </p>
+
+            <button
+              onClick={() => navigate("/criarOrc")}
+              className="mt-6 bg-blue-500 hover:bg-blue-600 transition text-white px-6 py-3 rounded-2xl"
+            >
+              Criar Orçamento
+            </button>
+          </div>
+
         ) : (
-          <div className="flex flex-col gap-4">
+
+          <div className="grid gap-6">
+
             {orcamentos.map((orc) => (
+
               <div
                 key={orc.id}
-                className="bg-white p-5 rounded-xl shadow"
+                className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-[28px] shadow-lg p-6 hover:shadow-2xl transition"
               >
-                <h3 className="font-bold text-lg">{orc.nome}</h3>
 
-                <p><strong>Telefone:</strong> {orc.telefone}</p>
-                <p><strong>Tipo:</strong> {orc.tipo}</p>
+                {/* TOPO CARD */}
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
 
-                <p className="mt-2 whitespace-pre-line">
-                  <strong>Descrição:</strong> {orc.descricao}
-                </p>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      {orc.nome}
+                    </h2>
 
-                <p className="mt-2">
-                  <strong>Material:</strong> R$ {orc.material}
-                </p>
+                    <p className="text-gray-500 mt-1">
+                      {orc.telefone}
+                    </p>
+                  </div>
 
-                <p>
-                  <strong>Serviço:</strong> R$ {orc.servico}
-                </p>
+                  <div className="bg-blue-100 text-blue-600 px-4 py-2 rounded-2xl text-sm font-semibold w-fit">
+                    {orc.tipo}
+                  </div>
 
-                <p className="text-green-600 font-bold mt-3">
-                  Total: R$ {orc.total}
-                </p>
+                </div>
 
-                <div className="flex gap-3 mt-4">
+                {/* DESCRIÇÃO */}
+                <div className="mt-6 bg-gray-50 border border-gray-100 rounded-2xl p-5">
+
+                  <h3 className="font-semibold text-gray-700 mb-2">
+                    Descrição do Projeto
+                  </h3>
+
+                  <p className="text-gray-600 whitespace-pre-line leading-relaxed">
+                    {orc.descricao || "Sem descrição"}
+                  </p>
+
+                </div>
+
+                {/* VALORES */}
+                <div className="grid md:grid-cols-3 gap-4 mt-6">
+
+                  <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4">
+                    <p className="text-gray-500 text-sm">
+                      Material
+                    </p>
+
+                    <h3 className="text-xl font-bold text-gray-800 mt-1">
+                      R$ {orc.material}
+                    </h3>
+                  </div>
+
+                  <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4">
+                    <p className="text-gray-500 text-sm">
+                      Serviço
+                    </p>
+
+                    <h3 className="text-xl font-bold text-gray-800 mt-1">
+                      R$ {orc.servico}
+                    </h3>
+                  </div>
+
+                  <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4">
+                    <p className="text-blue-500 text-sm">
+                      Total
+                    </p>
+
+                    <h3 className="text-2xl font-bold text-blue-600 mt-1">
+                      R$ {orc.total}
+                    </h3>
+                  </div>
+
+                </div>
+
+                {/* BOTÕES */}
+                <div className="flex flex-col md:flex-row gap-3 mt-6">
+
                   <button
                     onClick={() => gerarPDF(orc)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                    className="flex-1 bg-blue-500 hover:bg-blue-600 transition text-white py-3 rounded-2xl font-semibold shadow-md"
                   >
-                    PDF
+                    Gerar PDF
                   </button>
 
                   <button
                     onClick={() => excluirOrcamento(orc.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                    className="flex-1 bg-red-50 hover:bg-red-100 transition text-red-500 border border-red-200 py-3 rounded-2xl font-semibold"
                   >
                     Excluir
                   </button>
+
                 </div>
 
               </div>
