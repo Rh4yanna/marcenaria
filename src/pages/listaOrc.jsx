@@ -86,13 +86,6 @@ function ListaOrc() {
       align: "center",
     });
 
-    doc.setFontSize(13);
-    doc.setTextColor(107, 114, 128);
-
-    doc.text("Orçamento Personalizado", 105, 29, {
-      align: "center",
-    });
-
     doc.setFontSize(10);
 
     doc.text(
