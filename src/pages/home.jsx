@@ -15,7 +15,17 @@ function Home() {
   const MenuItem = ({ label, desc, path }) => (
     <button
       onClick={() => irPara(path)}
-      className="w-full text-left p-4 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100"
+      className="
+        w-full
+        text-left
+        p-4
+        rounded-2xl
+        hover:bg-blue-50
+        transition
+        border
+        border-transparent
+        hover:border-blue-100
+      "
     >
       <h3 className="font-semibold text-gray-800">
         {label}
@@ -45,7 +55,7 @@ function Home() {
         duration-300
       "
     >
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-2xl font-bold text-gray-800 group-hover:text-blue-600 transition">
             {title}
@@ -58,7 +68,8 @@ function Home() {
 
         <div
           className="
-            w-14 h-14
+            min-w-[56px]
+            h-14
             rounded-2xl
             bg-blue-50
             flex items-center justify-center
@@ -76,12 +87,12 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
-      
+
       {/* HEADER */}
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-          {/* MENU */}
+          {/* MENU BUTTON */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="
@@ -139,16 +150,21 @@ function Home() {
           {/* SIDEBAR */}
           <div
             className="
-              fixed top-0 left-0
-              w-80 h-full
+              fixed
+              top-0
+              left-0
+              w-80
+              h-full
               bg-white
               shadow-2xl
               z-50
               p-6
-              border-r border-gray-200
+              border-r
+              border-gray-200
             "
           >
-            {/* TOPO MENU */}
+
+            {/* TOPO */}
             <div className="flex items-center gap-4 mb-8">
               <img
                 src={logo}
@@ -196,7 +212,7 @@ function Home() {
 
               <MenuItem
                 label="Gerenciar Perfil"
-                desc="Atualize seus dados"
+                desc="Atualize suas informações"
                 path="/gerenciarPerfil"
               />
             </div>
@@ -204,8 +220,21 @@ function Home() {
         </>
       )}
 
-      {/* CARDS */}
-      <main className="max-w-7xl mx-auto px-6 pb-12">
+      {/* CONTEÚDO */}
+      <main className="max-w-7xl mx-auto px-6 pt-10 pb-12">
+
+        {/* TÍTULO */}
+        <div className="mb-10">
+          <h2 className="text-4xl font-bold text-gray-800">
+            Bem-vindo ao painel
+          </h2>
+
+          <p className="text-gray-500 mt-3 text-lg">
+            Gerencie orçamentos, projetos e informações da sua marcenaria.
+          </p>
+        </div>
+
+        {/* CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
 
           <CardButton
