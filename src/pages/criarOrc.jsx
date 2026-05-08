@@ -129,14 +129,6 @@ function CriarOrc() {
           >
             ← Voltar
           </button>
-
-          <button
-            type="button"
-            onClick={() => navigate("/listaOrc")}
-            className="bg-blue-500 hover:bg-blue-600 transition text-white px-5 py-3 rounded-2xl shadow-md"
-          >
-            Ver Orçamentos
-          </button>
         </div>
 
         {/* CARD */}
@@ -147,10 +139,6 @@ function CriarOrc() {
             <h1 className="text-4xl font-bold text-gray-800">
               Criar Orçamento
             </h1>
-
-            <p className="text-gray-500 mt-2">
-              Preencha as informações do projeto para gerar um novo orçamento.
-            </p>
           </div>
 
           {/* FORM */}
@@ -247,10 +235,10 @@ function CriarOrc() {
 
               <textarea
                 name="descricao"
-                placeholder="• Medidas (altura, largura e profundidade)
-• Material (MDF, madeira etc.)
-• Cor
-• Detalhes adicionais"
+                placeholder=" • Medidas (altura, largura e profundidade)
+                              • Material (MDF, madeira etc.)
+                              • Cor
+                              • Detalhes adicionais"
                 value={form.descricao}
                 onChange={handleChange}
                 className="w-full p-4 rounded-2xl border border-gray-200 bg-gray-50 resize-none min-h-[180px] focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -302,10 +290,6 @@ function CriarOrc() {
                 <h2 className="text-3xl font-bold text-gray-800 mt-1">
                   R$ {form.total.toFixed(2)}
                 </h2>
-              </div>
-
-              <div className="bg-blue-100 text-blue-600 px-4 py-2 rounded-2xl text-sm font-semibold">
-                Atualizado automaticamente
               </div>
             </div>
 
