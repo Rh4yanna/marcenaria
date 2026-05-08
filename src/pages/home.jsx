@@ -225,9 +225,9 @@ function Home() {
 
         {/* TÍTULO */}
         <div className="mb-10">
-          <h2 className="text-4xl font-bold text-gray-800">
+          <h4 className="text-4xl font-bold text-gray-800">
             Bem-vindo ao painel
-          </h2>
+          </h4>
 
           <p className="text-gray-500 mt-3 text-lg">
             Gerencie orçamentos, projetos e informações da sua marcenaria.
