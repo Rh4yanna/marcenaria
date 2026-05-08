@@ -8,37 +8,13 @@ function EditarProj() {
   const location = useLocation();
 
   const projeto = location.state?.projeto;
+  const tipoOrigem = location.state?.tipo || projeto?.tipo || "";
 
-  const [menuOpen, setMenuOpen] = useState(false);
   const [tipo, setTipo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [imagens, setImagens] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const tipos = [
-    "Rack para TV",
-    "Painel para TV",
-    "Estante",
-    "Mesa de centro",
-    "Aparador",
-    "Guarda-roupa planejado",
-    "Cama",
-    "Escrivaninha",
-    "Cozinha planejada",
-    "Closet planejado",
-    "Outro",
-  ];
-
-  const MenuItem = ({ label, path }) => (
-    <button
-      onClick={() => navigate(path)}
-      className="w-full text-left px-4 py-3 hover:bg-gray-100 rounded-lg transition"
-    >
-      {label}
-    </button>
-  );
-
-  // CARREGAR DADOS
   useEffect(() => {
     if (!projeto) return;
 
@@ -51,13 +27,12 @@ function EditarProj() {
           ? JSON.parse(projeto.imagens)
           : projeto.imagens;
 
-      setImagens(Array.isArray(imgs) ? imgs : []);
+      setImagens(imgs || []);
     } catch {
       setImagens([]);
     }
   }, [projeto]);
 
-  // UPLOAD CLOUDINARY
   const uploadImagem = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -65,215 +40,128 @@ function EditarProj() {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/drrmyedhr/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
+      { method: "POST", body: data }
     );
 
     const result = await res.json();
-
-    if (!result.secure_url) {
-      console.log("Erro Cloudinary:", result);
-      throw new Error("Erro no upload");
-    }
-
     return result.secure_url;
   };
 
-  // ADICIONAR IMAGENS
   const adicionarImagens = async (e) => {
     const files = Array.from(e.target.files);
-
     setLoading(true);
 
     try {
-      const novasUrls = [];
+      const novas = [];
 
       for (let file of files) {
         const url = await uploadImagem(file);
-        novasUrls.push(url);
+        novas.push(url);
       }
 
-      setImagens((prev) => [...prev, ...novasUrls]);
-    } catch (err) {
-      alert("Erro ao enviar imagens");
+      setImagens((prev) => [...prev, ...novas]);
     } finally {
       setLoading(false);
     }
   };
 
-  // REMOVER IMAGEM
-  const removerImagem = (index) => {
-    const novas = [...imagens];
-    novas.splice(index, 1);
-    setImagens(novas);
+  const removerImagem = (i) => {
+    const copy = [...imagens];
+    copy.splice(i, 1);
+    setImagens(copy);
   };
 
-  // SALVAR
-  const salvarAlteracoes = async () => {
-    if (!tipo) {
-      alert("Selecione o tipo");
-      return;
-    }
-
+  const salvar = async () => {
     setLoading(true);
 
-    try {
-      const res = await fetch(`${API_URL}/projetos/${projeto.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          tipo,
-          descricao,
-          imagens,
-        }),
-      });
+    const res = await fetch(`${API_URL}/projetos/${projeto.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tipo, descricao, imagens }),
+    });
 
-      if (res.ok) {
-        alert("Projeto atualizado!");
-        navigate("/controleProj");
-      } else {
-        const data = await res.json();
-        alert(data.message || "Erro ao salvar");
-      }
-    } catch (err) {
-      console.log(err);
-      alert("Erro no servidor");
-    } finally {
-      setLoading(false);
+    if (res.ok) {
+      navigate("/controleProj", {
+        state: { tipo: tipoOrigem }, // 🔥 volta filtrado
+      });
     }
+
+    setLoading(false);
   };
 
-  // proteção se entrar direto na rota
   if (!projeto) {
     return (
       <div className="p-6">
-        <p>Projeto não encontrado.</p>
-        <button
-          onClick={() => navigate("/gerenciarProj")}
-          className="mt-4 bg-gray-800 text-white px-4 py-2 rounded"
-        >
-          Voltar
-        </button>
+        Projeto não encontrado
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
 
       {/* HEADER */}
-      <header className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-        <button onClick={() => setMenuOpen(!menuOpen)}>
-          ☰
-        </button>
+      <header className="sticky top-0 bg-white/80 backdrop-blur-md border-b">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-        <div className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-12 h-12 rounded-full object-cover border-2 border-orange-500"
-          />
-          <span className="font-semibold text-gray-800">
-            Marcio Bassani
-          </span>
-        </div>
-
-        <div />
-      </header>
-
-      {/* MENU */}
-      {menuOpen && (
-        <div className="fixed left-0 top-0 w-64 h-full bg-white shadow p-4 z-50">
-          <MenuItem label="Criar Orçamentos" path="/criarOrc" />
-          <MenuItem label="Lista de Orçamentos" path="/listaOrc" />
-          <MenuItem label="Projetos" path="/gerenciarProj" />
-          <MenuItem label="Adicionar Projeto" path="/adicionarProj" />
-        </div>
-      )}
-
-      {/* CONTEÚDO */}
-      <main className="p-6 max-w-5xl mx-auto w-full">
-
-        <div className="flex items-center gap-4 mb-6">
           <button
-            onClick={() => navigate("/controleProj")}
-            className="bg-gray-800 text-white px-4 py-2 rounded"
+            onClick={() =>
+              navigate("/controleProj", {
+                state: { tipo: tipoOrigem },
+              })
+            }
+            className="w-12 h-12 rounded-2xl bg-gray-100"
           >
-            ← Voltar
+            ←
           </button>
 
-          <h2 className="text-2xl font-bold">
-            Editar Projeto
-          </h2>
+          <h1 className="font-bold text-gray-800">Editar Projeto</h1>
+
+          <img src={logo} className="w-12 h-12 rounded-2xl object-cover" />
         </div>
+      </header>
 
-        {/* TIPO */}
-        <select
-          value={tipo}
-          onChange={(e) => setTipo(e.target.value)}
-          className="p-3 border rounded mb-6 w-full"
-        >
-          <option value="">Selecione</option>
-          {tipos.map((t, i) => (
-            <option key={i}>{t}</option>
-          ))}
-        </select>
+      {/* CONTEÚDO */}
+      <main className="max-w-5xl mx-auto px-6 py-10">
 
-        {/* IMAGENS */}
-        <div className="mb-6">
-          <div className="flex justify-between mb-2">
-            <h3>Imagens</h3>
+        <div className="bg-white rounded-3xl p-8 shadow">
 
-            <label className="bg-orange-600 text-white px-3 py-1 rounded cursor-pointer">
-              +
-              <input
-                type="file"
-                multiple
-                onChange={adicionarImagens}
-                className="hidden"
-              />
-            </label>
-          </div>
+          <select
+            value={tipo}
+            onChange={(e) => setTipo(e.target.value)}
+            className="w-full p-4 border rounded-2xl mb-6"
+          >
+            <option>Selecione</option>
+            <option>Rack para TV</option>
+            <option>Painel para TV</option>
+            <option>Estante</option>
+          </select>
 
-          <div className="flex gap-4 overflow-x-auto">
-            {imagens.map((img, index) => (
-              <div key={index}>
-                <img
-                  src={img}
-                  className="w-40 h-32 object-cover rounded"
-                />
+          <input type="file" multiple onChange={adicionarImagens} />
 
-                <button
-                  onClick={() => removerImagem(index)}
-                  className="bg-red-500 text-white px-2 py-1 mt-2 rounded"
-                >
-                  Excluir
-                </button>
+          <div className="flex gap-3 overflow-x-auto mt-4">
+            {imagens.map((img, i) => (
+              <div key={i}>
+                <img src={img} className="w-40 h-32 object-cover rounded-xl" />
+                <button onClick={() => removerImagem(i)}>Excluir</button>
               </div>
             ))}
           </div>
+
+          <textarea
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            className="w-full p-4 border rounded-2xl mt-6"
+          />
+
+          <button
+            onClick={salvar}
+            className="bg-blue-500 text-white px-6 py-3 rounded-2xl mt-6"
+          >
+            {loading ? "Salvando..." : "Salvar"}
+          </button>
+
         </div>
-
-        {/* DESCRIÇÃO */}
-        <textarea
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-          className="w-full p-3 border rounded mb-6"
-        />
-
-        {/* SALVAR */}
-        <button
-          onClick={salvarAlteracoes}
-          disabled={loading}
-          className="bg-green-600 text-white px-6 py-3 rounded disabled:opacity-50"
-        >
-          {loading ? "Salvando..." : "Salvar alterações"}
-        </button>
-
       </main>
     </div>
   );
