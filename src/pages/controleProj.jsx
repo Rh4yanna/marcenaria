@@ -172,7 +172,7 @@ function ControleProj() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-10">
 
           <div>
-            <h1 className="text-4xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-gray-800">
               {tipoSelecionado || "Controle de Projetos"}
             </h1>
 
