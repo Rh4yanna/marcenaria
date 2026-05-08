@@ -12,7 +12,10 @@ function ListaOrc() {
     fetch(`${API_URL}/orcamentos`)
       .then((res) => res.json())
       .then((data) => {
-        setOrcamentos(data.reverse());
+        // MAIS RECENTES PRIMEIRO
+        const ordenados = [...data].sort((a, b) => b.id - a.id);
+
+        setOrcamentos(ordenados);
       })
       .catch((err) => {
         console.log("Erro ao buscar:", err);
@@ -57,20 +60,24 @@ function ListaOrc() {
   const gerarPDF = (orc) => {
     const doc = new jsPDF();
 
-    // DATA AUTOMÁTICA
-    const dataAtual = new Date();
+    // DATA DO ORÇAMENTO
+    const dataOrcamento = orc.createdAt
+      ? new Date(orc.createdAt)
+      : new Date();
 
-    const dataFormatada = dataAtual.toLocaleDateString("pt-BR");
-    const horaFormatada = dataAtual.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    const dataFormatada =
+      dataOrcamento.toLocaleDateString("pt-BR");
 
-    // FUNDO HEADER
+    const horaFormatada =
+      dataOrcamento.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+    // HEADER
     doc.setFillColor(239, 246, 255);
     doc.rect(0, 0, 210, 40, "F");
 
-    // TITULO
     doc.setFont("helvetica", "bold");
     doc.setTextColor(31, 41, 55);
     doc.setFontSize(24);
@@ -88,8 +95,9 @@ function ListaOrc() {
 
     // DATA
     doc.setFontSize(10);
+
     doc.text(
-      `Gerado em ${dataFormatada} às ${horaFormatada}`,
+      `Criado em ${dataFormatada} às ${horaFormatada}`,
       105,
       36,
       {
@@ -97,7 +105,7 @@ function ListaOrc() {
       }
     );
 
-    // CARD
+    // CARD PRINCIPAL
     doc.setDrawColor(220, 220, 220);
     doc.roundedRect(15, 50, 180, 180, 6, 6);
 
@@ -124,27 +132,31 @@ function ListaOrc() {
 
     y += 18;
 
-    // PROJETO
+    // TIPO DO MÓVEL
     doc.setFont("helvetica", "bold");
     doc.setTextColor(59, 130, 246);
 
-    doc.text("Detalhes do Projeto", 20, y);
+    doc.text("Tipo do Móvel", 20, y);
 
-    y += 12;
+    y += 10;
 
     doc.setFont("helvetica", "normal");
     doc.setTextColor(55, 65, 81);
 
-    doc.text(`Tipo do móvel: ${orc.tipo}`, 20, y);
+    doc.text(`${orc.tipo}`, 20, y);
 
-    y += 12;
+    y += 18;
 
+    // DESCRIÇÃO
     doc.setFont("helvetica", "bold");
-    doc.text("Descrição:", 20, y);
+    doc.setTextColor(59, 130, 246);
 
-    y += 8;
+    doc.text("Descrição do Projeto", 20, y);
+
+    y += 10;
 
     doc.setFont("helvetica", "normal");
+    doc.setTextColor(55, 65, 81);
 
     const descricaoQuebrada = doc.splitTextToSize(
       orc.descricao || "-",
@@ -153,7 +165,7 @@ function ListaOrc() {
 
     doc.text(descricaoQuebrada, 20, y);
 
-    y += descricaoQuebrada.length * 7 + 12;
+    y += descricaoQuebrada.length * 7 + 15;
 
     // VALORES
     doc.setFont("helvetica", "bold");
@@ -176,6 +188,7 @@ function ListaOrc() {
 
     // TOTAL
     doc.setFillColor(239, 246, 255);
+
     doc.roundedRect(20, y - 8, 170, 20, 4, 4, "F");
 
     doc.setFont("helvetica", "bold");
@@ -269,8 +282,9 @@ function ListaOrc() {
               >
 
                 {/* TOPO CARD */}
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                <div className="flex flex-col gap-4">
 
+                  {/* CLIENTE */}
                   <div>
                     <h2 className="text-2xl font-bold text-gray-800">
                       {orc.nome}
@@ -281,6 +295,7 @@ function ListaOrc() {
                     </p>
                   </div>
 
+                  {/* TIPO ABAIXO */}
                   <div className="bg-blue-100 text-blue-600 px-4 py-2 rounded-2xl text-sm font-semibold w-fit">
                     {orc.tipo}
                   </div>
