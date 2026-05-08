@@ -21,7 +21,7 @@ function ControleProj() {
     </button>
   );
 
-  // ✅ BUSCAR PROJETOS (AGORA USANDO API_URL)
+  // BUSCAR PROJETOS (AGORA USANDO API_URL)
   const buscarProjetos = () => {
     fetch(`${API_URL}/projetos`)
       .then((res) => res.json())
@@ -41,7 +41,7 @@ function ControleProj() {
     buscarProjetos();
   }, []);
 
-  // ✅ EXCLUIR (AGORA USANDO API_URL)
+  // EXCLUIR (AGORA USANDO API_URL)
   const excluirProjeto = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir?")) return;
 

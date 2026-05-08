@@ -21,12 +21,12 @@ function AdicionarProj() {
     </button>
   );
 
-  // 📸 CAPTURA IMAGENS
+  // CAPTURA IMAGENS
   const handleImagens = (e) => {
     setImagens(Array.from(e.target.files));
   };
 
-  // ☁️ UPLOAD PARA CLOUDINARY
+  // UPLOAD PARA CLOUDINARY
   const uploadImagem = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -43,14 +43,14 @@ function AdicionarProj() {
     const result = await res.json();
 
     if (!result.secure_url) {
-      console.log("❌ ERRO CLOUDINARY:", result);
+      console.log(" ERRO CLOUDINARY:", result);
       throw new Error("Erro no upload da imagem");
     }
 
     return result.secure_url;
   };
 
-  // 💾 SALVAR PROJETO
+  // SALVAR PROJETO
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -72,9 +72,9 @@ function AdicionarProj() {
         urls.push(url);
       }
 
-      console.log("📸 URLs:", urls);
+      console.log(" URLs:", urls);
 
-      // 🔥 ENVIO PARA BACKEND (CORRIGIDO)
+      //  ENVIO PARA BACKEND (CORRIGIDO)
       const res = await fetch(`${API_URL}/projetos`, {
         method: "POST",
         headers: {

@@ -67,7 +67,7 @@ function GerenciarPerfil() {
     console.log("Perfil:", perfil);
     console.log("Publico:", publico);
 
-    alert("Dados salvos (depois conectamos com API)");
+    alert("Dados salvos (depois precisa conectar com API)");
   };
 
   return (

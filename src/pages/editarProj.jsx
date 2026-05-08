@@ -38,7 +38,7 @@ function EditarProj() {
     </button>
   );
 
-  // ✅ CARREGAR DADOS
+  // CARREGAR DADOS
   useEffect(() => {
     if (!projeto) return;
 
@@ -57,7 +57,7 @@ function EditarProj() {
     }
   }, [projeto]);
 
-  // ✅ UPLOAD CLOUDINARY
+  // UPLOAD CLOUDINARY
   const uploadImagem = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -81,7 +81,7 @@ function EditarProj() {
     return result.secure_url;
   };
 
-  // ✅ ADICIONAR IMAGENS
+  // ADICIONAR IMAGENS
   const adicionarImagens = async (e) => {
     const files = Array.from(e.target.files);
 
@@ -103,14 +103,14 @@ function EditarProj() {
     }
   };
 
-  // ✅ REMOVER IMAGEM
+  // REMOVER IMAGEM
   const removerImagem = (index) => {
     const novas = [...imagens];
     novas.splice(index, 1);
     setImagens(novas);
   };
 
-  // ✅ SALVAR
+  // SALVAR
   const salvarAlteracoes = async () => {
     if (!tipo) {
       alert("Selecione o tipo");
@@ -147,7 +147,7 @@ function EditarProj() {
     }
   };
 
-  // ❌ proteção se entrar direto na rota
+  // proteção se entrar direto na rota
   if (!projeto) {
     return (
       <div className="p-6">
