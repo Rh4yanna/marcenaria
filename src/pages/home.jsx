@@ -225,7 +225,7 @@ function Home() {
 
         {/* TÍTULO */}
         <div className="mb-10">
-          <h4 className="text-2xl font-bold text-gray-800">
+          <h4 className="text-3xl font-bold text-gray-800">
             Bem-vindo ao painel
           </h4>
 
