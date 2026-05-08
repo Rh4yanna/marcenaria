@@ -9,18 +9,26 @@ function ListaOrc() {
 
   // BUSCAR DADOS
   useEffect(() => {
-    fetch(`${API_URL}/orcamentos`)
-      .then((res) => res.json())
-      .then((data) => {
-        // MAIS RECENTES PRIMEIRO
-        const ordenados = [...data].sort((a, b) => b.id - a.id);
-
-        setOrcamentos(ordenados);
-      })
-      .catch((err) => {
-        console.log("Erro ao buscar:", err);
-      });
+    buscarOrcamentos();
   }, []);
+
+  const buscarOrcamentos = async () => {
+    try {
+      const res = await fetch(`${API_URL}/orcamentos`);
+
+      const data = await res.json();
+
+      // ORDENA MAIS RECENTES PRIMEIRO
+      const ordenados = [...data].sort((a, b) => {
+        return new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id);
+      });
+
+      setOrcamentos(ordenados);
+
+    } catch (err) {
+      console.log("Erro ao buscar:", err);
+    }
+  };
 
   // EXCLUIR
   const excluirOrcamento = async (id) => {
@@ -35,20 +43,12 @@ function ListaOrc() {
         method: "DELETE",
       });
 
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        data = null;
-      }
-
       if (res.ok) {
         setOrcamentos((prev) =>
           prev.filter((orc) => orc.id !== id)
         );
       } else {
-        alert(data?.message || "Erro ao excluir");
+        alert("Erro ao excluir");
       }
     } catch (err) {
       console.log(err);
@@ -56,7 +56,7 @@ function ListaOrc() {
     }
   };
 
-  // GERAR PDF
+  // PDF
   const gerarPDF = (orc) => {
     const doc = new jsPDF();
 
@@ -93,7 +93,6 @@ function ListaOrc() {
       align: "center",
     });
 
-    // DATA
     doc.setFontSize(10);
 
     doc.text(
@@ -105,7 +104,7 @@ function ListaOrc() {
       }
     );
 
-    // CARD PRINCIPAL
+    // CARD
     doc.setDrawColor(220, 220, 220);
     doc.roundedRect(15, 50, 180, 180, 6, 6);
 
@@ -132,31 +131,27 @@ function ListaOrc() {
 
     y += 18;
 
-    // TIPO DO MÓVEL
+    // PROJETO
     doc.setFont("helvetica", "bold");
     doc.setTextColor(59, 130, 246);
 
-    doc.text("Tipo do Móvel", 20, y);
+    doc.text("Detalhes do Projeto", 20, y);
 
-    y += 10;
+    y += 12;
 
     doc.setFont("helvetica", "normal");
     doc.setTextColor(55, 65, 81);
 
-    doc.text(`${orc.tipo}`, 20, y);
+    doc.text(`Tipo do móvel: ${orc.tipo}`, 20, y);
 
-    y += 18;
+    y += 12;
 
-    // DESCRIÇÃO
     doc.setFont("helvetica", "bold");
-    doc.setTextColor(59, 130, 246);
+    doc.text("Descrição:", 20, y);
 
-    doc.text("Descrição do Projeto", 20, y);
-
-    y += 10;
+    y += 8;
 
     doc.setFont("helvetica", "normal");
-    doc.setTextColor(55, 65, 81);
 
     const descricaoQuebrada = doc.splitTextToSize(
       orc.descricao || "-",
@@ -165,7 +160,7 @@ function ListaOrc() {
 
     doc.text(descricaoQuebrada, 20, y);
 
-    y += descricaoQuebrada.length * 7 + 15;
+    y += descricaoQuebrada.length * 7 + 12;
 
     // VALORES
     doc.setFont("helvetica", "bold");
@@ -210,7 +205,6 @@ function ListaOrc() {
       }
     );
 
-    // SALVAR
     doc.save(`orcamento_${orc.nome}.pdf`);
   };
 
@@ -254,6 +248,7 @@ function ListaOrc() {
         {orcamentos.length === 0 ? (
 
           <div className="bg-white border border-gray-200 rounded-3xl p-12 text-center shadow-sm">
+
             <h2 className="text-2xl font-semibold text-gray-700">
               Nenhum orçamento encontrado
             </h2>
@@ -262,12 +257,6 @@ function ListaOrc() {
               Crie seu primeiro orçamento para começar.
             </p>
 
-            <button
-              onClick={() => navigate("/criarOrc")}
-              className="mt-6 bg-blue-500 hover:bg-blue-600 transition text-white px-6 py-3 rounded-2xl"
-            >
-              Criar Orçamento
-            </button>
           </div>
 
         ) : (
@@ -281,22 +270,19 @@ function ListaOrc() {
                 className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-[28px] shadow-lg p-6 hover:shadow-2xl transition"
               >
 
-                {/* TOPO CARD */}
-                <div className="flex flex-col gap-4">
+                {/* TOPO */}
+                <div>
 
-                  {/* CLIENTE */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-800">
-                      {orc.nome}
-                    </h2>
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {orc.nome}
+                  </h2>
 
-                    <p className="text-gray-500 mt-1">
-                      {orc.telefone}
-                    </p>
-                  </div>
+                  <p className="text-gray-500 mt-1">
+                    {orc.telefone}
+                  </p>
 
                   {/* TIPO ABAIXO */}
-                  <div className="bg-blue-100 text-blue-600 px-4 py-2 rounded-2xl text-sm font-semibold w-fit">
+                  <div className="mt-3 bg-blue-100 text-blue-600 px-4 py-2 rounded-2xl text-sm font-semibold w-fit">
                     {orc.tipo}
                   </div>
 
