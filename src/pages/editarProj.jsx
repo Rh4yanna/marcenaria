@@ -242,10 +242,32 @@ function EditarProj() {
             onChange={(e) => setTipo(e.target.value)}
             className="w-full p-4 border rounded-2xl mb-6"
           >
-            <option>Selecione</option>
-            <option>Rack para TV</option>
-            <option>Painel para TV</option>
-            <option>Estante</option>
+                <option>Selecione</option>
+                <option>Rack para TV</option>
+                <option>Painel para TV</option>
+                <option>Estante</option>
+                <option>Mesa de centro</option>
+                <option>Mesa de jantar</option>
+                <option>Mesa planejada</option>
+                <option>Aparador</option>
+                <option>Guarda-roupa planejado</option>
+                <option>Cama</option>
+                <option>Cabeceira</option>
+                <option>Escrivaninha</option>
+                <option>Cozinha planejada</option>
+                <option>Closet planejado</option>
+                <option>Armário de banheiro</option>
+                <option>Painel ripado</option>
+                <option>Balcão</option>
+                <option>Home office</option>
+                <option>Cristaleira</option>
+                <option>Nicho decorativo</option>
+                <option>Prateleira</option>
+                <option>Lavanderia planejada</option>
+                <option>Barzinho</option>
+                <option>Área gourmet</option>
+                <option>Quarto infantil</option>
+                <option>Outro</option>
           </select>
 
           {/* IMAGENS */}
