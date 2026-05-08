@@ -22,15 +22,41 @@ function GerenciarProj() {
     "Escrivaninha",
     "Cozinha planejada",
     "Closet planejado",
+    "Home office planejado",
+    "Mesa de jantar",
+    "Painel ripado",
+    "Lavanderia planejada",
+    "Banheiro planejado",
     "Outro",
   ];
 
-  const MenuItem = ({ label, path }) => (
+  const irPara = (path) => {
+    setMenuOpen(false);
+    navigate(path);
+  };
+
+  const MenuItem = ({ label, desc, path }) => (
     <button
-      onClick={() => navigate(path)}
-      className="w-full text-left px-4 py-3 hover:bg-gray-100 rounded-lg transition"
+      onClick={() => irPara(path)}
+      className="
+        w-full
+        text-left
+        p-4
+        rounded-2xl
+        hover:bg-blue-50
+        transition
+        border
+        border-transparent
+        hover:border-blue-100
+      "
     >
-      {label}
+      <h3 className="font-semibold text-gray-800">
+        {label}
+      </h3>
+
+      <p className="text-sm text-gray-500 mt-1">
+        {desc}
+      </p>
     </button>
   );
 
@@ -41,7 +67,7 @@ function GerenciarProj() {
         const res = await fetch(`${API_URL}/projetos`);
         const data = await res.json();
 
-        setProjetos(Array.isArray(data) ? data : []);
+        setProjetos(Array.isArray(data) ? data.reverse() : []);
       } catch (err) {
         console.log("Erro ao buscar projetos:", err);
       } finally {
@@ -59,86 +85,282 @@ function GerenciarProj() {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
 
       {/* HEADER */}
-      <header className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-        <button onClick={() => setMenuOpen(!menuOpen)}>
-          ☰
-        </button>
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-        <div className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-12 h-12 rounded-full object-cover border-2 border-orange-500"
-          />
-          <span className="font-semibold text-gray-800">
-            Marcio Bassani
-          </span>
+          {/* MENU */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="
+              w-12 h-12
+              rounded-2xl
+              bg-gray-100
+              hover:bg-blue-50
+              flex flex-col items-center justify-center gap-1
+              transition
+            "
+          >
+            <span className="w-5 h-0.5 bg-gray-700"></span>
+            <span className="w-5 h-0.5 bg-gray-700"></span>
+            <span className="w-5 h-0.5 bg-gray-700"></span>
+          </button>
+
+          {/* LOGO */}
+          <div className="flex items-center gap-4">
+            <img
+              src={logo}
+              alt="logo"
+              className="
+                w-14 h-14
+                rounded-2xl
+                object-cover
+                border-2 border-blue-100
+                shadow-md
+              "
+            />
+
+            <div>
+              <h1 className="text-xl font-bold text-gray-800">
+                Marcio Bassani
+              </h1>
+
+              <p className="text-sm text-gray-500">
+                Gestão de Projetos
+              </p>
+            </div>
+          </div>
+
+          <div className="w-12"></div>
         </div>
-
-        <div />
       </header>
 
-      {/* MENU */}
+      {/* MENU LATERAL */}
       {menuOpen && (
         <>
+          {/* OVERLAY */}
           <div
-            className="fixed inset-0 bg-black/30 z-40"
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
             onClick={() => setMenuOpen(false)}
           />
 
-          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-xl p-4 z-50">
-            <MenuItem label="Criar Orçamentos" path="/criarOrc" />
-            <MenuItem label="Lista de Orçamentos" path="/listaOrc" />
-            <MenuItem label="Controle de Projetos" path="/controleProj" />
-            <MenuItem label="Adicionar Projeto" path="/adicionarProj" />
-            <MenuItem label="Gerenciar Perfil" path="/gerenciarPerfil" />
+          {/* SIDEBAR */}
+          <div
+            className="
+              fixed
+              top-0
+              left-0
+              w-80
+              h-full
+              bg-white
+              shadow-2xl
+              z-50
+              p-6
+              border-r
+              border-gray-200
+            "
+          >
+            {/* TOPO */}
+            <div className="flex items-center gap-4 mb-8">
+              <img
+                src={logo}
+                alt="logo"
+                className="w-14 h-14 rounded-2xl object-cover"
+              />
+
+              <div>
+                <h2 className="font-bold text-gray-800">
+                  Marcio Bassani
+                </h2>
+
+                <p className="text-sm text-gray-500">
+                  Gestão de móveis planejados
+                </p>
+              </div>
+            </div>
+
+            {/* LINKS */}
+            <div className="flex flex-col gap-2">
+
+              <MenuItem
+                label="Criar Orçamentos"
+                desc="Monte novos orçamentos rapidamente"
+                path="/criarOrc"
+              />
+
+              <MenuItem
+                label="Lista de Orçamentos"
+                desc="Visualize todos os orçamentos"
+                path="/listaOrc"
+              />
+
+              <MenuItem
+                label="Gerenciar Projetos"
+                desc="Controle seus projetos"
+                path="/gerenciarProj"
+              />
+
+              <MenuItem
+                label="Adicionar Projeto"
+                desc="Cadastre novos projetos"
+                path="/adicionarProj"
+              />
+
+              <MenuItem
+                label="Gerenciar Perfil"
+                desc="Atualize suas informações"
+                path="/gerenciarPerfil"
+              />
+            </div>
           </div>
         </>
       )}
 
       {/* CONTEÚDO */}
-      <main className="p-6 max-w-6xl mx-auto w-full">
-
-        {/* BOTÃO VOLTAR */}
-        <button
-          onClick={() => navigate("/home")}
-          className="mb-4 text-white bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition"
-        >
-          ← Voltar
-        </button>
+      <main className="max-w-7xl mx-auto px-6 pt-10 pb-12">
 
         {/* TOPO */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <span className="text-gray-700 font-semibold">
-              Filtrar por móvel
-            </span>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-10">
 
-            <select
-              value={filtro}
-              onChange={(e) => setFiltro(e.target.value)}
-              className="p-2 border rounded-lg ml-2"
-            >
-              <option value="">Todos</option>
-              {tipos.map((t, i) => (
-                <option key={i}>{t}</option>
-              ))}
-            </select>
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800">
+              Gerenciar Projetos
+            </h1>
+
+            <p className="text-gray-500 mt-3 text-lg">
+              Organize e visualize todos os projetos cadastrados.
+            </p>
           </div>
 
-          <button
-            onClick={() => navigate("/adicionarProj")}
-            className="bg-orange-600 text-white px-4 py-2 rounded-lg text-xl"
-          >
-            +
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3">
+
+            <button
+              onClick={() => navigate("/home")}
+              className="
+                bg-white
+                border
+                border-gray-200
+                hover:bg-gray-100
+                transition
+                text-gray-700
+                px-5
+                py-3
+                rounded-2xl
+                shadow-sm
+              "
+            >
+              ← Voltar
+            </button>
+
+            <button
+              onClick={() => navigate("/adicionarProj")}
+              className="
+                bg-blue-500
+                hover:bg-blue-600
+                transition
+                text-white
+                px-5
+                py-3
+                rounded-2xl
+                shadow-lg
+                font-semibold
+              "
+            >
+              + Adicionar Projeto
+            </button>
+
+          </div>
+        </div>
+
+        {/* FILTRO */}
+        <div
+          className="
+            bg-white/90
+            backdrop-blur-md
+            border
+            border-gray-200
+            rounded-[28px]
+            p-6
+            shadow-md
+            mb-10
+          "
+        >
+          <div className="flex flex-col md:flex-row md:items-center gap-4">
+
+            <div className="flex-1">
+              <label className="text-sm font-semibold text-gray-700 block mb-2">
+                Filtrar por tipo de móvel
+              </label>
+
+              <select
+                value={filtro}
+                onChange={(e) => setFiltro(e.target.value)}
+                className="
+                  w-full
+                  bg-gray-50
+                  border
+                  border-gray-200
+                  rounded-2xl
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-4
+                  focus:ring-blue-100
+                  focus:border-blue-300
+                  transition
+                "
+              >
+                <option value="">Todos os móveis</option>
+
+                {tipos.map((t, i) => (
+                  <option key={i}>{t}</option>
+                ))}
+              </select>
+            </div>
+
+          </div>
         </div>
 
         {/* LOADING */}
-        {loading && <p>Carregando projetos...</p>}
+        {loading && (
+          <div className="bg-white rounded-3xl p-12 text-center shadow-md">
+            <p className="text-gray-500 text-lg">
+              Carregando projetos...
+            </p>
+          </div>
+        )}
+
+        {/* SEM PROJETOS */}
+        {!loading && projetos.length === 0 && (
+          <div className="bg-white rounded-3xl p-12 text-center shadow-md border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-700">
+              Nenhum projeto encontrado
+            </h2>
+
+            <p className="text-gray-500 mt-3">
+              Cadastre seu primeiro projeto para começar.
+            </p>
+
+            <button
+              onClick={() => navigate("/adicionarProj")}
+              className="
+                mt-6
+                bg-blue-500
+                hover:bg-blue-600
+                transition
+                text-white
+                px-6
+                py-3
+                rounded-2xl
+                font-semibold
+              "
+            >
+              Adicionar Projeto
+            </button>
+          </div>
+        )}
 
         {/* LISTA */}
         {!loading &&
@@ -149,15 +371,46 @@ function GerenciarProj() {
               if (grupo.itens.length === 0) return null;
 
               return (
-                <div key={index} className="mb-10">
+                <div key={index} className="mb-14">
 
                   {/* TÍTULO */}
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {grupo.tipo}
-                  </h3>
+                  <div className="flex items-center justify-between mb-5">
 
-                  {/* SCROLL */}
-                  <div className="flex gap-4 overflow-x-auto pb-2">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-800">
+                        {grupo.tipo}
+                      </h2>
+
+                      <p className="text-gray-500 mt-1">
+                        {grupo.itens.length} projeto(s)
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        navigate("/controleProj", {
+                          state: { tipo: grupo.tipo },
+                        })
+                      }
+                      className="
+                        bg-gray-900
+                        hover:bg-black
+                        transition
+                        text-white
+                        px-5
+                        py-3
+                        rounded-2xl
+                        shadow-md
+                        font-semibold
+                      "
+                    >
+                      Gerenciar
+                    </button>
+
+                  </div>
+
+                  {/* PROJETOS */}
+                  <div className="flex gap-5 overflow-x-auto pb-3">
 
                     {grupo.itens.map((proj) => {
                       let imagens = [];
@@ -178,35 +431,56 @@ function GerenciarProj() {
                       return (
                         <div
                           key={proj.id}
-                          className="min-w-[200px] bg-white p-3 rounded-xl shadow"
+                          className="
+                            min-w-[280px]
+                            bg-white/90
+                            backdrop-blur-md
+                            border border-gray-200
+                            rounded-[28px]
+                            overflow-hidden
+                            shadow-md
+                            hover:shadow-2xl
+                            transition
+                            group
+                          "
                         >
+
+                          {/* IMAGEM */}
                           {imagens.length > 0 ? (
                             <img
                               src={imagens[0]}
                               alt="projeto"
-                              className="w-full h-32 object-cover rounded-lg"
+                              className="
+                                w-full
+                                h-56
+                                object-cover
+                                group-hover:scale-105
+                                transition
+                                duration-500
+                              "
                             />
                           ) : (
-                            <div className="w-full h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+                            <div className="w-full h-56 bg-gray-100 flex items-center justify-center text-gray-400">
                               Sem imagem
                             </div>
                           )}
+
+                          {/* INFO */}
+                          <div className="p-5">
+
+                            <h3 className="text-lg font-bold text-gray-800">
+                              {proj.nome || grupo.tipo}
+                            </h3>
+
+                            <p className="text-gray-500 mt-2 text-sm">
+                              Projeto cadastrado no sistema
+                            </p>
+
+                          </div>
                         </div>
                       );
                     })}
                   </div>
-
-                  {/* BOTÃO */}
-                  <button
-                    onClick={() =>
-                      navigate("/controleProj", {
-                        state: { tipo: grupo.tipo },
-                      })
-                    }
-                    className="mt-3 bg-gray-800 text-white px-4 py-2 rounded-lg"
-                  >
-                    Gerenciar
-                  </button>
                 </div>
               );
             })}
