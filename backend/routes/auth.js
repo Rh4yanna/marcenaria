@@ -1,5 +1,4 @@
 import express from "express";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { db } from "../server.js";
 
@@ -12,69 +11,65 @@ const SECRET = "segredo123";
 // CADASTRO
 // =========================
 router.post("/register", async (req, res) => {
+
   const { nome, email, senha } = req.body;
 
-  // validação
   if (!nome || !email || !senha) {
+
     return res.status(400).json({
-      message: "Preencha todos os campos"
+      message:"Preencha todos os campos"
     });
+
   }
 
-  try {
+  try{
 
-    // verifica se email já existe
     const verificarSQL =
-      "SELECT * FROM usuarios WHERE email=?";
+    "SELECT * FROM usuarios WHERE email=?";
 
     db.query(
       verificarSQL,
       [email],
-      async (err, usuarioExistente) => {
+      (err,usuarioExistente)=>{
 
-        if (err) {
+        if(err){
+
           console.log(err);
 
           return res.status(500).json({
-            message: "Erro servidor"
+            message:"Erro servidor"
           });
+
         }
 
-        if (usuarioExistente.length > 0) {
+        if(usuarioExistente.length>0){
 
           return res.status(400).json({
-            message: "Email já cadastrado"
+            message:"Email já cadastrado"
           });
 
         }
 
-        // criptografa senha
-        const hash =
-          await bcrypt.hash(
-            senha,
-            10
-          );
-
-        const sql =
-          "INSERT INTO usuarios (nome,email,senha) VALUES (?,?,?)";
+        const sql=
+        "INSERT INTO usuarios(nome,email,senha) VALUES(?,?,?)";
 
         db.query(
           sql,
-          [nome, email, hash],
-          (err) => {
+          [nome,email,senha],
+          (err)=>{
 
-            if (err) {
+            if(err){
 
               console.log(err);
 
               return res.status(500).json({
-                message: "Erro ao cadastrar"
+                message:"Erro ao cadastrar"
               });
 
             }
 
             return res.status(201).json({
-              message: "Usuário cadastrado com sucesso"
+              message:"Usuário cadastrado"
             });
 
           }
@@ -83,12 +78,12 @@ router.post("/register", async (req, res) => {
       }
     );
 
-  } catch (err) {
+  }catch(err){
 
     console.log(err);
 
     return res.status(500).json({
-      message: "Erro no servidor"
+      message:"Erro servidor"
     });
 
   }
@@ -99,104 +94,87 @@ router.post("/register", async (req, res) => {
 // =========================
 // LOGIN
 // =========================
-router.post("/login", (req, res) => {
+router.post("/login",(req,res)=>{
 
-  const { email, senha } = req.body;
+const {email,senha}=req.body;
 
-  if (!email || !senha) {
+if(!email || !senha){
 
-    return res.status(400).json({
-      message:"Preencha email e senha"
-    });
+return res.status(400).json({
+message:"Preencha email e senha"
+});
 
-  }
+}
 
-  const sql =
-    "SELECT * FROM usuarios WHERE email=?";
+const sql=
+"SELECT * FROM usuarios WHERE email=?";
 
-  db.query(
-    sql,
-    [email],
-    async (err, result) => {
+db.query(
+sql,
+[email],
+(err,result)=>{
 
-      if (err) {
+if(err){
 
-        console.log(err);
+console.log(err);
 
-        return res.status(500).json({
-          message:"Erro servidor"
-        });
+return res.status(500).json({
+message:"Erro servidor"
+});
 
-      }
+}
 
-      if (result.length === 0) {
+if(result.length===0){
 
-        return res.status(404).json({
-          message:"Usuário não encontrado"
-        });
+return res.status(404).json({
+message:"Usuário não encontrado"
+});
 
-      }
+}
 
-      const usuario = result[0];
+const usuario=result[0];
 
-      try {
+// COMPARAÇÃO DIRETA
+if(senha!==usuario.senha){
 
-        // compara senha digitada
-        // com senha criptografada
-        const senhaValida =
-          await bcrypt.compare(
-            senha,
-            usuario.senha
-          );
+return res.status(401).json({
+message:"Senha incorreta"
+});
 
-        if (!senhaValida) {
+}
 
-          return res.status(401).json({
-            message:"Senha incorreta"
-          });
+const token=jwt.sign(
 
-        }
+{
+id:usuario.id,
+email:usuario.email
+},
 
-        // gera token
-        const token = jwt.sign(
+SECRET,
 
-          {
-            id:usuario.id,
-            email:usuario.email
-          },
+{
+expiresIn:"1d"
+}
 
-          SECRET,
+);
 
-          {
-            expiresIn:"1d"
-          }
+return res.json({
 
-        );
+token,
 
-        return res.json({
+usuario:{
 
-          token,
+id:usuario.id,
+nome:usuario.nome,
+email:usuario.email
 
-          usuario:{
-            id:usuario.id,
-            nome:usuario.nome,
-            email:usuario.email
-          }
+}
 
-        });
+});
 
-      } catch(err){
+}
 
-        console.log(err);
-
-        return res.status(500).json({
-          message:"Erro ao validar senha"
-        });
-
-      }
-
-    }
-  );
+);
 
 });
 
