@@ -2,9 +2,9 @@ import { Navigate } from "react-router-dom";
 
 function PrivateRoute({ children }) {
 
-  const token = localStorage.getItem("token");
+  const token =
+    localStorage.getItem("token");
 
-  // verifica se existe token válido
   const autenticado =
     token &&
     token !== "undefined" &&
