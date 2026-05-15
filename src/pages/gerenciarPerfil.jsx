@@ -129,7 +129,7 @@ function GerenciarPerfil() {
             transition
           "
           >
-            ←
+            ← Voltar
           </button>
 
           {/* LOGO */}
