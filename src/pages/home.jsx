@@ -12,6 +12,15 @@ function Home() {
     navigate(path);
   };
 
+  // SAIR
+  const sair = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+
+    setMenuOpen(false);
+    navigate("/login");
+  };
+
   const MenuItem = ({ label, desc, path }) => (
     <button
       onClick={() => irPara(path)}
@@ -92,7 +101,7 @@ function Home() {
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-          {/* MENU BUTTON */}
+          {/* MENU */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="
@@ -161,9 +170,10 @@ function Home() {
               p-6
               border-r
               border-gray-200
+              flex
+              flex-col
             "
           >
-
             {/* TOPO */}
             <div className="flex items-center gap-4 mb-8">
               <img
@@ -184,7 +194,7 @@ function Home() {
             </div>
 
             {/* LINKS */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 flex-1">
 
               <MenuItem
                 label="Criar Orçamentos"
@@ -215,7 +225,26 @@ function Home() {
                 desc="Atualize suas informações"
                 path="/gerenciarPerfil"
               />
+
             </div>
+
+            {/* SAIR */}
+            <button
+              onClick={sair}
+              className="
+                mt-6
+                bg-red-500
+                hover:bg-red-600
+                text-white
+                py-3
+                rounded-2xl
+                font-semibold
+                transition
+              "
+            >
+              Sair da conta
+            </button>
+
           </div>
         </>
       )}
@@ -223,7 +252,6 @@ function Home() {
       {/* CONTEÚDO */}
       <main className="max-w-7xl mx-auto px-6 pt-10 pb-12">
 
-        {/* TÍTULO */}
         <div className="mb-10">
           <h4 className="text-3xl font-bold text-gray-800">
             Bem-vindo ao painel
@@ -239,25 +267,25 @@ function Home() {
 
           <CardButton
             title="Criar Orçamentos"
-            desc="Monte novos orçamentos personalizados para seus clientes de forma rápida e profissional."
+            desc="Monte novos orçamentos personalizados."
             path="/criarOrc"
           />
 
           <CardButton
             title="Gerenciar Projetos"
-            desc="Controle todos os projetos cadastrados e mantenha seu portfólio organizado."
+            desc="Controle todos os projetos."
             path="/gerenciarProj"
           />
 
           <CardButton
             title="Lista de Orçamentos"
-            desc="Visualize, exporte em PDF e exclua orçamentos já criados."
+            desc="Visualize, exporte PDF e exclua."
             path="/listaOrc"
           />
 
           <CardButton
             title="Gerenciar Perfil"
-            desc="Atualize suas informações, banner, contatos e dados públicos."
+            desc="Atualize informações e dados públicos."
             path="/gerenciarPerfil"
           />
 
