@@ -5,10 +5,12 @@ import "./index.css";
 
 import App from "./App.jsx";
 
+// ÁREA ADMIN
 import Home from "./pages/home.jsx";
 
 import CriarOrc from "./pages/criarOrc.jsx";
 import ListaOrc from "./pages/listaOrc.jsx";
+
 import GerenciarProj from "./pages/gerenciarProj.jsx";
 import ControleProj from "./pages/controleProj.jsx";
 import EditarProj from "./pages/editarProj.jsx";
@@ -17,6 +19,13 @@ import GerenciarPerfil from "./pages/gerenciarPerfil.jsx";
 
 import PrivateRoute from "./PrivateRoute.jsx";
 
+// PÁGINAS PÚBLICAS
+import Principal from "./pagespub/principal.jsx";
+import Portfolio from "./pagespub/portifolio.jsx";
+import Projetos from "./pagespub/projetos.jsx";
+import DetalheProj from "./pagespub/detalheProj.jsx";
+import Contato from "./pagespub/contato.jsx";
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -24,7 +33,7 @@ import {
 } from "react-router-dom";
 
 
-// verifica se token é válido
+// verifica token
 const isAuth = () => {
   const token = localStorage.getItem("token");
 
@@ -37,13 +46,13 @@ const isAuth = () => {
 
 const router = createBrowserRouter([
 
-  // rota inicial
+  // página inicial
   {
     path: "/",
     element: <Navigate to="/login" replace />,
   },
 
-  // login
+  // LOGIN
   {
     path: "/login",
     element: isAuth()
@@ -51,7 +60,10 @@ const router = createBrowserRouter([
       : <App />,
   },
 
-  // HOME
+  // ====================
+  // ÁREA ADMIN
+  // ====================
+
   {
     path: "/home",
     element: (
@@ -61,7 +73,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  // ORÇAMENTOS
   {
     path: "/criarOrc",
     element: (
@@ -80,7 +91,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  // PROJETOS
   {
     path: "/gerenciarProj",
     element: (
@@ -117,7 +127,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  // PERFIL
   {
     path: "/gerenciarPerfil",
     element: (
@@ -127,34 +136,40 @@ const router = createBrowserRouter([
     ),
   },
 
-  // =========
-  // PÁGINAS PÚBLICAS FUTURAS
-  // =========
+  // ====================
+  // PÁGINAS PÚBLICAS
+  // ====================
 
   {
     path: "/principal",
-    element: null,
+    element: <Principal />,
   },
 
   {
     path: "/portfolio",
-    element: null,
+    element: <Portfolio />,
   },
 
   {
     path: "/projetos/:tipo",
-    element: null,
+    element: <Projetos />,
   },
 
   {
     path: "/detalhesProj/:id",
-    element: null,
+    element: <DetalheProj />,
   },
 
   {
     path: "/contato",
-    element: null,
+    element: <Contato />,
   },
+
+  // rota inexistente
+  {
+    path: "*",
+    element: <Navigate to="/login" replace />,
+  }
 
 ]);
 
@@ -162,8 +177,6 @@ createRoot(
   document.getElementById("root")
 ).render(
   <StrictMode>
-    <RouterProvider
-      router={router}
-    />
+    <RouterProvider router={router}/>
   </StrictMode>
 );
