@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { API_URL } from "../services/api";
+import { Link } from "react-router-dom";
 
 function Principal() {
   const navigate = useNavigate();
@@ -378,30 +379,18 @@ Ver Portfólio
 
 </button>
 
-
-
-<a
-href={
-perfilPublico.whatsapp
-}
-target="_blank"
-rel="noreferrer"
->
-
-<button
-className="
-bg-white
-px-6
-py-4
-rounded-2xl
-"
->
-
-Entrar em contato
-
-</button>
-
-</a>
+<Link to="/contato">
+  <button
+    className="
+      bg-white
+      px-6
+      py-4
+      rounded-2xl
+    "
+  >
+    Entrar em contato
+  </button>
+</Link>
 
 </div>
 
