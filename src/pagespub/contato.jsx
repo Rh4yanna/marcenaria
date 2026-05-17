@@ -91,7 +91,7 @@ function Contato() {
 
             <div>
               <h1 className="text-xl font-bold">Marcio Bassani</h1>
-              <p className="text-sm text-gray-500">Móveis Planejados</p>
+              <p className="text-sm text-gray-500">Entre em Contato</p>
             </div>
           </div>
 
@@ -133,19 +133,6 @@ function Contato() {
         className="h-[450px] bg-cover bg-center relative"
         style={{ backgroundImage: `url(${perfilPublico.banner})` }}
       >
-        <div className="absolute inset-0 bg-black/50" />
-
-        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-6">
-
-          <h1 className="text-5xl text-white font-bold max-w-4xl">
-            {perfilPublico.titulo}
-          </h1>
-
-          <p className="text-white text-xl mt-5 max-w-2xl">
-            {perfilPublico.subtitulo}
-          </p>
-
-        </div>
       </section>
 
       {/* BOTÃO VOLTAR */}
