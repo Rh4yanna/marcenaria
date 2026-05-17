@@ -6,19 +6,18 @@ import { API_URL } from "../services/api";
 function GerenciarPerfil() {
   const navigate = useNavigate();
 
-  const [perfil, setPerfil] = useState({
-    nome: "Marcio Bassani",
-  });
-
   const [publico, setPublico] =
     useState({
       titulo: "",
       subtitulo: "",
       descricao_servicos: "",
       banner: "",
+
       whatsapp: "",
       telefone: "",
+
       email: "",
+
       instagram: "",
       instagram_link: "",
     });
@@ -30,6 +29,7 @@ function GerenciarPerfil() {
     "https://marcenaria-1.onrender.com/principal";
 
 
+  // CARREGAR DADOS
 
   useEffect(()=>{
 
@@ -38,19 +38,18 @@ function GerenciarPerfil() {
   },[]);
 
 
-
   const buscarPerfil =
     async()=>{
 
       try{
 
         const resposta=
-        await fetch(
-          `${API_URL}/perfilPublico`
-        );
+          await fetch(
+            `${API_URL}/perfilPublico`
+          );
 
         const dados=
-        await resposta.json();
+          await resposta.json();
 
         if(dados){
 
@@ -75,6 +74,8 @@ function GerenciarPerfil() {
 
 
 
+  // INPUTS
+
   const handlePublico=(e)=>{
 
     const {name,value}=e.target;
@@ -91,31 +92,82 @@ function GerenciarPerfil() {
 
 
 
-  const handleBanner=(e)=>{
+  // UPLOAD CLOUDINARY
 
-    const file=
-      e.target.files[0];
+  const handleBanner =
+    async(e)=>{
 
-    if(!file)return;
+      const file =
+        e.target.files[0];
 
-    const preview=
-      URL.createObjectURL(file);
-
-    setPreviewBanner(
-      preview
-    );
-
-    setPublico({
-
-      ...publico,
-
-      banner:preview
-
-    });
-
-  };
+      if(!file) return;
 
 
+      try{
+
+        const formData=
+          new FormData();
+
+        formData.append(
+        "file",
+        publico.banner
+      );
+
+        formData.append(
+          "upload_preset",
+          "marcenaria_upload"
+      );
+
+
+        const resposta=
+          await fetch(
+
+            "https://api.cloudinary.com/v1_1/drrmyedhr/image/upload",
+
+            {
+
+              method:"POST",
+
+              body:formData
+
+            }
+
+          );
+
+
+        const dados=
+          await resposta.json();
+
+
+        setPreviewBanner(
+          dados.secure_url
+        );
+
+
+        setPublico({
+
+          ...publico,
+
+          banner:
+            dados.secure_url
+
+        });
+
+      }catch(err){
+
+        console.log(err);
+
+        alert(
+          "Erro upload imagem"
+        );
+
+      }
+
+    };
+
+
+
+  // COPIAR LINK
 
   const copiarLink=()=>{
 
@@ -123,64 +175,86 @@ function GerenciarPerfil() {
       linkPublico
     );
 
-    alert("Link copiado");
+    alert(
+      "Link copiado"
+    );
 
   };
 
 
 
-  const salvar=async()=>{
+  // SALVAR API
 
-    try{
+  const salvar =
+    async()=>{
 
-      const resposta=
-      await fetch(
+      try{
 
-        `${API_URL}/perfilPublico`,
+        const resposta=
+        await fetch(
 
-        {
+          `${API_URL}/perfilPublico`,
 
-          method:"PUT",
+          {
 
-          headers:{
-            "Content-Type":
-            "application/json"
-          },
+            method:"PUT",
 
-          body:JSON.stringify(
-            publico
-          )
+            headers:{
+              "Content-Type":
+              "application/json"
+            },
+
+            body:JSON.stringify(
+              publico
+            )
+
+          }
+
+        );
+
+
+        const dados=
+          await resposta.json();
+
+
+        if(resposta.ok){
+
+          alert(
+            "Salvo com sucesso"
+          );
+
+        }else{
+
+          alert(
+            dados.erro ||
+            "Erro salvar"
+          );
 
         }
 
-      );
+      }catch(err){
 
-      const dados=
-      await resposta.json();
+        console.log(err);
 
-      alert(
-        dados.message
-      );
+        alert(
+          "Erro conexão API"
+        );
 
-    }catch{
+      }
 
-      alert(
-        "Erro ao salvar"
-      );
-
-    }
-
-  };
+    };
 
 
 
-  return(
+return(
 
 <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
+
 
 <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
 
 <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
 
 <button
 onClick={()=>
@@ -191,9 +265,12 @@ bg-white
 border
 border-gray-200
 hover:bg-gray-100
+transition
+text-gray-700
 px-5
 py-3
 rounded-2xl
+shadow-sm
 "
 >
 
@@ -202,20 +279,26 @@ rounded-2xl
 </button>
 
 
+
 <div className="flex items-center gap-4">
 
 <img
 src={logo}
+alt=""
 className="
 w-14
 h-14
 rounded-2xl
+object-cover
+border-2
+border-blue-100
+shadow-md
 "
 />
 
 <div>
 
-<h1 className="font-bold text-xl">
+<h1 className="font-bold text-gray-800 text-xl">
 
 Marcio Bassani
 
@@ -231,7 +314,7 @@ Gerenciar Perfil
 
 </div>
 
-<div className="w-12"/>
+<div className="w-12"></div>
 
 </div>
 
@@ -243,19 +326,30 @@ Gerenciar Perfil
 
 <div
 className="
-bg-white
+bg-white/90
+backdrop-blur-md
 rounded-[30px]
 shadow-md
 p-8
 border
+border-gray-200
 "
 >
 
-<h2 className="text-3xl font-bold mb-8">
+<h2 className="text-3xl font-bold text-gray-800 mb-8">
 
 Configurações Públicas
 
 </h2>
+
+
+<div>
+
+<h3 className="font-bold text-xl mb-5 text-gray-700">
+
+Página Pública
+
+</h3>
 
 
 <div className="grid md:grid-cols-2 gap-5">
@@ -264,7 +358,7 @@ Configurações Públicas
 name="titulo"
 value={publico.titulo}
 onChange={handlePublico}
-placeholder="Título"
+placeholder="Título principal"
 className="p-4 rounded-2xl border"
 />
 
@@ -316,7 +410,6 @@ className="p-4 rounded-2xl border"
 </div>
 
 
-
 <input
 name="instagram_link"
 value={
@@ -336,13 +429,15 @@ border
 />
 
 
+
 <div className="mt-6">
 
-<label>
+<label className="block mb-2">
 
-Banner
+Banner Principal
 
 </label>
+
 
 {previewBanner &&(
 
@@ -350,16 +445,18 @@ Banner
 src={
 previewBanner
 }
+alt=""
 className="
 w-full
 h-52
-rounded-3xl
 object-cover
-my-4
+rounded-3xl
+mb-4
 "
 />
 
 )}
+
 
 <input
 type="file"
@@ -380,7 +477,7 @@ publico.descricao_servicos
 onChange={
 handlePublico
 }
-placeholder="Descrição"
+placeholder="Ex: trabalho com móveis planejados..."
 className="
 w-full
 mt-6
@@ -396,11 +493,12 @@ border
 <div
 className="
 mt-8
-bg-blue-50
 p-5
 rounded-3xl
+bg-blue-50
 flex
 justify-between
+items-center
 "
 >
 
@@ -410,15 +508,18 @@ justify-between
 
 </span>
 
+
 <button
 onClick={
 copiarLink
 }
 className="
 bg-blue-500
-text-white
+hover:bg-blue-600
 px-5
+py-3
 rounded-2xl
+text-white
 "
 >
 
@@ -427,6 +528,7 @@ Copiar
 </button>
 
 </div>
+
 
 
 <button
@@ -440,6 +542,7 @@ text-white
 py-4
 rounded-2xl
 font-bold
+shadow-lg
 "
 >
 
