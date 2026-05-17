@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { API_URL } from "../services/api";
-import { Link } from "react-router-dom";
 
 function Principal() {
   const navigate = useNavigate();
@@ -379,8 +378,12 @@ Ver Portfólio
 
 </button>
 
-<Link to="/contato">
   <button
+    onClick={() =>
+    navigate(
+    "/contato"
+    )
+    }
     className="
       bg-white
       px-6
@@ -390,7 +393,6 @@ Ver Portfólio
   >
     Entrar em contato
   </button>
-</Link>
 
 </div>
 
