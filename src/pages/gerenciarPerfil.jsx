@@ -363,13 +363,6 @@ border-gray-200
   items-center
   ">
 
-    {/* ESQUERDA */}
-    <div className="
-    flex
-    items-center
-    gap-3
-    ">
-
       <button
         onClick={()=>
         navigate("/home")
