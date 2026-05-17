@@ -129,18 +129,16 @@ function Contato() {
       )}
 
       {/* BANNER */}
-        <section
-            className="
-                relative
+        <section className="relative w-full bg-black flex justify-center items-center">
+            <img
+                src={perfilPublico.banner}
+                alt="Banner"
+                className="
                 w-full
-                h-[300px] sm:h-[380px] md:h-[450px]
-                bg-cover
-                bg-center
-            "
-            style={{ backgroundImage: `url(${perfilPublico.banner})` }}
-            >
-            {/* overlay opcional (caso queira consistência com outras páginas) */}
-            <div className="absolute inset-0 bg-black/40" />
+                max-h-[450px]
+                object-contain
+                "
+            />
         </section>
 
       {/* BOTÃO VOLTAR */}
