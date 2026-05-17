@@ -394,7 +394,7 @@ to-blue-50
 
               <p className="text-gray-500 text-sm">
 
-                Painel Administrativo
+                Gerenciar Perfil
 
               </p>
 
