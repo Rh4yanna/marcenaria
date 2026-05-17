@@ -350,103 +350,132 @@ z-30
 bg-white/80
 backdrop-blur-md
 border-b
+border-gray-200
 ">
 
-<div className="
-max-w-7xl
-mx-auto
-px-6
-py-4
-flex
-justify-between
-items-center
-">
+  <div className="
+  max-w-7xl
+  mx-auto
+  px-6
+  py-4
+  flex
+  justify-between
+  items-center
+  ">
+
+    {/* ESQUERDA */}
+    <div className="
+    flex
+    items-center
+    gap-3
+    ">
+
+      <button
+        onClick={()=>
+          navigate("/home")
+        }
+        className="
+        bg-white
+        border
+        border-gray-200
+        hover:bg-gray-100
+        transition
+        text-gray-700
+        px-5
+        py-3
+        rounded-2xl
+        shadow-sm
+        "
+      >
+
+        ← Voltar
+
+      </button>
 
 
-<button
-onClick={()=>
-setMenuOpen(
-!menuOpen
-)
-}
-className="
-w-12
-h-12
-rounded-2xl
-bg-gray-100
-flex
-flex-col
-justify-center
-items-center
-gap-1
-"
->
+      <button
+        onClick={()=>
+          setMenuOpen(
+            !menuOpen
+          )
+        }
+        className="
+        w-12
+        h-12
+        rounded-2xl
+        bg-gray-100
+        hover:bg-blue-50
+        flex
+        flex-col
+        items-center
+        justify-center
+        gap-1
+        transition
+        "
+      >
 
-<span className="
-w-5
-h-0.5
-bg-gray-700
-"/>
+        <span className="w-5 h-0.5 bg-gray-700"></span>
 
-<span className="
-w-5
-h-0.5
-bg-gray-700
-"/>
+        <span className="w-5 h-0.5 bg-gray-700"></span>
 
-<span className="
-w-5
-h-0.5
-bg-gray-700
-"/>
+        <span className="w-5 h-0.5 bg-gray-700"></span>
 
-</button>
+      </button>
+
+    </div>
 
 
+    {/* CENTRO */}
+    <div className="
+    flex
+    items-center
+    gap-4
+    ">
 
-<div className="
-flex
-items-center
-gap-4
-">
+      <img
+        src={logo}
+        alt=""
+        className="
+        w-14
+        h-14
+        rounded-2xl
+        object-cover
+        border-2
+        border-blue-100
+        shadow-md
+        "
+      />
 
-<img
-src={logo}
-className="
-w-14
-h-14
-rounded-2xl
-"
-/>
+      <div>
+
+        <h1 className="
+        font-bold
+        text-xl
+        text-gray-800
+        ">
+
+          Marcio Bassani
+
+        </h1>
+
+        <p className="
+        text-sm
+        text-gray-500
+        ">
+
+          Gerenciar Perfil
+
+        </p>
+
+      </div>
+
+    </div>
 
 
-<div>
+    {/* ESPAÇADOR */}
+    <div className="w-12"></div>
 
-<h1 className="
-font-bold
-text-xl
-">
-
-Marcio Bassani
-
-</h1>
-
-<p className="
-text-sm
-text-gray-500
-">
-
-Gerenciar Perfil
-
-</p>
-
-</div>
-
-</div>
-
-<div className="w-12"/>
-
-</div>
+  </div>
 
 </header>
 
