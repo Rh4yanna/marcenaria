@@ -129,13 +129,13 @@ function Contato() {
       )}
 
       {/* BANNER */}
-        <section className="relative w-full bg-black flex justify-center items-center">
+        <section className="w-full bg-black flex justify-center">
             <img
                 src={perfilPublico.banner}
                 alt="Banner"
                 className="
                 w-full
-                max-h-[450px]
+                max-h-[60vh]
                 object-contain
                 "
             />
