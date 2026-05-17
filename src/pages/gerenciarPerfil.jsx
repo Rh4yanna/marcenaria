@@ -343,119 +343,70 @@ via-gray-100
 to-blue-50
 ">
 
-<header className="
-sticky
-top-0
-z-30
-bg-white/80
-backdrop-blur-md
-border-b
-border-gray-200
-">
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
 
-  <div className="
-  max-w-7xl
-  mx-auto
-  px-6
-  py-4
-  flex
-  justify-between
-  items-center
-  ">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-    {/* ESQUERDA */}
-    <div className="
-    flex
-    items-center
-    gap-3
-    ">
+          <button
+            onClick={() =>
+              setMenuOpen(
+                !menuOpen
+              )
+            }
+            className="
+            w-12
+            h-12
+            rounded-2xl
+            bg-gray-100
+            flex
+            flex-col
+            justify-center
+            items-center
+            gap-1
+            "
+          >
 
+            <span className="w-5 h-0.5 bg-gray-700"></span>
+            <span className="w-5 h-0.5 bg-gray-700"></span>
+            <span className="w-5 h-0.5 bg-gray-700"></span>
 
-      <button
-        onClick={()=>
-          setMenuOpen(
-            !menuOpen
-          )
-        }
-        className="
-        w-12
-        h-12
-        rounded-2xl
-        bg-gray-100
-        hover:bg-blue-50
-        flex
-        flex-col
-        items-center
-        justify-center
-        gap-1
-        transition
-        "
-      >
-
-        <span className="w-5 h-0.5 bg-gray-700"></span>
-
-        <span className="w-5 h-0.5 bg-gray-700"></span>
-
-        <span className="w-5 h-0.5 bg-gray-700"></span>
-
-      </button>
-
-    </div>
+          </button>
 
 
-    {/* CENTRO */}
-    <div className="
-    flex
-    items-center
-    gap-4
-    ">
+          <div className="flex items-center gap-4">
 
-      <img
-        src={logo}
-        alt=""
-        className="
-        w-14
-        h-14
-        rounded-2xl
-        object-cover
-        border-2
-        border-blue-100
-        shadow-md
-        "
-      />
+            <img
+              src={logo}
+              className="
+              w-14
+              h-14
+              rounded-2xl
+              "
+            />
 
-      <div>
+            <div>
 
-        <h1 className="
-        font-bold
-        text-xl
-        text-gray-800
-        ">
+              <h1 className="font-bold text-xl">
 
-          Marcio Bassani
+                Marcio Bassani
 
-        </h1>
+              </h1>
 
-        <p className="
-        text-sm
-        text-gray-500
-        ">
+              <p className="text-gray-500 text-sm">
 
-          Gerenciar Perfil
+                Painel Administrativo
 
-        </p>
+              </p>
 
-      </div>
+            </div>
 
-    </div>
+          </div>
 
-        {/* DIREITA */}
-        <div></div>
+          <div className="w-12"></div>
 
+        </div>
 
-  </div>
-
-</header>
+      </header>
 
 
 
