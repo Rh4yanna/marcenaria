@@ -450,33 +450,7 @@ border-gray-200
     </div>
 
 
-    {/* DIREITA */}
 
-      <div>
-
-        <button
-          onClick={()=>
-            navigate("/home")
-          }
-          className="
-          bg-white
-          border
-          border-gray-200
-          hover:bg-gray-100
-          transition
-          text-gray-700
-          px-5
-          py-3
-          rounded-2xl
-          shadow-sm
-          "
-        >
-
-          ← Voltar
-
-        </button>
-
-      </div>
 
   </div>
 
@@ -607,257 +581,283 @@ mx-auto
 p-6
 ">
 
-<div className="
-bg-white
-rounded-[30px]
-p-8
-shadow-md
-">
+  <div>
 
-<h2 className="
-text-3xl
-font-bold
-mb-8
-">
+        <button
+          onClick={()=>
+            navigate("/home")
+          }
+          className="
+          bg-white
+          border
+          border-gray-200
+          hover:bg-gray-100
+          transition
+          text-gray-700
+          px-5
+          py-3
+          rounded-2xl
+          shadow-sm
+          "
+        >
 
-Configurações Públicas
+          ← Voltar
 
-</h2>
+        </button>
 
-
-<div className="
-grid
-md:grid-cols-2
-gap-5
-">
-
-<input
-name="titulo"
-value={publico.titulo}
-onChange={handlePublico}
-placeholder="Título"
-className="p-4 rounded-2xl border"
-/>
-
-
-<input
-name="subtitulo"
-value={publico.subtitulo}
-onChange={handlePublico}
-placeholder="Subtítulo"
-className="p-4 rounded-2xl border"
-/>
-
-
-<input
-name="whatsapp"
-value={publico.whatsapp}
-onChange={handlePublico}
-placeholder="Whats"
-className="p-4 rounded-2xl border"
-/>
-
-
-<input
-name="telefone"
-value={publico.telefone}
-onChange={handlePublico}
-placeholder="Telefone"
-className="p-4 rounded-2xl border"
-/>
-
-
-<input
-name="email"
-value={publico.email}
-onChange={handlePublico}
-placeholder="Email"
-className="p-4 rounded-2xl border"
-/>
-
-
-<input
-name="instagram"
-value={publico.instagram}
-onChange={handlePublico}
-placeholder="@instagram"
-className="p-4 rounded-2xl border"
-/>
-
-</div>
-
-
-<input
-name="instagram_link"
-value={publico.instagram_link}
-onChange={handlePublico}
-placeholder="Link Instagram"
-className="
-w-full
-mt-5
-p-4
-rounded-2xl
-border
-"
-/>
-
-
-
-<div className="mt-8">
-
-{previewBanner&&(
-
-<img
-src={previewBanner}
-className="
-w-full
-h-56
-rounded-3xl
-object-cover
-mb-4
-"
-/>
-
-)}
-
-
-<input
-type="file"
-hidden
-ref={
-inputBannerRef
-}
-onChange={
-handleBanner
-}
-/>
-
-
-<button
-onClick={()=>
-inputBannerRef
-.current
-.click()
-}
-className="
-bg-blue-500
-text-white
-px-6
-py-3
-rounded-2xl
-"
->
-
-Trocar Imagem
-
-</button>
-
-</div>
-
-
-
-<textarea
-name="
-descricao_servicos"
-value={
-publico.descricao_servicos
-}
-onChange={
-handlePublico
-}
-className="
-w-full
-mt-6
-h-36
-border
-rounded-2xl
-p-4
-"
-/>
-
-
+      </div>
 
 <div className="
-bg-blue-50
-p-5
-rounded-3xl
-mt-8
-flex
-justify-between
-">
+    bg-white
+    rounded-[30px]
+    p-8
+    shadow-md
+    ">
 
-<span>
+    <h2 className="
+    text-3xl
+    font-bold
+    mb-8
+    ">
 
-{linkPublico}
+    Configurações Públicas
 
-</span>
-
-
-<button
-onClick={
-copiarLink
-}
-className="
-bg-blue-500
-text-white
-px-5
-rounded-2xl
-"
->
-
-Copiar
-
-</button>
-
-</div>
+    </h2>
 
 
+    <div className="
+    grid
+    md:grid-cols-2
+    gap-5
+    ">
 
-<button
-onClick={salvar}
-className="
-w-full
-mt-8
-bg-blue-500
-text-white
-py-4
-rounded-2xl
-font-bold
-"
->
-
-Salvar Alterações
-
-</button>
+    <input
+    name="titulo"
+    value={publico.titulo}
+    onChange={handlePublico}
+    placeholder="Título"
+    className="p-4 rounded-2xl border"
+    />
 
 
-<button
-onClick={()=>
+    <input
+    name="subtitulo"
+    value={publico.subtitulo}
+    onChange={handlePublico}
+    placeholder="Subtítulo"
+    className="p-4 rounded-2xl border"
+    />
 
-window.open(
-linkPublico,
-"_blank"
-)
 
-}
-className="
-w-full
-mt-4
-bg-gray-800
-text-white
-py-4
-rounded-2xl
-font-bold
-"
->
+    <input
+    name="whatsapp"
+    value={publico.whatsapp}
+    onChange={handlePublico}
+    placeholder="Whats"
+    className="p-4 rounded-2xl border"
+    />
 
-Acessar Portfólio Público
 
-</button>
+    <input
+    name="telefone"
+    value={publico.telefone}
+    onChange={handlePublico}
+    placeholder="Telefone"
+    className="p-4 rounded-2xl border"
+    />
 
-</div>
 
-</main>
+    <input
+    name="email"
+    value={publico.email}
+    onChange={handlePublico}
+    placeholder="Email"
+    className="p-4 rounded-2xl border"
+    />
+
+
+    <input
+    name="instagram"
+    value={publico.instagram}
+    onChange={handlePublico}
+    placeholder="@instagram"
+    className="p-4 rounded-2xl border"
+    />
+
+    </div>
+
+
+    <input
+    name="instagram_link"
+    value={publico.instagram_link}
+    onChange={handlePublico}
+    placeholder="Link Instagram"
+    className="
+    w-full
+    mt-5
+    p-4
+    rounded-2xl
+    border
+    "
+    />
+
+
+
+    <div className="mt-8">
+
+    {previewBanner&&(
+
+    <img
+    src={previewBanner}
+    className="
+    w-full
+    h-56
+    rounded-3xl
+    object-cover
+    mb-4
+    "
+    />
+
+    )}
+
+
+    <input
+    type="file"
+    hidden
+    ref={
+    inputBannerRef
+    }
+    onChange={
+    handleBanner
+    }
+    />
+
+
+    <button
+    onClick={()=>
+    inputBannerRef
+    .current
+    .click()
+    }
+    className="
+    bg-blue-500
+    text-white
+    px-6
+    py-3
+    rounded-2xl
+    "
+    >
+
+    Trocar Imagem
+
+    </button>
+
+    </div>
+
+
+
+    <textarea
+    name="
+    descricao_servicos"
+    value={
+    publico.descricao_servicos
+    }
+    onChange={
+    handlePublico
+    }
+    className="
+    w-full
+    mt-6
+    h-36
+    border
+    rounded-2xl
+    p-4
+    "
+    />
+
+
+
+    <div className="
+    bg-blue-50
+    p-5
+    rounded-3xl
+    mt-8
+    flex
+    justify-between
+    ">
+
+    <span>
+
+    {linkPublico}
+
+    </span>
+
+
+    <button
+    onClick={
+    copiarLink
+    }
+    className="
+    bg-blue-500
+    text-white
+    px-5
+    rounded-2xl
+    "
+    >
+
+    Copiar
+
+    </button>
+
+    </div>
+
+
+
+    <button
+    onClick={salvar}
+    className="
+    w-full
+    mt-8
+    bg-blue-500
+    text-white
+    py-4
+    rounded-2xl
+    font-bold
+    "
+    >
+
+    Salvar Alterações
+
+    </button>
+
+
+    <button
+    onClick={()=>
+
+    window.open(
+    linkPublico,
+    "_blank"
+    )
+
+    }
+    className="
+    w-full
+    mt-4
+    bg-gray-800
+    text-white
+    py-4
+    rounded-2xl
+    font-bold
+    "
+    >
+
+    Acessar Portfólio Público
+
+    </button>
+
+    </div>
+
+    </main>
 
 </div>
 
