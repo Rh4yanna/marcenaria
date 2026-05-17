@@ -363,27 +363,12 @@ border-gray-200
   items-center
   ">
 
-      <button
-        onClick={()=>
-        navigate("/home")
-        }
-        className="
-        bg-white
-        border
-        border-gray-200
-        hover:bg-gray-100
-        transition
-        text-gray-700
-        px-5
-        py-3
-        rounded-2xl
-        shadow-sm
-        "
-        >
-
-        ← Voltar
-
-      </button>
+    {/* ESQUERDA */}
+    <div className="
+    flex
+    items-center
+    gap-3
+    ">
 
 
       <button
@@ -465,8 +450,33 @@ border-gray-200
     </div>
 
 
-    {/* ESPAÇADOR */}
-    <div className="w-12"></div>
+    {/* DIREITA */}
+
+      <div>
+
+        <button
+          onClick={()=>
+            navigate("/home")
+          }
+          className="
+          bg-white
+          border
+          border-gray-200
+          hover:bg-gray-100
+          transition
+          text-gray-700
+          px-5
+          py-3
+          rounded-2xl
+          shadow-sm
+          "
+        >
+
+          ← Voltar
+
+        </button>
+
+      </div>
 
   </div>
 
