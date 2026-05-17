@@ -7,409 +7,454 @@ function GerenciarPerfil() {
   const navigate = useNavigate();
 
   const [perfil, setPerfil] = useState({
-    nome: "",
-    foto: "",
-    previewFoto: "",
+    nome: "Marcio Bassani",
   });
 
-  const [publico, setPublico] = useState({
-    whatsapp: "",
-    telefone: "",
-    banner: "",
-    previewBanner: "",
-    email: "",
-    instagram: "",
-    instagramLink: "",
-    titulo: "",
-    subtitulo: "",
-    descricaoServicos: "",
-  });
+  const [publico, setPublico] =
+    useState({
+      titulo: "",
+      subtitulo: "",
+      descricao_servicos: "",
+      banner: "",
+      whatsapp: "",
+      telefone: "",
+      email: "",
+      instagram: "",
+      instagram_link: "",
+    });
+
+  const [previewBanner,setPreviewBanner]=
+    useState("");
 
   const linkPublico =
     "https://marcenaria-1.onrender.com/principal";
 
-  useEffect(() => {
+
+
+  useEffect(()=>{
+
     buscarPerfil();
-  }, []);
 
-  const buscarPerfil = async () => {
-    try {
-      const res = await fetch(
-        `${API_URL}/perfil`
-      );
+  },[]);
 
-      const data = await res.json();
 
-      setPerfil({
-        nome: data.nome || "",
-        foto: "",
-        previewFoto: "",
-      });
 
-      setPublico({
-        whatsapp:
-          data.whatsapp || "",
+  const buscarPerfil =
+    async()=>{
 
-        telefone:
-          data.telefone || "",
+      try{
 
-        banner: "",
+        const resposta=
+        await fetch(
+          `${API_URL}/perfilPublico`
+        );
 
-        previewBanner: "",
+        const dados=
+        await resposta.json();
 
-        email:
-          data.email || "",
+        if(dados){
 
-        instagram:
-          data.instagram || "",
+          setPublico(dados);
 
-        instagramLink:
-          data.instagram_link || "",
+          setPreviewBanner(
+            dados.banner || ""
+          );
 
-        titulo:
-          data.titulo || "",
+        }
 
-        subtitulo:
-          data.subtitulo || "",
+      }catch(err){
 
-        descricaoServicos:
-          data.descricao_servicos || "",
-      });
+        console.log(
+          "Erro carregar:",
+          err
+        );
 
-    } catch (err) {
+      }
 
-      console.log(
-        "Erro:",
-        err
-      );
+    };
 
-    }
-  };
 
-  const handlePerfil = (e) => {
 
-    const {
-      name,
-      value
-    } = e.target;
+  const handlePublico=(e)=>{
 
-    setPerfil({
-
-      ...perfil,
-
-      [name]:
-      value,
-
-    });
-
-  };
-
-  const handlePublico = (e) => {
-
-    const {
-      name,
-      value
-    } = e.target;
+    const {name,value}=e.target;
 
     setPublico({
 
       ...publico,
 
-      [name]:
-      value,
+      [name]:value
 
     });
 
   };
 
-  const handleFoto = (e) => {
 
-    const file =
+
+  const handleBanner=(e)=>{
+
+    const file=
       e.target.files[0];
 
-    if (!file) return;
+    if(!file)return;
 
-    setPerfil({
+    const preview=
+      URL.createObjectURL(file);
 
-      ...perfil,
-
-      foto:file,
-
-      previewFoto:
-      URL.createObjectURL(
-        file
-      ),
-
-    });
-
-  };
-
-  const handleBanner = (e) => {
-
-    const file =
-      e.target.files[0];
-
-    if (!file) return;
+    setPreviewBanner(
+      preview
+    );
 
     setPublico({
 
       ...publico,
 
-      banner:file,
-
-      previewBanner:
-      URL.createObjectURL(
-        file
-      ),
+      banner:preview
 
     });
 
   };
+
+
 
   const copiarLink=()=>{
 
-    navigator.clipboard
-    .writeText(
+    navigator.clipboard.writeText(
       linkPublico
     );
 
-    alert(
-      "Link copiado!"
-    );
+    alert("Link copiado");
 
   };
+
+
 
   const salvar=async()=>{
 
     try{
 
-      const res=
+      const resposta=
       await fetch(
 
-      `${API_URL}/perfil`,
+        `${API_URL}/perfilPublico`,
 
-      {
+        {
 
-      method:"PUT",
+          method:"PUT",
 
-      headers:{
+          headers:{
+            "Content-Type":
+            "application/json"
+          },
 
-      "Content-Type":
-      "application/json"
+          body:JSON.stringify(
+            publico
+          )
 
-      },
-
-      body:JSON.stringify({
-
-      nome:
-      perfil.nome,
-
-      titulo:
-      publico.titulo,
-
-      subtitulo:
-      publico.subtitulo,
-
-      descricaoServicos:
-      publico.descricaoServicos,
-
-      whatsapp:
-      publico.whatsapp,
-
-      telefone:
-      publico.telefone,
-
-      email:
-      publico.email,
-
-      instagram:
-      publico.instagram,
-
-      instagramLink:
-      publico.instagramLink
-
-      })
-
-      }
+        }
 
       );
 
-      if(!res.ok){
-
-      throw new Error();
-
-      }
+      const dados=
+      await resposta.json();
 
       alert(
-      "Salvo!"
+        dados.message
       );
 
     }catch{
 
       alert(
-      "Erro ao salvar"
+        "Erro ao salvar"
       );
 
     }
 
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
 
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
 
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+  return(
 
-          <button
-            onClick={() =>
-            navigate("/home")}
-            className="
-            bg-white
-            border
-            border-gray-200
-            hover:bg-gray-100
-            px-5
-            py-3
-            rounded-2xl
-            "
-          >
-            ← Voltar
-          </button>
+<div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
 
-          <div className="flex items-center gap-4">
+<header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
 
-            <img
-              src={logo}
-              alt=""
-              className="
-              w-14 h-14
-              rounded-2xl
-              object-cover
-              border-2
-              border-blue-100
-              "
-            />
+<div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-            <div>
+<button
+onClick={()=>
+navigate("/home")
+}
+className="
+bg-white
+border
+border-gray-200
+hover:bg-gray-100
+px-5
+py-3
+rounded-2xl
+"
+>
 
-              <h1 className="font-bold text-xl">
-                Marcio Bassani
-              </h1>
+← Voltar
 
-              <p className="text-sm text-gray-500">
-                Gerenciar Perfil
-              </p>
+</button>
 
-            </div>
 
-          </div>
+<div className="flex items-center gap-4">
 
-          <div className="w-12"></div>
+<img
+src={logo}
+className="
+w-14
+h-14
+rounded-2xl
+"
+/>
 
-        </div>
+<div>
 
-      </header>
+<h1 className="font-bold text-xl">
 
-      <main className="max-w-5xl mx-auto p-6">
+Marcio Bassani
 
-        <div className="bg-white p-8 rounded-[30px] shadow-md">
+</h1>
 
-          <h2 className="text-3xl font-bold mb-8">
+<p className="text-sm text-gray-500">
 
-            Configurações Públicas
+Gerenciar Perfil
 
-          </h2>
+</p>
 
-          <input
-            type="text"
-            name="nome"
-            value={perfil.nome}
-            onChange={handlePerfil}
-            placeholder="Nome"
-            className="w-full p-4 border rounded-2xl mb-5"
-          />
+</div>
 
-          <input
-            type="text"
-            name="titulo"
-            value={publico.titulo}
-            onChange={handlePublico}
-            placeholder="Título"
-            className="w-full p-4 border rounded-2xl mb-5"
-          />
+</div>
 
-          <input
-            type="text"
-            name="subtitulo"
-            value={publico.subtitulo}
-            onChange={handlePublico}
-            placeholder="Subtítulo"
-            className="w-full p-4 border rounded-2xl mb-5"
-          />
+<div className="w-12"/>
 
-          <textarea
-            name="descricaoServicos"
-            value={publico.descricaoServicos}
-            onChange={handlePublico}
-            placeholder="Descrição"
-            className="w-full p-4 border rounded-2xl h-36 mb-5"
-          />
+</div>
 
-          <input
-            type="text"
-            name="whatsapp"
-            value={publico.whatsapp}
-            onChange={handlePublico}
-            placeholder="WhatsApp"
-            className="w-full p-4 border rounded-2xl mb-5"
-          />
+</header>
 
-          <input
-            type="text"
-            name="telefone"
-            value={publico.telefone}
-            onChange={handlePublico}
-            placeholder="Telefone"
-            className="w-full p-4 border rounded-2xl mb-5"
-          />
 
-          <input
-            type="email"
-            name="email"
-            value={publico.email}
-            onChange={handlePublico}
-            placeholder="Email"
-            className="w-full p-4 border rounded-2xl mb-5"
-          />
 
-          <input
-            type="text"
-            name="instagram"
-            value={publico.instagram}
-            onChange={handlePublico}
-            placeholder="@Instagram"
-            className="w-full p-4 border rounded-2xl mb-5"
-          />
+<main className="max-w-5xl mx-auto p-6">
 
-          <button
-            onClick={salvar}
-            className="
-            w-full
-            bg-blue-500
-            hover:bg-blue-600
-            text-white
-            py-4
-            rounded-2xl
-            "
-          >
-            Salvar Alterações
-          </button>
+<div
+className="
+bg-white
+rounded-[30px]
+shadow-md
+p-8
+border
+"
+>
 
-        </div>
-      </main>
-    </div>
-  );
+<h2 className="text-3xl font-bold mb-8">
+
+Configurações Públicas
+
+</h2>
+
+
+<div className="grid md:grid-cols-2 gap-5">
+
+<input
+name="titulo"
+value={publico.titulo}
+onChange={handlePublico}
+placeholder="Título"
+className="p-4 rounded-2xl border"
+/>
+
+
+<input
+name="subtitulo"
+value={publico.subtitulo}
+onChange={handlePublico}
+placeholder="Subtítulo"
+className="p-4 rounded-2xl border"
+/>
+
+
+<input
+name="whatsapp"
+value={publico.whatsapp}
+onChange={handlePublico}
+placeholder="WhatsApp"
+className="p-4 rounded-2xl border"
+/>
+
+
+<input
+name="telefone"
+value={publico.telefone}
+onChange={handlePublico}
+placeholder="Telefone"
+className="p-4 rounded-2xl border"
+/>
+
+
+<input
+name="email"
+value={publico.email}
+onChange={handlePublico}
+placeholder="Email"
+className="p-4 rounded-2xl border"
+/>
+
+
+<input
+name="instagram"
+value={publico.instagram}
+onChange={handlePublico}
+placeholder="@Instagram"
+className="p-4 rounded-2xl border"
+/>
+
+</div>
+
+
+
+<input
+name="instagram_link"
+value={
+publico.instagram_link
+}
+onChange={
+handlePublico
+}
+placeholder="Link Instagram"
+className="
+w-full
+mt-5
+p-4
+rounded-2xl
+border
+"
+/>
+
+
+<div className="mt-6">
+
+<label>
+
+Banner
+
+</label>
+
+{previewBanner &&(
+
+<img
+src={
+previewBanner
+}
+className="
+w-full
+h-52
+rounded-3xl
+object-cover
+my-4
+"
+/>
+
+)}
+
+<input
+type="file"
+onChange={
+handleBanner
+}
+/>
+
+</div>
+
+
+
+<textarea
+name="descricao_servicos"
+value={
+publico.descricao_servicos
+}
+onChange={
+handlePublico
+}
+placeholder="Descrição"
+className="
+w-full
+mt-6
+h-36
+p-4
+rounded-2xl
+border
+"
+/>
+
+
+
+<div
+className="
+mt-8
+bg-blue-50
+p-5
+rounded-3xl
+flex
+justify-between
+"
+>
+
+<span>
+
+{linkPublico}
+
+</span>
+
+<button
+onClick={
+copiarLink
+}
+className="
+bg-blue-500
+text-white
+px-5
+rounded-2xl
+"
+>
+
+Copiar
+
+</button>
+
+</div>
+
+
+<button
+onClick={salvar}
+className="
+w-full
+mt-8
+bg-blue-500
+hover:bg-blue-600
+text-white
+py-4
+rounded-2xl
+font-bold
+"
+>
+
+Salvar Alterações
+
+</button>
+
+</div>
+
+</main>
+
+</div>
+
+);
+
 }
 
 export default GerenciarPerfil;
