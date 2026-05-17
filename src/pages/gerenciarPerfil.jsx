@@ -115,22 +115,22 @@ function GerenciarPerfil() {
           {/* VOLTAR */}
 
           <button
-            onClick={() =>
-              navigate("/home")
-            }
-            className="
-            w-12 h-12
-            rounded-2xl
-            bg-gray-100
-            hover:bg-blue-50
-            flex
-            items-center
-            justify-center
-            transition
-          "
-          >
-            ← Voltar
-          </button>
+              onClick={() => navigate("/home")}
+              className="
+                bg-white
+                border
+                border-gray-200
+                hover:bg-gray-100
+                transition
+                text-gray-700
+                px-5
+                py-3
+                rounded-2xl
+                shadow-sm
+              "
+            >
+              ← Voltar
+            </button>
 
           {/* LOGO */}
 
