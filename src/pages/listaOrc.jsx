@@ -203,72 +203,7 @@ function ListaOrc() {
 
   return (
 
-     <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
     
-          <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
-    
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-    
-              <button
-                onClick={() =>
-                  setMenuOpen(
-                    !menuOpen
-                  )
-                }
-                className="
-                w-12
-                h-12
-                rounded-2xl
-                bg-gray-100
-                flex
-                flex-col
-                justify-center
-                items-center
-                gap-1
-                "
-              >
-    
-                <span className="w-5 h-0.5 bg-gray-700"></span>
-                <span className="w-5 h-0.5 bg-gray-700"></span>
-                <span className="w-5 h-0.5 bg-gray-700"></span>
-    
-              </button>
-    
-    
-              <div className="flex items-center gap-4">
-    
-                <img
-                  src={logo}
-                  className="
-                  w-14
-                  h-14
-                  rounded-2xl
-                  "
-                />
-    
-                <div>
-    
-                  <h1 className="font-bold text-xl">
-    
-                    Marcio Bassani
-    
-                  </h1>
-    
-                  <p className="text-gray-500 text-sm">
-    
-                    Painel Administrativo
-    
-                  </p>
-    
-                </div>
-    
-              </div>
-    
-              <div className="w-12"></div>
-    
-            </div>
-    
-          </header>
 
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50 p-6">
       <div className="max-w-5xl mx-auto">
