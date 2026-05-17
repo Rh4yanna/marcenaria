@@ -372,7 +372,7 @@ border-gray-200
 
       <button
         onClick={()=>
-          navigate("/home")
+        navigate("/home")
         }
         className="
         bg-white
@@ -386,7 +386,7 @@ border-gray-200
         rounded-2xl
         shadow-sm
         "
-      >
+        >
 
         ← Voltar
 
