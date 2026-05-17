@@ -27,7 +27,9 @@ function GerenciarPerfil() {
   const linkPublico =
     "https://marcenaria-1.onrender.com/principal";
 
-  // CARREGAR DADOS
+
+
+  // CARREGAR PERFIL
 
   useEffect(() => {
     buscarPerfil();
@@ -36,51 +38,68 @@ function GerenciarPerfil() {
   const buscarPerfil =
     async () => {
       try {
+
         const resposta =
           await fetch(
-            `${API_URL}/perfilPublico`
+            `${API_URL}/perfil`
           );
 
         const dados =
           await resposta.json();
 
         if (dados) {
+
           setPublico(dados);
 
           setPreviewBanner(
             dados.banner || ""
           );
+
         }
+
       } catch (err) {
+
         console.log(
           "Erro carregar:",
           err
         );
+
       }
     };
+
+
 
   // INPUTS
 
   const handlePublico = (e) => {
+
     const { name, value } =
       e.target;
 
     setPublico({
+
       ...publico,
+
       [name]: value,
+
     });
+
   };
 
-  // UPLOAD CLOUDINARY
+
+
+  // CLOUDINARY
 
   const handleBanner =
     async (e) => {
+
       const file =
         e.target.files[0];
 
       if (!file) return;
 
       try {
+
         const formData =
           new FormData();
 
@@ -109,13 +128,13 @@ function GerenciarPerfil() {
         if (
           !dados.secure_url
         ) {
-          console.log(
-            dados
-          );
+
+          console.log(dados);
 
           return alert(
             "Erro upload"
           );
+
         }
 
         setPreviewBanner(
@@ -123,22 +142,32 @@ function GerenciarPerfil() {
         );
 
         setPublico({
+
           ...publico,
+
           banner:
             dados.secure_url,
+
         });
+
       } catch (err) {
+
         console.log(err);
 
         alert(
           "Erro upload imagem"
         );
+
       }
+
     };
+
+
 
   // COPIAR LINK
 
   const copiarLink = () => {
+
     navigator.clipboard.writeText(
       linkPublico
     );
@@ -146,17 +175,23 @@ function GerenciarPerfil() {
     alert(
       "Link copiado"
     );
+
   };
 
-  // SALVAR API
+
+
+  // SALVAR
 
   const salvar =
     async () => {
+
       try {
+
         const resposta =
           await fetch(
-            `${API_URL}/perfilPublico`,
+            `${API_URL}/perfil`,
             {
+
               method: "PUT",
 
               headers: {
@@ -168,6 +203,7 @@ function GerenciarPerfil() {
                 JSON.stringify(
                   publico
                 ),
+
             }
           );
 
@@ -177,25 +213,36 @@ function GerenciarPerfil() {
         if (
           resposta.ok
         ) {
+
           alert(
             "Salvo com sucesso"
           );
+
         } else {
+
           alert(
             dados.erro ||
-              "Erro salvar"
+            "Erro salvar"
           );
+
         }
+
       } catch (err) {
+
         console.log(err);
 
         alert(
           "Erro conexão API"
         );
+
       }
+
     };
 
+
+
   return (
+
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
 
       {/* HEADER */}
@@ -221,8 +268,11 @@ function GerenciarPerfil() {
             shadow-sm
             "
           >
+
             ← Voltar
+
           </button>
+
 
           <div className="flex items-center gap-4">
 
@@ -243,11 +293,15 @@ function GerenciarPerfil() {
             <div>
 
               <h1 className="font-bold text-gray-800 text-xl">
+
                 Marcio Bassani
+
               </h1>
 
               <p className="text-sm text-gray-500">
+
                 Gerenciar Perfil
+
               </p>
 
             </div>
@@ -260,7 +314,7 @@ function GerenciarPerfil() {
 
       </header>
 
-      {/* CONTEÚDO */}
+
 
       <main className="max-w-5xl mx-auto p-6">
 
@@ -282,96 +336,64 @@ function GerenciarPerfil() {
 
           </h2>
 
-          <h3 className="font-bold text-xl mb-5 text-gray-700">
-
-            Página Pública
-
-          </h3>
 
           <div className="grid md:grid-cols-2 gap-5">
 
             <input
               name="titulo"
-              value={
-                publico.titulo
-              }
-              onChange={
-                handlePublico
-              }
+              value={publico.titulo}
+              onChange={handlePublico}
               placeholder="Título principal"
               className="p-4 rounded-2xl border"
             />
 
             <input
               name="subtitulo"
-              value={
-                publico.subtitulo
-              }
-              onChange={
-                handlePublico
-              }
+              value={publico.subtitulo}
+              onChange={handlePublico}
               placeholder="Subtítulo"
               className="p-4 rounded-2xl border"
             />
 
             <input
               name="whatsapp"
-              value={
-                publico.whatsapp
-              }
-              onChange={
-                handlePublico
-              }
+              value={publico.whatsapp}
+              onChange={handlePublico}
               placeholder="WhatsApp"
               className="p-4 rounded-2xl border"
             />
 
             <input
               name="telefone"
-              value={
-                publico.telefone
-              }
-              onChange={
-                handlePublico
-              }
-              placeholder="Telefone"
+              value={publico.telefone}
+              onChange={handlePublico}
+              placeholder="(42)999999999"
               className="p-4 rounded-2xl border"
             />
 
             <input
               name="email"
-              value={
-                publico.email
-              }
-              onChange={
-                handlePublico
-              }
+              value={publico.email}
+              onChange={handlePublico}
               placeholder="Email"
               className="p-4 rounded-2xl border"
             />
 
             <input
               name="instagram"
-              value={
-                publico.instagram
-              }
-              onChange={
-                handlePublico
-              }
+              value={publico.instagram}
+              onChange={handlePublico}
               placeholder="@Instagram"
               className="p-4 rounded-2xl border"
             />
 
           </div>
 
+
           <input
             name="instagram_link"
-            value={
-              publico.instagram_link
-            }
-            onChange={
-              handlePublico
-            }
+            value={publico.instagram_link}
+            onChange={handlePublico}
             placeholder="Link Instagram"
             className="
             w-full
@@ -382,17 +404,19 @@ function GerenciarPerfil() {
             "
           />
 
+
           <div className="mt-6">
 
             <label className="block mb-2">
+
               Banner Principal
+
             </label>
 
             {previewBanner && (
+
               <img
-                src={
-                  previewBanner
-                }
+                src={previewBanner}
                 alt=""
                 className="
                 w-full
@@ -402,26 +426,22 @@ function GerenciarPerfil() {
                 mb-4
                 "
               />
+
             )}
 
             <input
               type="file"
-              onChange={
-                handleBanner
-              }
+              onChange={handleBanner}
             />
 
           </div>
 
+
           <textarea
             name="descricao_servicos"
-            value={
-              publico.descricao_servicos
-            }
-            onChange={
-              handlePublico
-            }
-            placeholder="Ex: trabalho com móveis planejados..."
+            value={publico.descricao_servicos}
+            onChange={handlePublico}
+            placeholder="Descrição serviços"
             className="
             w-full
             mt-6
@@ -432,26 +452,25 @@ function GerenciarPerfil() {
             "
           />
 
-          <div
-            className="
-            mt-8
-            p-5
-            rounded-3xl
-            bg-blue-50
-            flex
-            justify-between
-            items-center
-            "
-          >
+
+          <div className="
+          mt-8
+          p-5
+          rounded-3xl
+          bg-blue-50
+          flex
+          justify-between
+          items-center
+          ">
 
             <span>
+
               {linkPublico}
+
             </span>
 
             <button
-              onClick={
-                copiarLink
-              }
+              onClick={copiarLink}
               className="
               bg-blue-500
               hover:bg-blue-600
@@ -461,15 +480,16 @@ function GerenciarPerfil() {
               text-white
               "
             >
+
               Copiar
+
             </button>
 
           </div>
 
+
           <button
-            onClick={
-              salvar
-            }
+            onClick={salvar}
             className="
             w-full
             mt-8
@@ -482,7 +502,9 @@ function GerenciarPerfil() {
             shadow-lg
             "
           >
+
             Salvar Alterações
+
           </button>
 
         </div>
@@ -490,6 +512,7 @@ function GerenciarPerfil() {
       </main>
 
     </div>
+
   );
 }
 

@@ -8,110 +8,98 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
 
-  const sql = `
-    SELECT *
-    FROM perfil_publico
-    LIMIT 1
-  `;
+  db.query(
+    "SELECT * FROM perfil_publico LIMIT 1",
+    (err, result) => {
 
-  db.query(sql, (erro, resultado) => {
+      if (err) {
+        console.log(err);
+        return res
+          .status(500)
+          .json({
+            erro:"Erro ao buscar"
+          });
+      }
 
-    if (erro) {
-      console.log(erro);
+      res.json(
+        result[0] || {}
+      );
 
-      return res
-        .status(500)
-        .json(erro);
     }
-
-    res.json(
-      resultado[0] || {}
-    );
-
-  });
+  );
 
 });
 
 
 
+// SALVAR
 
-// EDITAR PERFIL
+router.put("/", (req,res)=>{
 
-router.put("/", (req, res) => {
-
-  const {
-
-    nome,
-    titulo,
-    subtitulo,
-    descricaoServicos,
-    whatsapp,
-    telefone,
-    email,
-    instagram,
-    instagramLink
-
-  } = req.body;
+const {
+titulo,
+subtitulo,
+descricao_servicos,
+banner,
+whatsapp,
+telefone,
+email,
+instagram,
+instagram_link
+}=req.body;
 
 
-  const sql = `
+db.query(
 
-  UPDATE perfil_publico
+`
+UPDATE perfil_publico
+SET
+titulo=?,
+subtitulo=?,
+descricao_servicos=?,
+banner=?,
+whatsapp=?,
+telefone=?,
+email=?,
+instagram=?,
+instagram_link=?
+WHERE id=1
+`,
 
-  SET
+[
+titulo,
+subtitulo,
+descricao_servicos,
+banner,
+whatsapp,
+telefone,
+email,
+instagram,
+instagram_link
+],
 
-  nome=?,
-  titulo=?,
-  subtitulo=?,
-  descricao_servicos=?,
-  whatsapp=?,
-  telefone=?,
-  email=?,
-  instagram=?,
-  instagram_link=?
+(err)=>{
 
-  WHERE id=1
+if(err){
 
-  `;
+console.log(err);
 
+return res
+.status(500)
+.json({
+erro:"Erro salvar"
+});
 
-  db.query(
+}
 
-    sql,
+res.json({
+mensagem:
+"Perfil atualizado"
+});
 
-    [
+}
 
-      nome,
-      titulo,
-      subtitulo,
-      descricaoServicos,
-      whatsapp,
-      telefone,
-      email,
-      instagram,
-      instagramLink
-
-    ],
-
-    (erro) => {
-
-      if (erro) {
-
-        console.log(erro);
-
-        return res
-          .status(500)
-          .json(erro);
-
-      }
-
-      res.json({
-        mensagem: "Perfil atualizado"
-      });
-
-    }
-
-  );
+);
 
 });
 
