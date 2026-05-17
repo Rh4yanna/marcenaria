@@ -293,110 +293,86 @@ path="/contato"
 
 <main>
 
-<section
-className="
-h-[550px]
-bg-cover
-bg-center
-relative
-"
-style={{
-backgroundImage:
-`url(${perfilPublico.banner})`
-}}
->
+   <section className="relative w-full overflow-hidden">
 
-<div
-className="
-absolute
-inset-0
-bg-black/50
-"
-/>
-
-<div
-className="
-relative
-z-10
-h-full
-flex
-flex-col
-justify-center
-items-center
-text-center
-px-6
-"
->
-
-<h1
-className="
-text-5xl
-text-white
-font-bold
-max-w-4xl
-"
->
-
-{perfilPublico.titulo}
-
-</h1>
-
-
-<p
-className="
-text-white
-text-xl
-mt-5
-max-w-2xl
-"
->
-
-{perfilPublico.subtitulo}
-
-</p>
-
-
-<div className="flex gap-4 mt-8">
-
-<button
-onClick={() =>
-navigate(
-"/portfolio"
-)
-}
-className="
-bg-blue-500
-hover:bg-blue-600
-text-white
-px-6
-py-4
-rounded-2xl
-"
->
-
-Ver Portfólio
-
-</button>
-
-  <button
-    onClick={() =>
-    navigate(
-    "/contato"
-    )
-    }
+  {/* IMAGEM RESPONSIVA (sem corte) */}
+  <img
+    src={perfilPublico.banner}
+    alt="Banner"
     className="
-      bg-white
-      px-6
-      py-4
-      rounded-2xl
+      w-full
+      h-auto
+      max-h-[70vh]
+      object-contain
+      block
     "
-  >
-    Entrar em contato
-  </button>
+  />
 
-</div>
+  {/* OVERLAY */}
+  <div className="absolute inset-0 bg-black/40" />
 
-</div>
+  {/* CONTEÚDO */}
+  <div className="
+    absolute
+    inset-0
+    z-10
+    flex
+    flex-col
+    justify-center
+    items-center
+    text-center
+    px-6
+  ">
+
+    <h1 className="
+      text-3xl sm:text-4xl md:text-5xl
+      text-white
+      font-bold
+      max-w-4xl
+    ">
+      {perfilPublico.titulo}
+    </h1>
+
+    <p className="
+      text-white
+      text-base sm:text-lg md:text-xl
+      mt-5
+      max-w-2xl
+    ">
+      {perfilPublico.subtitulo}
+    </p>
+
+    <div className="flex flex-col sm:flex-row gap-4 mt-8">
+
+      <button
+        onClick={() => navigate("/portfolio")}
+        className="
+          bg-blue-500
+          hover:bg-blue-600
+          text-white
+          px-6
+          py-4
+          rounded-2xl
+        "
+      >
+        Ver Portfólio
+      </button>
+
+      <button
+        onClick={() => navigate("/contato")}
+        className="
+          bg-white
+          px-6
+          py-4
+          rounded-2xl
+        "
+      >
+        Entrar em contato
+      </button>
+
+    </div>
+
+  </div>
 
 </section>
 
