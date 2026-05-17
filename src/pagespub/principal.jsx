@@ -6,32 +6,20 @@ import { API_URL } from "../services/api";
 function Principal() {
   const navigate = useNavigate();
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] =
+    useState(false);
 
   const [perfilPublico, setPerfilPublico] =
     useState({
-      titulo:
-        "Móveis Planejados Sob Medida",
-
-      subtitulo:
-        "Projetos exclusivos com qualidade e acabamento premium",
-
-      descricaoServicos:
-        "Trabalho com móveis planejados sob medida.",
-
-      whatsapp:
-        "https://wa.me/551199999999",
-
+      titulo: "",
+      subtitulo: "",
+      descricao_servicos: "",
+      whatsapp: "",
       banner: "",
-
-      telefone:
-        "(11)99999-9999",
-
+      telefone: "",
       email: "",
-
       instagram: "",
-
-      instagramLink: "",
+      instagram_link: "",
     });
 
   const [projetos, setProjetos] =
@@ -66,36 +54,55 @@ function Principal() {
     </button>
   );
 
+
+
   useEffect(() => {
+
     buscarPerfil();
+
     buscarProjetos();
+
   }, []);
+
+
 
   const buscarPerfil =
     async () => {
+
       try {
+
         const res =
           await fetch(
-            `${API_URL}/perfilPublico`
+            `${API_URL}/perfil`
           );
 
         const data =
           await res.json();
 
-        if (data) {
+        if(data){
+
           setPerfilPublico(data);
+
         }
+
       } catch (err) {
+
         console.log(
           "Erro perfil:",
           err
         );
+
       }
+
     };
+
+
 
   const buscarProjetos =
     async () => {
+
       try {
+
         const res =
           await fetch(
             `${API_URL}/projetos`
@@ -109,440 +116,476 @@ function Principal() {
             ? data
             : []
         );
+
       } catch {
+
         console.log(
-          "erro projetos"
+          "Erro projetos"
         );
+
       }
+
     };
 
+
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
 
-      {/* HEADER */}
+<div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
 
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
+<header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
 
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+<div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-          {/* MENU */}
+<button
+onClick={()=>
+setMenuOpen(
+!menuOpen
+)
+}
+className="
+w-12
+h-12
+rounded-2xl
+bg-gray-100
+hover:bg-blue-50
+flex
+flex-col
+items-center
+justify-center
+gap-1
+"
+>
 
-          <button
-            onClick={() =>
-              setMenuOpen(
-                !menuOpen
-              )
-            }
-            className="
-              w-12
-              h-12
-              rounded-2xl
-              bg-gray-100
-              hover:bg-blue-50
-              flex
-              flex-col
-              items-center
-              justify-center
-              gap-1
-            "
-          >
-            <span className="w-5 h-0.5 bg-gray-700"></span>
-            <span className="w-5 h-0.5 bg-gray-700"></span>
-            <span className="w-5 h-0.5 bg-gray-700"></span>
-          </button>
+<span className="w-5 h-0.5 bg-gray-700"></span>
+<span className="w-5 h-0.5 bg-gray-700"></span>
+<span className="w-5 h-0.5 bg-gray-700"></span>
 
+</button>
 
-          {/* LOGO */}
 
-          <div className="flex items-center gap-4">
 
-            <img
-              src={logo}
-              alt=""
-              className="
-                w-14
-                h-14
-                rounded-2xl
-                object-cover
-                border-2
-                border-blue-100
-                shadow-md
-              "
-            />
+<div className="flex items-center gap-4">
 
-            <div>
+<img
+src={logo}
+alt=""
+className="
+w-14
+h-14
+rounded-2xl
+object-cover
+border-2
+border-blue-100
+shadow-md
+"
+/>
 
-              <h1 className="text-xl font-bold">
+<div>
 
-                Marcio Bassani
+<h1 className="text-xl font-bold">
 
-              </h1>
+Marcio Bassani
 
-              <p className="text-sm text-gray-500">
+</h1>
 
-                Móveis Planejados
+<p className="text-sm text-gray-500">
 
-              </p>
+Móveis Planejados
 
-            </div>
+</p>
 
-          </div>
+</div>
 
-          <div className="w-12"></div>
+</div>
 
-        </div>
+<div className="w-12"></div>
 
-      </header>
+</div>
 
+</header>
 
-      {/* MENU LATERAL */}
 
-      {menuOpen && (
 
-        <>
-          <div
-            onClick={() =>
-              setMenuOpen(false)
-            }
-            className="fixed inset-0 bg-black/20 z-40"
-          />
+{menuOpen && (
 
-          <div
-            className="
-            fixed
-            left-0
-            top-0
-            w-72
-            h-full
-            bg-white
-            z-50
-            p-6
-            shadow-2xl
-          "
-          >
-
-            <div className="flex items-center gap-3 mb-8">
-
-              <img
-                src={logo}
-                className="w-14 h-14 rounded-2xl"
-              />
-
-              <div>
-
-                <h2 className="font-bold">
-
-                  Marcio Bassani
-
-                </h2>
-
-                <p className="text-gray-500 text-sm">
-
-                  Navegação
-
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="flex flex-col gap-3">
-
-              <MenuItem
-                label="Início"
-                path="/principal"
-              />
-
-              <MenuItem
-                label="Portfólio"
-                path="/portfolio"
-              />
-
-              <MenuItem
-                label="Contato"
-                path="/contato"
-              />
-
-            </div>
-
-          </div>
-
-        </>
-
-      )}
-
-      <main>
-
-        {/* BANNER */}
-
-        <section
-          className="
-            h-[550px]
-            bg-cover
-            bg-center
-            relative
-          "
-          style={{
-            backgroundImage:
-              `url(${perfilPublico.banner})`,
-          }}
-        >
-
-          <div
-            className="
-              absolute
-              inset-0
-              bg-black/50
-            "
-          />
-
-          <div
-            className="
-              relative
-              z-10
-              h-full
-              flex
-              flex-col
-              justify-center
-              items-center
-              text-center
-              px-6
-            "
-          >
+<>
 
-            <h1
-              className="
-                text-5xl
-                text-white
-                font-bold
-                max-w-4xl
-              "
-            >
-              {perfilPublico.titulo}
-            </h1>
+<div
+onClick={()=>
+setMenuOpen(false)
+}
+className="
+fixed
+inset-0
+bg-black/20
+z-40
+"
+/>
 
-            <p
-              className="
-                text-white
-                text-xl
-                mt-5
-                max-w-2xl
-              "
-            >
-              {perfilPublico.subtitulo}
-            </p>
-
-            <div className="flex gap-4 mt-8">
+<div
+className="
+fixed
+left-0
+top-0
+w-72
+h-full
+bg-white
+z-50
+p-6
+shadow-2xl
+"
+>
+
+<div className="flex items-center gap-3 mb-8">
+
+<img
+src={logo}
+className="
+w-14
+h-14
+rounded-2xl
+"
+/>
+
+<div>
+
+<h2 className="font-bold">
+
+Marcio Bassani
+
+</h2>
+
+<p className="text-gray-500 text-sm">
 
-              <button
-                onClick={() =>
-                  navigate("/portfolio")
-                }
-                className="
-                  bg-blue-500
-                  hover:bg-blue-600
-                  text-white
-                  px-6
-                  py-4
-                  rounded-2xl
-                "
-              >
-                Ver Portfólio
-              </button>
+Navegação
 
+</p>
 
-              <button
-                onClick={() =>
-                  navigate("/contato")
-                }
-                className="
-                  bg-white
-                  px-6
-                  py-4
-                  rounded-2xl
-                "
-              >
-                Entrar em contato
-              </button>
+</div>
+
+</div>
+
+<div className="flex flex-col gap-3">
+
+<MenuItem
+label="Início"
+path="/principal"
+/>
+
+<MenuItem
+label="Portfólio"
+path="/portfolio"
+/>
+
+<MenuItem
+label="Contato"
+path="/contato"
+/>
 
-            </div>
+</div>
+
+</div>
+
+</>
+
+)}
+
+<main>
+
+<section
+className="
+h-[550px]
+bg-cover
+bg-center
+relative
+"
+style={{
+backgroundImage:
+`url(${perfilPublico.banner})`
+}}
+>
 
-          </div>
+<div
+className="
+absolute
+inset-0
+bg-black/50
+"
+/>
 
-        </section>
+<div
+className="
+relative
+z-10
+h-full
+flex
+flex-col
+justify-center
+items-center
+text-center
+px-6
+"
+>
 
+<h1
+className="
+text-5xl
+text-white
+font-bold
+max-w-4xl
+"
+>
 
-        {/* SOBRE */}
+{perfilPublico.titulo}
 
-        <section className="max-w-6xl mx-auto px-6 py-16">
+</h1>
 
-          <div
-            className="
-              bg-white
-              rounded-[30px]
-              p-10
-              shadow-md
-            "
-          >
 
-            <h2 className="text-3xl font-bold">
+<p
+className="
+text-white
+text-xl
+mt-5
+max-w-2xl
+"
+>
 
-              Trabalho com:
+{perfilPublico.subtitulo}
 
-            </h2>
+</p>
 
-            <p className="text-gray-600 mt-4 leading-8">
 
-              {perfilPublico.descricaoServicos}
+<div className="flex gap-4 mt-8">
 
-            </p>
+<button
+onClick={() =>
+navigate(
+"/portfolio"
+)
+}
+className="
+bg-blue-500
+hover:bg-blue-600
+text-white
+px-6
+py-4
+rounded-2xl
+"
+>
 
-          </div>
+Ver Portfólio
 
-        </section>
+</button>
 
 
-        {/* CARROSSEL */}
 
-        <section className="px-6">
+<a
+href={
+perfilPublico.whatsapp
+}
+target="_blank"
+rel="noreferrer"
+>
 
-          <h2
-            className="
-            text-3xl
-            font-bold
-            text-center
-            mb-8
-          "
-          >
-            Projetos realizados
-          </h2>
+<button
+className="
+bg-white
+px-6
+py-4
+rounded-2xl
+"
+>
 
+Entrar em contato
 
-          <div
-            className="
-            flex
-            overflow-x-auto
-            gap-5
-            pb-4
-          "
-          >
+</button>
 
-            {projetos.map(
-              (proj) => {
+</a>
 
-                let imagens=[];
+</div>
 
-                try{
+</div>
 
-                  imagens=
-                  typeof proj.imagens==="string"
+</section>
 
-                  ?JSON.parse(
-                    proj.imagens
-                  )
 
-                  :proj.imagens;
 
-                }catch{
+<section className="max-w-6xl mx-auto px-6 py-16">
 
-                  imagens=[];
+<div
+className="
+bg-white
+rounded-[30px]
+p-10
+shadow-md
+"
+>
 
-                }
+<h2 className="text-3xl font-bold">
 
-                return(
+Trabalho com:
 
-                  <div
-                    key={proj.id}
-                    className="
-                    min-w-[320px]
-                    bg-white
-                    rounded-[30px]
-                    overflow-hidden
-                    shadow-md
-                  "
-                  >
+</h2>
 
-                    {imagens?.[0] && (
+<p className="text-gray-600 mt-4 leading-8">
 
-                      <img
-                        src={
-                          imagens[0]
-                        }
-                        className="
-                        w-full
-                        h-72
-                        object-cover
-                      "
-                      />
+{
+perfilPublico
+.descricao_servicos
+}
 
-                    )}
+</p>
 
-                  </div>
+</div>
 
-                );
+</section>
 
-              }
-            )}
 
-          </div>
 
-        </section>
+<section className="px-6">
 
+<h2
+className="
+text-3xl
+font-bold
+text-center
+mb-8
+"
+>
 
-        {/* ORÇAMENTO */}
+Projetos realizados
 
-        <section
-          className="
-            text-center
-            py-20
-            px-6
-          "
-        >
+</h2>
 
-          <h2 className="text-4xl font-bold">
 
-            Solicite um orçamento
+<div
+className="
+flex
+overflow-x-auto
+gap-5
+pb-4
+"
+>
 
-          </h2>
+{projetos.map(
+(proj)=>{
 
-          <p className="text-gray-500 mt-3">
+let imagens=[];
 
-            Fale diretamente pelo WhatsApp
+try{
 
-          </p>
+imagens=
+typeof proj.imagens==="string"
+?JSON.parse(
+proj.imagens
+)
+:proj.imagens;
 
-          <a
-            href={
-              perfilPublico.whatsapp
-            }
-            target="_blank"
-            rel="noreferrer"
-          >
+}catch{
 
-            <button
-              className="
-              mt-8
-              bg-green-500
-              hover:bg-green-600
-              text-white
-              px-10
-              py-5
-              rounded-2xl
-              shadow-xl
-              text-lg
-            "
-            >
-              WhatsApp
-            </button>
+imagens=[];
 
-          </a>
+}
 
-        </section>
+return(
 
-      </main>
+<div
+key={proj.id}
+className="
+min-w-[320px]
+bg-white
+rounded-[30px]
+overflow-hidden
+shadow-md
+"
+>
 
-    </div>
+{imagens?.[0]&&(
+
+<img
+src={
+imagens[0]
+}
+className="
+w-full
+h-72
+object-cover
+"
+/>
+
+)}
+
+</div>
+
+);
+
+}
+)}
+
+</div>
+
+</section>
+
+
+
+<section
+className="
+text-center
+py-20
+px-6
+"
+>
+
+<h2 className="text-4xl font-bold">
+
+Solicite um orçamento
+
+</h2>
+
+<p className="text-gray-500 mt-3">
+
+Fale diretamente pelo WhatsApp
+
+</p>
+
+
+<a
+href={
+perfilPublico.whatsapp
+}
+target="_blank"
+rel="noreferrer"
+>
+
+<button
+className="
+mt-8
+bg-green-500
+hover:bg-green-600
+text-white
+px-10
+py-5
+rounded-2xl
+shadow-xl
+text-lg
+"
+>
+
+WhatsApp
+
+</button>
+
+</a>
+
+</section>
+
+</main>
+
+</div>
+
   );
+
 }
 
 export default Principal;
