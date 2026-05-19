@@ -21,7 +21,6 @@ const [loading,setLoading]=
 useState(true);
 
 
-
 const tipos=[
 
 "Rack para TV",
@@ -42,7 +41,6 @@ const tipos=[
 "Outro"
 
 ];
-
 
 
 useEffect(()=>{
@@ -96,7 +94,6 @@ const data=
 await res.json();
 
 setProjetos(
-
 Array.isArray(data)
 ?data
 :[]
@@ -495,12 +492,7 @@ className="
 mb-14
 ">
 
-<div className="
-flex
-justify-between
-items-center
-mb-6
-">
+<div className="mb-6">
 
 <div>
 
@@ -515,6 +507,7 @@ font-bold
 
 <p className="
 text-gray-500
+mt-1
 ">
 
 {grupo.itens.length}
@@ -523,44 +516,6 @@ projeto(s)
 </p>
 
 </div>
-
-
-
-<button
-
-onClick={()=>
-
-navigate(
-"/projetos",
-{
-
-state:{
-
-tipo:
-grupo.tipo
-
-}
-
-}
-
-)
-
-}
-
-className="
-bg-blue-500
-hover:bg-blue-600
-text-white
-px-6
-py-3
-rounded-2xl
-"
-
->
-
-Ver mais
-
-</button>
 
 </div>
 
@@ -644,6 +599,49 @@ object-cover
 )}
 
 </div>
+
+
+<div className="
+flex
+justify-center
+mt-6
+">
+
+<button
+
+onClick={()=>
+
+navigate(
+"/controleProj",
+{
+state:{
+tipo:grupo.tipo
+}
+}
+)
+
+}
+
+className="
+bg-blue-500
+hover:bg-blue-600
+transition
+text-white
+px-8
+py-3
+rounded-2xl
+shadow-md
+font-semibold
+"
+
+>
+
+Ver mais
+
+</button>
+
+</div>
+
 
 </div>
 
