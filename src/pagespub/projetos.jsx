@@ -561,7 +561,7 @@ proj.tipo}
 onClick={()=>
 
 navigate(
-"/detalheProj",
+"/detalhesProj",
 {
 
 state:{
