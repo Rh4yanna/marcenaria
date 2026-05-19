@@ -151,12 +151,12 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/projetos/:tipo",
+    path: "/projetos",
     element: <Projetos />,
   },
 
   {
-    path: "/detalhesProj/:id",
+    path: "/detalhesProj",
     element: <DetalheProj />,
   },
 
