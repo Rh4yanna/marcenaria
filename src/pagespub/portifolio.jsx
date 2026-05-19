@@ -612,7 +612,7 @@ mt-6
 onClick={()=>
 
 navigate(
-"/detalheProj",
+"/projetos",
 {
 state:{
 tipo:grupo.tipo
