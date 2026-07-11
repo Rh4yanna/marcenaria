@@ -38,25 +38,10 @@ function GerenciarProj() {
   const MenuItem = ({ label, desc, path }) => (
     <button
       onClick={() => irPara(path)}
-      className="
-        w-full
-        text-left
-        p-4
-        rounded-2xl
-        hover:bg-blue-50
-        transition
-        border
-        border-transparent
-        hover:border-blue-100
-      "
+      className="w-full text-left p-3.5 rounded-xl hover:bg-slate-50 transition border border-transparent hover:border-slate-200"
     >
-      <h3 className="font-semibold text-gray-800">
-        {label}
-      </h3>
-
-      <p className="text-sm text-gray-500 mt-1">
-        {desc}
-      </p>
+      <h3 className="text-sm font-bold text-slate-800">{label}</h3>
+      <p className="text-xs text-slate-400 mt-0.5">{desc}</p>
     </button>
   );
 
@@ -66,7 +51,6 @@ function GerenciarProj() {
       try {
         const res = await fetch(`${API_URL}/projetos`);
         const data = await res.json();
-
         setProjetos(Array.isArray(data) ? data.reverse() : []);
       } catch (err) {
         console.log("Erro ao buscar projetos:", err);
@@ -85,304 +69,176 @@ function GerenciarProj() {
   }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50">
-
-      {/* HEADER */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
-          {/* MENU */}
+    <div className="min-h-screen bg-slate-50/60 text-slate-800 antialiased">
+      
+      {/* HEADER DA PLATAFORMA */}
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex items-center justify-between">
+          
+          {/* TOOGLE HAMBÚRGUER */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="
-              w-12 h-12
-              rounded-2xl
-              bg-gray-100
-              hover:bg-blue-50
-              flex flex-col items-center justify-center gap-1
-              transition
-            "
+            className="w-10 h-10 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 flex flex-col items-center justify-center gap-1 transition shadow-sm"
           >
-            <span className="w-5 h-0.5 bg-gray-700"></span>
-            <span className="w-5 h-0.5 bg-gray-700"></span>
-            <span className="w-5 h-0.5 bg-gray-700"></span>
+            <span className="w-4 h-0.5 bg-slate-600 rounded-full"></span>
+            <span className="w-4 h-0.5 bg-slate-600 rounded-full"></span>
+            <span className="w-4 h-0.5 bg-slate-600 rounded-full"></span>
           </button>
 
-          {/* LOGO */}
-          <div className="flex items-center gap-4">
+          {/* LOGO EMPRESARIAL */}
+          <div className="flex items-center gap-3">
             <img
               src={logo}
-              alt="logo"
-              className="
-                w-14 h-14
-                rounded-2xl
-                object-cover
-                border-2 border-blue-100
-                shadow-md
-              "
+              alt="Logo Bassani"
+              className="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-sm"
             />
-
             <div>
-              <h1 className="text-xl font-bold text-gray-800">
+              <h1 className="text-sm font-black text-slate-900 tracking-tight leading-none">
                 Marcio Bassani
               </h1>
-
-              <p className="text-sm text-gray-500">
+              <p className="text-[11px] font-medium text-slate-400 mt-1">
                 Gestão de Projetos
               </p>
             </div>
           </div>
 
-          <div className="w-12"></div>
+          <div className="w-10"></div>
         </div>
       </header>
 
-      {/* MENU LATERAL */}
+      {/* MENU LATERAL RETRÁTIL */}
       {menuOpen && (
         <>
-          {/* OVERLAY */}
           <div
-            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40"
             onClick={() => setMenuOpen(false)}
           />
 
-          {/* SIDEBAR */}
-          <div
-            className="
-              fixed
-              top-0
-              left-0
-              w-80
-              h-full
-              bg-white
-              shadow-2xl
-              z-50
-              p-6
-              border-r
-              border-gray-200
-            "
-          >
-            {/* TOPO */}
-            <div className="flex items-center gap-4 mb-8">
+          <div className="fixed top-0 left-0 w-72 h-full bg-white border-r border-slate-200 shadow-xl z-50 p-5 flex flex-col gap-6">
+            <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
               <img
                 src={logo}
-                alt="logo"
-                className="w-14 h-14 rounded-2xl object-cover"
+                alt="Logo Bassani"
+                className="w-12 h-12 rounded-xl object-cover border border-slate-200"
               />
-
               <div>
-                <h2 className="font-bold text-gray-800">
-                  Marcio Bassani
-                </h2>
-
-                <p className="text-sm text-gray-500">
-                  Gestão de móveis planejados
-                </p>
+                <h2 className="text-sm font-bold text-slate-900">Marcio Bassani</h2>
+                <p className="text-[11px] text-slate-400 font-medium">Móveis Planejados</p>
               </div>
             </div>
 
-            {/* LINKS */}
-            <div className="flex flex-col gap-2">
-
-              <MenuItem
-                label="Criar Orçamentos"
-                desc="Monte novos orçamentos rapidamente"
-                path="/criarOrc"
-              />
-
-              <MenuItem
-                label="Lista de Orçamentos"
-                desc="Visualize todos os orçamentos"
-                path="/listaOrc"
-              />
-
-              <MenuItem
-                label="Gerenciar Projetos"
-                desc="Controle seus projetos"
-                path="/gerenciarProj"
-              />
-
-              <MenuItem
-                label="Adicionar Projeto"
-                desc="Cadastre novos projetos"
-                path="/adicionarProj"
-              />
-
-              <MenuItem
-                label="Gerenciar Perfil"
-                desc="Atualize suas informações"
-                path="/gerenciarPerfil"
-              />
+            <div className="flex flex-col gap-1 overflow-y-auto">
+              <MenuItem label="Criar Orçamentos" desc="Monte novos orçamentos" path="/criarOrc" />
+              <MenuItem label="Lista de Orçamentos" desc="Visualize todos os registros" path="/listaOrc" />
+              <MenuItem label="Gerenciar Projetos" desc="Controle seus projetos atuais" path="/gerenciarProj" />
+              <MenuItem label="Adicionar Projeto" desc="Cadastre novos layouts" path="/adicionarProj" />
+              <MenuItem label="Gerenciar Perfil" desc="Atualize seus dados institucionais" path="/gerenciarPerfil" />
             </div>
           </div>
         </>
       )}
 
-      {/* CONTEÚDO */}
-      <main className="max-w-7xl mx-auto px-6 pt-10 pb-12">
-
-        {/* TOPO */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-10">
-
+      {/* CONTEÚDO PRINCIPAL */}
+      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-8 pb-12 flex flex-col gap-6">
+        
+        {/* TITULAÇÃO DA SEÇÃO */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">
-              Gerenciar Projetos
+            <h1 className="text-2xl font-black tracking-tight text-slate-900">
+              Galeria de Projetos
             </h1>
-
-            <p className="text-gray-500 mt-3 text-lg">
-              Organize e visualize todos os projetos cadastrados.
+            <p className="text-slate-400 text-sm mt-0.5">
+              Organize, categorize e filtre os portfólios de móveis produzidos.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-
+          <div className="flex gap-2">
             <button
               onClick={() => navigate("/home")}
-              className="
-                bg-white
-                border
-                border-gray-200
-                hover:bg-gray-100
-                transition
-                text-gray-700
-                px-5
-                py-3
-                rounded-2xl
-                shadow-sm
-              "
+              className="bg-white hover:bg-slate-50 transition border border-slate-200 text-slate-600 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 shadow-sm"
             >
-              ← Voltar
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Voltar
             </button>
 
             <button
               onClick={() => navigate("/adicionarProj")}
-              className="
-                bg-blue-500
-                hover:bg-blue-600
-                transition
-                text-white
-                px-5
-                py-3
-                rounded-2xl
-                shadow-lg
-                font-semibold
-              "
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-xl text-sm shadow-md shadow-blue-500/10 transition flex items-center gap-2"
             >
-              + Adicionar Projeto
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="14"/><line x1="5" y1="12" x2="14" y2="12"/></svg>
+              Novo Projeto
             </button>
-
           </div>
         </div>
 
-        {/* FILTRO */}
-        <div
-          className="
-            bg-white/90
-            backdrop-blur-md
-            border
-            border-gray-200
-            rounded-[28px]
-            p-6
-            shadow-md
-            mb-10
-          "
-        >
-          <div className="flex flex-col md:flex-row md:items-center gap-4">
-
-            <div className="flex-1">
-              <label className="text-sm font-semibold text-gray-700 block mb-2">
-                Filtrar por tipo de móvel
-              </label>
-
-              <select
-                value={filtro}
-                onChange={(e) => setFiltro(e.target.value)}
-                className="
-                  w-full
-                  bg-gray-50
-                  border
-                  border-gray-200
-                  rounded-2xl
-                  px-4
-                  py-3
-                  outline-none
-                  focus:ring-4
-                  focus:ring-blue-100
-                  focus:border-blue-300
-                  transition
-                "
-              >
-                <option value="">Todos os móveis</option>
-
-                {tipos.map((t, i) => (
-                  <option key={i}>{t}</option>
-                ))}
-              </select>
-            </div>
-
+        {/* CONTAINER DO FILTRO SELETOR */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm max-w-md">
+          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
+            Filtrar por Categoria de Móvel
+          </label>
+          <div className="relative">
+            <select
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none text-sm text-slate-800 appearance-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition pr-10 font-medium"
+            >
+              <option value="">Exibir Todas as Categorias</option>
+              {tipos.map((t, i) => (
+                <option key={i} value={t}>{t}</option>
+              ))}
+            </select>
+            <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
           </div>
         </div>
 
-        {/* LOADING */}
+        {/* LOADING STATE */}
         {loading && (
-          <div className="bg-white rounded-3xl p-12 text-center shadow-md">
-            <p className="text-gray-500 text-lg">
-              Carregando projetos...
+          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm max-w-sm mx-auto">
+            <p className="text-slate-400 font-medium text-sm animate-pulse">
+              Carregando portfólio...
             </p>
           </div>
         )}
 
-        {/* SEM PROJETOS */}
+        {/* EMPTY STATE */}
         {!loading && projetos.length === 0 && (
-          <div className="bg-white rounded-3xl p-12 text-center shadow-md border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-700">
-              Nenhum projeto encontrado
-            </h2>
-
-            <p className="text-gray-500 mt-3">
-              Cadastre seu primeiro projeto para começar.
+          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm max-w-xl mx-auto mt-4">
+            <div className="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-4 border border-slate-200/60">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <h2 className="text-lg font-bold text-slate-800">Nenhum projeto registrado</h2>
+            <p className="text-slate-400 text-sm mt-1 mb-6">
+              Comece populando sua vitrine adicionando os primeiros móveis concluídos.
             </p>
-
             <button
               onClick={() => navigate("/adicionarProj")}
-              className="
-                mt-6
-                bg-blue-500
-                hover:bg-blue-600
-                transition
-                text-white
-                px-6
-                py-3
-                rounded-2xl
-                font-semibold
-              "
+              className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition"
             >
-              Adicionar Projeto
+              Adicionar Primeiro Projeto
             </button>
           </div>
         )}
 
-        {/* LISTA */}
+        {/* LISTAGEM AGRUPADA */}
         {!loading &&
           projetosPorTipo
             .filter((grupo) => !filtro || grupo.tipo === filtro)
             .map((grupo, index) => {
-
               if (grupo.itens.length === 0) return null;
 
               return (
-                <div key={index} className="mb-14">
-
-                  {/* TÍTULO */}
-                  <div className="flex items-center justify-between mb-5">
-
+                <div key={index} className="flex flex-col gap-4 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                  
+                  {/* HEADER DO GRUPO */}
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-800">
+                      <h2 className="text-base font-black text-slate-900 uppercase tracking-tight">
                         {grupo.tipo}
                       </h2>
-
-                      <p className="text-gray-500 mt-1">
-                        {grupo.itens.length} projeto(s)
+                      <p className="text-xs text-slate-400 font-medium mt-0.5">
+                        {grupo.itens.length} {grupo.itens.length === 1 ? "móvel listado" : "móveis listados"}
                       </p>
                     </div>
 
@@ -392,38 +248,19 @@ function GerenciarProj() {
                           state: { tipo: grupo.tipo },
                         })
                       }
-                      className="
-                        bg-gray-900
-                        hover:bg-black
-                        transition
-                        text-white
-                        px-5
-                        py-3
-                        rounded-2xl
-                        shadow-md
-                        font-semibold
-                      "
+                      className="bg-slate-900 hover:bg-black text-white text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-sm transition"
                     >
-                      Gerenciar
+                      Gerenciar Categoria
                     </button>
-
                   </div>
 
-                  {/* PROJETOS */}
-                  <div className="flex gap-5 overflow-x-auto pb-3">
-
+                  {/* CARROSSEL HORIZONTAL DE IMAGENS */}
+                  <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
                     {grupo.itens.map((proj) => {
                       let imagens = [];
-
                       try {
-                        imagens =
-                          typeof proj.imagens === "string"
-                            ? JSON.parse(proj.imagens)
-                            : proj.imagens;
-
-                        imagens = (imagens || []).filter(
-                          (img) => img && img !== "null"
-                        );
+                        imagens = typeof proj.imagens === "string" ? JSON.parse(proj.imagens) : proj.imagens;
+                        imagens = (imagens || []).filter((img) => img && img !== "null");
                       } catch {
                         imagens = [];
                       }
@@ -431,52 +268,35 @@ function GerenciarProj() {
                       return (
                         <div
                           key={proj.id}
-                          className="
-                            min-w-[280px]
-                            bg-white/90
-                            backdrop-blur-md
-                            border border-gray-200
-                            rounded-[28px]
-                            overflow-hidden
-                            shadow-md
-                            hover:shadow-2xl
-                            transition
-                            group
-                          "
+                          className="min-w-[240px] max-w-[240px] bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group flex flex-col justify-between"
                         >
+                          {/* WRAPPER DA FOTO */}
+                          <div className="w-full h-44 overflow-hidden relative bg-slate-200 border-b border-slate-200/60">
+                            {imagens.length > 0 ? (
+                              <img
+                                src={imagens[0]}
+                                alt={proj.nome || "Projeto"}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <span className="text-[10px] font-bold uppercase tracking-wider">Sem Imagem</span>
+                              </div>
+                            )}
+                          </div>
 
-                          {/* IMAGEM */}
-                          {imagens.length > 0 ? (
-                            <img
-                              src={imagens[0]}
-                              alt="projeto"
-                              className="
-                                w-full
-                                h-56
-                                object-cover
-                                group-hover:scale-105
-                                transition
-                                duration-500
-                              "
-                            />
-                          ) : (
-                            <div className="w-full h-56 bg-gray-100 flex items-center justify-center text-gray-400">
-                              Sem imagem
-                            </div>
-                          )}
-
-                          {/* INFO */}
-                          <div className="p-5">
-
-                            <h3 className="text-lg font-bold text-gray-800">
-                              {proj.nome || grupo.tipo}
+                          {/* LEGENDA */}
+                          <div className="p-3 bg-white">
+                            <h3 className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                              {proj.nome || "Ambiente sem título"}
                             </h3>
-
                           </div>
                         </div>
                       );
                     })}
                   </div>
+
                 </div>
               );
             })}
