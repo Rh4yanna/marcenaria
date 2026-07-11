@@ -193,7 +193,7 @@ function CriarOrc() {
                 className="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition text-sm text-slate-800 appearance-none cursor-pointer"
                 required
               >
-                <option value="">Selecione uma opção profissional</option>
+                <option value="">Selecione o tipo de móvel</option>
                 <option>Rack para TV</option>
                 <option>Painel para TV</option>
                 <option>Estante</option>
