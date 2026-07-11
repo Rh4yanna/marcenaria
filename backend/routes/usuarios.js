@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
   }
 
   const verificarSQL =
-    "SELECT * FROM usuarios WHERE email = ?";
+    "SELECT * FROM usuarios WHERE email=?";
 
   db.query(
     verificarSQL,
@@ -31,7 +31,7 @@ router.post("/register", (req, res) => {
         console.log(err);
 
         return res.status(500).json({
-          message: "Erro no servidor"
+          message: "Erro servidor"
         });
       }
 
@@ -42,7 +42,7 @@ router.post("/register", (req, res) => {
       }
 
       const sql =
-        "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
+        "INSERT INTO usuarios(nome,email,senha) VALUES(?,?,?)";
 
       db.query(
         sql,
@@ -53,7 +53,7 @@ router.post("/register", (req, res) => {
             console.log(err);
 
             return res.status(500).json({
-              message: "Erro ao cadastrar usuário"
+              message: "Erro ao cadastrar"
             });
           }
 
@@ -69,6 +69,7 @@ router.post("/register", (req, res) => {
 
 });
 
+
 // =========================
 // LOGIN
 // =========================
@@ -83,7 +84,7 @@ router.post("/login", (req, res) => {
   }
 
   const sql =
-    "SELECT * FROM usuarios WHERE email = ?";
+    "SELECT * FROM usuarios WHERE email=?";
 
   db.query(
     sql,
@@ -94,7 +95,7 @@ router.post("/login", (req, res) => {
         console.log(err);
 
         return res.status(500).json({
-          message: "Erro no servidor"
+          message: "Erro servidor"
         });
       }
 
@@ -106,7 +107,7 @@ router.post("/login", (req, res) => {
 
       const usuario = result[0];
 
-      // COMPARAÇÃO DIRETA DA SENHA
+      // Comparação direta da senha
       if (senha !== usuario.senha) {
         return res.status(401).json({
           message: "Senha incorreta"
@@ -125,12 +126,15 @@ router.post("/login", (req, res) => {
       );
 
       return res.json({
+
         token,
+
         usuario: {
           id: usuario.id,
           nome: usuario.nome,
           email: usuario.email
         }
+
       });
 
     }
