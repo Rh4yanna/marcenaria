@@ -20,7 +20,7 @@ function Home() {
   const MenuItem = ({ label, desc, path }) => (
     <button
       onClick={() => irPara(path)}
-      className="w-full text-left p-3.5 rounded-xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100 flex flex-col gap-0.5 group"
+      className="w-full text-left p-3.5 rounded-xl hover:bg-slate-50 transition border border-transparent hover:border-slate-200 flex flex-col gap-0.5 group"
     >
       <span className="font-medium text-slate-700 group-hover:text-blue-600 transition">{label}</span>
       <span className="text-xs text-slate-400">{desc}</span>
@@ -30,13 +30,13 @@ function Home() {
   const CardButton = ({ title, desc, path, icon }) => (
     <div
       onClick={() => navigate(path)}
-      className="group cursor-pointer bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 hover:border-blue-100 transition-all duration-300 flex flex-col justify-between min-h-[160px]"
+      className="group cursor-pointer bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-0.5 hover:border-blue-300 transition-all duration-300 flex flex-col justify-between min-h-[160px]"
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="p-3 rounded-xl bg-slate-50 text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-300">
+        <div className="p-3 rounded-xl bg-slate-50 text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-300 border border-slate-100 group-hover:border-blue-100">
           {icon}
         </div>
-        <div className="p-2 rounded-lg text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-300">
+        <div className="p-2 rounded-lg text-slate-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </div>
       </div>
@@ -50,11 +50,11 @@ function Home() {
   return (
     <div className="min-h-screen bg-slate-50/60 text-slate-800 antialiased">
       {/* HEADER */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200/80">
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex flex-col justify-center items-center gap-1.5 transition text-slate-700"
+            className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex flex-col justify-center items-center gap-1.5 transition text-slate-700 border border-slate-200/40"
           >
             <span className={`w-5 h-0.5 bg-current transition-transform ${menuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
             <span className={`w-5 h-0.5 bg-current transition-opacity ${menuOpen ? 'opacity-0' : ''}`}></span>
@@ -62,7 +62,7 @@ function Home() {
           </button>
 
           <div className="flex items-center gap-3">
-            <img src={logo} className="w-10 h-10 rounded-xl object-cover shadow-sm" alt="Logo" />
+            <img src={logo} className="w-10 h-10 rounded-xl object-cover shadow-sm border border-slate-100" alt="Logo" />
             <div>
               <h1 className="font-bold text-base tracking-tight text-slate-900 leading-tight">Marcio Bassani</h1>
               <p className="text-xs text-slate-500 font-medium">Painel Administrativo</p>
@@ -71,7 +71,7 @@ function Home() {
           
           <button 
             onClick={sair}
-            className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-red-600 hover:bg-red-50 transition"
+            className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-red-600 hover:bg-red-50 transition border border-transparent hover:border-red-100"
           >
             Sair
           </button>
@@ -83,10 +83,10 @@ function Home() {
       {menuOpen && (
         <>
           <div onClick={() => setMenuOpen(false)} className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40" />
-          <div className="fixed left-0 top-0 w-72 h-full bg-white p-5 shadow-2xl z-50 flex flex-col justify-between border-r border-slate-100">
+          <div className="fixed left-0 top-0 w-72 h-full bg-white p-5 shadow-2xl z-50 flex flex-col justify-between border-r border-slate-200">
             <div>
-              <div className="flex items-center gap-3 pb-6 mb-4 border-b border-slate-100">
-                <img src={logo} className="w-10 h-10 rounded-xl object-cover" alt="Logo" />
+              <div className="flex items-center gap-3 pb-6 mb-4 border-b border-slate-200">
+                <img src={logo} className="w-10 h-10 rounded-xl object-cover border border-slate-100" alt="Logo" />
                 <div>
                   <h2 className="font-bold text-slate-900 text-sm">Marcio Bassani</h2>
                   <p className="text-xs text-slate-400 font-medium">Gestão Marcenaria</p>
@@ -104,7 +104,7 @@ function Home() {
 
             <button
               onClick={sair}
-              className="w-full bg-slate-100 text-slate-700 hover:bg-red-50 hover:text-red-600 font-semibold py-3 rounded-xl text-sm transition-colors duration-200 mt-auto flex items-center justify-center gap-2"
+              className="w-full bg-slate-100 text-slate-700 hover:bg-red-50 hover:text-red-600 font-semibold py-3 rounded-xl text-sm transition-colors duration-200 mt-auto flex items-center justify-center gap-2 border border-slate-200 hover:border-red-200"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
               Sair da Conta
@@ -116,12 +116,11 @@ function Home() {
       {/* CONTEÚDO PRINCIPAL */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-6">
         
-        {/* NOVO BANNER DO PORTFÓLIO PÚBLICO (Destaque Separado) */}
+        {/* BANNER DO PORTFÓLIO PÚBLICO */}
         <div 
           onClick={() => window.open("https://marcenaria-1.onrender.com/principal", "_blank")}
-          className="group cursor-pointer relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-md hover:shadow-xl transition-all duration-300 border border-slate-800"
+          className="group cursor-pointer relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-md hover:shadow-xl transition-all duration-300 border border-slate-700/70"
         >
-          {/* Efeito de luz decorativo de fundo */}
           <div className="absolute top-0 right-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-500/20 transition-all duration-500" />
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
