@@ -315,7 +315,7 @@ function EditarProj() {
             </label>
           </div>
 
-          {/* FOTOS QUE JÁ ESTÃO NO BANCO DE DADOS (COM BOTÃO DE REMOÇÃO DEFINITIVA) */}
+          {/* FOTOS QUE JÁ ESTÃO NO BANCO DE DADOS (COM BOTÃO DE REMOÇÃO DEFINITIVA FIXO) */}
           {imagensExistentes.length > 0 && (
             <div className="bg-slate-50/60 border border-slate-200/60 rounded-xl p-4">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
@@ -324,17 +324,17 @@ function EditarProj() {
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {imagensExistentes.map((img, i) => (
-                  <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                  <div key={i} className="relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                     <img src={img} alt={`Existente ${i}`} className="w-full h-full object-cover" />
                     
-                    {/* Botão Vermelho Flutuante de Exclusão Direta */}
+                    {/* Botão Vermelho Fixo e Visível de Exclusão Direta */}
                     <button
                       type="button"
                       onClick={() => removerImagemExistente(i)}
-                      className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md transition opacity-95 sm:opacity-0 sm:group-hover:opacity-100"
+                      className="absolute top-2 right-2 p-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-md transition-all active:scale-95"
                       title="Excluir imagem do sistema"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <polyline points="3 6 5 6 21 6"></polyline>
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                       </svg>
@@ -345,7 +345,7 @@ function EditarProj() {
             </div>
           )}
 
-          {/* NOVAS FOTOS SELECIONADAS (PREVIEW ANTES DO UPLOAD) */}
+          {/* NOVAS FOTOS SELECIONADAS (PREVIEW ANTES DO UPLOAD - FIXO) */}
           {novasImagensGlobais.length > 0 && (
             <div className="bg-blue-50/40 border border-blue-200/60 rounded-xl p-4">
               <h3 className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-3">
@@ -354,17 +354,17 @@ function EditarProj() {
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {novasImagensGlobais.map((file, i) => (
-                  <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                  <div key={i} className="relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                     <img src={URL.createObjectURL(file)} alt={`Nova ${i}`} className="w-full h-full object-cover" />
                     
-                    {/* Botão de descarte local */}
+                    {/* Botão Vermelho Fixo de descarte local */}
                     <button
                       type="button"
                       onClick={() => removerNovaImagemPreview(i)}
-                      className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md transition opacity-95 sm:opacity-0 sm:group-hover:opacity-100"
+                      className="absolute top-2 right-2 p-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-md transition-all active:scale-95"
                       title="Descartar foto"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <polyline points="3 6 5 6 21 6"></polyline>
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                       </svg>
