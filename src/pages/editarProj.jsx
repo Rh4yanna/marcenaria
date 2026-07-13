@@ -60,9 +60,40 @@ function EditarProj() {
     setNovasImagensGlobais((prev) => [...prev, ...files]);
   };
 
-  // Remove uma foto que já existia no banco
-  const removerImagemExistente = (i) => {
-    setImagensExistentes((prev) => prev.filter((_, index) => index !== i));
+  // EXCLUSÃO IMEDIATA: Remove a foto direto do banco de dados e atualiza o sistema na hora
+  const removerImagemExistente = async (i) => {
+    const listaAtualizada = imagensExistentes.filter((_, index) => index !== i);
+
+    if (!window.confirm("Tem certeza que deseja excluir esta imagem definitivamente do projeto e do sistema?")) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Envia a lista atualizada (sem a foto deletada) para a API
+      const res = await fetch(`${API_URL}/projetos/${projeto.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          tipo, 
+          descricao, 
+          imagens: listaAtualizada 
+        }),
+      });
+
+      if (res.ok) {
+        setImagensExistentes(listaAtualizada);
+        alert("Imagem excluída com sucesso do sistema!");
+      } else {
+        alert("Erro ao remover a imagem do banco de dados.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erro na conexão com o servidor ao tentar excluir.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Remove um arquivo local que foi selecionado errado ANTES do upload acontecer
@@ -284,7 +315,7 @@ function EditarProj() {
             </label>
           </div>
 
-          {/* FOTOS QUE JÁ ESTÃO NO BANCO DE DADOS */}
+          {/* FOTOS QUE JÁ ESTÃO NO BANCO DE DADOS (COM BOTÃO DE REMOÇÃO DEFINITIVA) */}
           {imagensExistentes.length > 0 && (
             <div className="bg-slate-50/60 border border-slate-200/60 rounded-xl p-4">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
@@ -293,14 +324,20 @@ function EditarProj() {
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {imagensExistentes.map((img, i) => (
-                  <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
-                    <img src={img} alt={`Existente ${i}`} className="w-full h-24 object-cover" />
+                  <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                    <img src={img} alt={`Existente ${i}`} className="w-full h-full object-cover" />
+                    
+                    {/* Botão Vermelho Flutuante de Exclusão Direta */}
                     <button
                       type="button"
                       onClick={() => removerImagemExistente(i)}
-                      className="w-full py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-[11px] font-bold border-t border-red-100/60 transition text-center"
+                      className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md transition opacity-95 sm:opacity-0 sm:group-hover:opacity-100"
+                      title="Excluir imagem do sistema"
                     >
-                      Remover foto
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
                     </button>
                   </div>
                 ))}
@@ -317,14 +354,20 @@ function EditarProj() {
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {novasImagensGlobais.map((file, i) => (
-                  <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
-                    <img src={URL.createObjectURL(file)} alt={`Nova ${i}`} className="w-full h-24 object-cover" />
+                  <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                    <img src={URL.createObjectURL(file)} alt={`Nova ${i}`} className="w-full h-full object-cover" />
+                    
+                    {/* Botão de descarte local */}
                     <button
                       type="button"
                       onClick={() => removerNovaImagemPreview(i)}
-                      className="w-full py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-[11px] font-bold border-t border-red-100/60 transition text-center"
+                      className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md transition opacity-95 sm:opacity-0 sm:group-hover:opacity-100"
+                      title="Descartar foto"
                     >
-                      Descartar foto
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
                     </button>
                   </div>
                 ))}

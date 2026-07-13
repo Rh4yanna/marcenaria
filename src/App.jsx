@@ -64,11 +64,8 @@ function App() {
         {/* Identificação / Boas-vindas */}
         <div className="text-center">
           <h2 className="text-2xl font-black tracking-tight text-slate-900">
-            Painel Administrativo
+            Login 
           </h2>
-          <p className="text-slate-400 text-sm mt-1.5 font-medium">
-            Insira suas credenciais para gerenciar os projetos e orçamentos.
-          </p>
         </div>
 
         {/* Formulário estruturado */}
@@ -82,7 +79,7 @@ function App() {
             <div className="relative">
               <input
                 type="email"
-                placeholder="nome@marciobassani.com"
+                placeholder="Digite seu email"
                 value={email}
                 required
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition font-medium"
@@ -99,7 +96,7 @@ function App() {
             <div className="relative">
               <input
                 type="password"
-                placeholder="••••••••"
+                placeholder="Digite sua senha"
                 value={senha}
                 required
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition font-medium"
