@@ -13,7 +13,12 @@ function EditarProj() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [tipo, setTipo] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [imagens, setImagens] = useState([]);
+  
+  // Imagens que já vieram salvas do banco de dados (URLs)
+  const [imagensExistentes, setImagensExistentes] = useState([]);
+  // Novas imagens selecionadas localmente que ainda não subiram para o Cloudinary (Arquivos/Files)
+  const [novasImagensGlobais, setNovasImagensGlobais] = useState([]);
+  
   const [loading, setLoading] = useState(false);
 
   const irPara = (path) => {
@@ -43,13 +48,30 @@ function EditarProj() {
           ? JSON.parse(projeto.imagens)
           : projeto.imagens;
 
-      setImagens(imgs || []);
+      setImagensExistentes(imgs || []);
     } catch {
-      setImagens([]);
+      setImagensExistentes([]);
     }
   }, [projeto]);
 
-  const uploadImagem = async (file) => {
+  // Apenas guarda os arquivos localmente no estado para gerar o Preview
+  const lidarComSelecaoDeImagens = (e) => {
+    const files = Array.from(e.target.files);
+    setNovasImagensGlobais((prev) => [...prev, ...files]);
+  };
+
+  // Remove uma foto que já existia no banco
+  const removerImagemExistente = (i) => {
+    setImagensExistentes((prev) => prev.filter((_, index) => index !== i));
+  };
+
+  // Remove um arquivo local que foi selecionado errado ANTES do upload acontecer
+  const removerNovaImagemPreview = (i) => {
+    setNovasImagensGlobais((prev) => prev.filter((_, index) => index !== i));
+  };
+
+  // Faz o upload apenas no momento final do envio
+  const uploadImagemCloudinary = async (file) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "meu_upload");
@@ -63,39 +85,25 @@ function EditarProj() {
     return result.secure_url;
   };
 
-  const adicionarImagens = async (e) => {
-    const files = Array.from(e.target.files);
-    setLoading(true);
-
-    try {
-      const novas = [];
-      for (let file of files) {
-        const url = await uploadImagem(file);
-        novas.push(url);
-      }
-      setImagens((prev) => [...prev, ...novas]);
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao fazer upload de alguma imagem.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const removerImagem = (i) => {
-    const copy = [...imagens];
-    copy.splice(i, 1);
-    setImagens(copy);
-  };
-
   const salvar = async () => {
     setLoading(true);
 
     try {
+      const urlsNovasDasFotos = [];
+      
+      // Sobe para o Cloudinary apenas os arquivos novos validados
+      for (let file of novasImagensGlobais) {
+        const url = await uploadImagemCloudinary(file);
+        urlsNovasDasFotos.push(url);
+      }
+
+      // Une as fotos antigas que restaram com os links das novas
+      const todasImagens = [...imagensExistentes, ...urlsNovasDasFotos];
+
       const res = await fetch(`${API_URL}/projetos/${projeto.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tipo, descricao, imagens }),
+        body: JSON.stringify({ tipo, descricao, imagens: todasImagens }),
       });
 
       if (res.ok) {
@@ -271,28 +279,52 @@ function EditarProj() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               </div>
               <h3 className="text-sm font-bold text-slate-700">Escolher arquivos locais</h3>
-              <p className="text-xs text-slate-400 mt-0.5">Clique para anexar novas mídias via Cloudinary.</p>
-              <input type="file" multiple onChange={adicionarImagens} className="hidden" />
+              <p className="text-xs text-slate-400 mt-0.5">Clique para anexar novas mídias.</p>
+              <input type="file" multiple onChange={lidarComSelecaoDeImagens} className="hidden" />
             </label>
           </div>
 
-          {/* GRADE / GALERIA DE IMAGENS ATUAIS */}
-          {imagens.length > 0 && (
+          {/* FOTOS QUE JÁ ESTÃO NO BANCO DE DADOS */}
+          {imagensExistentes.length > 0 && (
             <div className="bg-slate-50/60 border border-slate-200/60 rounded-xl p-4">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                Imagens Ativas ({imagens.length})
+                Imagens Atuais do Portfólio ({imagensExistentes.length})
               </h3>
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {imagens.map((img, i) => (
+                {imagensExistentes.map((img, i) => (
                   <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
-                    <img src={img} alt={`Midia ${i}`} className="w-full h-24 object-cover" />
-                    
+                    <img src={img} alt={`Existente ${i}`} className="w-full h-24 object-cover" />
                     <button
-                      onClick={() => removerImagem(i)}
+                      type="button"
+                      onClick={() => removerImagemExistente(i)}
                       className="w-full py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-[11px] font-bold border-t border-red-100/60 transition text-center"
                     >
                       Remover foto
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* NOVAS FOTOS SELECIONADAS (PREVIEW ANTES DO UPLOAD) */}
+          {novasImagensGlobais.length > 0 && (
+            <div className="bg-blue-50/40 border border-blue-200/60 rounded-xl p-4">
+              <h3 className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-3">
+                Novas Fotos Adicionadas ({novasImagensGlobais.length})
+              </h3>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {novasImagensGlobais.map((file, i) => (
+                  <div key={i} className="group relative aspect-video bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
+                    <img src={URL.createObjectURL(file)} alt={`Nova ${i}`} className="w-full h-24 object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removerNovaImagemPreview(i)}
+                      className="w-full py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-[11px] font-bold border-t border-red-100/60 transition text-center"
+                    >
+                      Descartar foto
                     </button>
                   </div>
                 ))}
