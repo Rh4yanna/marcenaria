@@ -140,26 +140,26 @@ function Portfolio() {
       )}
 
       {/* CONTEÚDO PRINCIPAL DO PORTFÓLIO */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col gap-8">
+      <main className="max-w-7xl mx-auto px-4 md:px-8 py-6 flex flex-col gap-6">
         
         {/* TITULAÇÃO DA PÁGINA */}
-        <div className="border-b border-slate-200 pb-5">
-          <span className="text-[11px] font-bold text-blue-500 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded-md">
+        <div className="border-b border-slate-200 pb-4">
+          <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md">
             Galeria Exclusiva
           </span>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900 mt-2">
+          <h1 className="text-2xl font-black tracking-tight text-slate-900 mt-1.5">
             Nosso Portfólio
           </h1>
-          <p className="text-slate-400 text-sm mt-0.5">
+          <p className="text-slate-400 text-xs mt-0.5">
             Explore os móveis planejados sob medida fabricados pela nossa equipe.
           </p>
         </div>
 
         {/* LOADING INDICATOR */}
         {loading && (
-          <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm flex flex-col items-center justify-center gap-3">
-            <svg className="animate-spin h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            <p className="text-sm font-bold text-slate-500">Buscando os melhores projetos...</p>
+          <div className="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-sm flex flex-col items-center justify-center gap-3">
+            <svg className="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <p className="text-xs font-bold text-slate-500">Buscando os melhores projetos...</p>
           </div>
         )}
 
@@ -169,22 +169,22 @@ function Portfolio() {
             if (grupo.itens.length === 0) return null;
 
             return (
-              <div key={index} className="bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-sm flex flex-col gap-5">
+              <div key={index} className="bg-white border border-slate-200 rounded-xl p-4 md:p-5 shadow-sm flex flex-col gap-4">
                 
                 {/* CABEÇALHO DA CATEGORIA */}
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
                   <div>
-                    <h2 className="text-lg font-black tracking-tight text-slate-900">
+                    <h2 className="text-base font-black tracking-tight text-slate-900">
                       {grupo.tipo}
                     </h2>
-                    <p className="text-xs font-semibold text-slate-400 mt-0.5">
-                      {grupo.itens.length} {grupo.itens.length === 1 ? "ambiente catalogado" : "ambientes catalogados"}
+                    <p className="text-[11px] font-semibold text-slate-400">
+                      {grupo.itens.length} {grupo.itens.length === 1 ? "ambiente" : "ambientes"}
                     </p>
                   </div>
                 </div>
 
-                {/* FILA DE CARDS FLUIDA (CARROSSEL HORIZONTAL) */}
-                <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+                {/* FILA DE CARDS MAIS COMPACTOS COM FORMATO WIDESCREEN */}
+                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
                   {grupo.itens.map((proj) => {
                     let imagens = [];
                     try {
@@ -197,24 +197,24 @@ function Portfolio() {
                       <button
                         key={proj.id}
                         onClick={() => navigate("/detalheProj", { state: { projeto: proj } })}
-                        className="min-w-[290px] md:min-w-[340px] text-left group bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 rounded-xl overflow-hidden transition-all duration-300 flex flex-col"
+                        className="min-w-[220px] md:min-w-[270px] text-left group bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 rounded-xl overflow-hidden transition-all duration-300 flex flex-col"
                       >
-                        {/* Imagem do Card */}
-                        <div className="relative aspect-[4/3] w-full bg-slate-200 overflow-hidden">
+                        {/* Imagem do Card Ajustada (Aspecto 16:10 para menor altura) */}
+                        <div className="relative aspect-[16/10] w-full bg-slate-200 overflow-hidden">
                           {imagens?.[0] && (
                             <img
                               src={imagens[0]}
                               alt={proj.tipo}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-104"
                             />
                           )}
                         </div>
                         
-                        {/* Rodapé Interno do Card */}
-                        <div className="p-4 flex items-center justify-between gap-3">
-                          <span className="text-xs font-bold text-slate-700 truncate">Ver Detalhes do Móvel</span>
-                          <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-blue-500 group-hover:border-blue-200 transition-colors shadow-xs shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        {/* Rodapé Interno Mais Discreto */}
+                        <div className="p-3 flex items-center justify-between gap-2 bg-white border-t border-slate-100">
+                          <span className="text-[11px] font-bold text-slate-600 truncate">Ver Detalhes</span>
+                          <div className="w-5 h-5 rounded-md bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-blue-500 group-hover:border-blue-200 transition-colors shadow-2xs shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                           </div>
                         </div>
                       </button>
@@ -223,12 +223,12 @@ function Portfolio() {
                 </div>
 
                 {/* BOTÃO VER MAIS DA CATEGORIA */}
-                <div className="flex justify-center pt-2">
+                <div className="flex justify-center pt-1">
                   <button
                     onClick={() => navigate("/projetos", { state: { tipo: grupo.tipo } })}
-                    className="bg-slate-100 hover:bg-slate-200 border border-slate-200/60 text-slate-700 font-bold px-6 py-2.5 rounded-xl text-xs transition active:scale-98 shadow-xs flex items-center gap-1.5"
+                    className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 font-bold px-4 py-2 rounded-xl text-[10px] transition active:scale-98 shadow-2xs flex items-center gap-1.5"
                   >
-                    Ver todas os projetos {grupo.tipo}
+                    Ver todos de {grupo.tipo}
                   </button>
                 </div>
 
