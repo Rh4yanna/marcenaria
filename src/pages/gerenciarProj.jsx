@@ -290,7 +290,6 @@ function GerenciarProj() {
                           {/* LEGENDA */}
                           <div className="p-3 bg-white">
                             <h3 className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-blue-600 transition-colors">
-                              {proj.nome || "Ambiente sem título"}
                             </h3>
                           </div>
                         </div>
