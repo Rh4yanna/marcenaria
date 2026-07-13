@@ -13,7 +13,6 @@ function App() {
   // Se já estiver logado
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (token) {
       navigate("/home");
     }
@@ -23,7 +22,6 @@ function App() {
     e.preventDefault();
 
     if (loading) return;
-
     setLoading(true);
 
     try {
@@ -32,24 +30,14 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          senha,
-        }),
+        body: JSON.stringify({ email, senha }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        // Salva token
         localStorage.setItem("token", data.token);
-
-        // Salva usuário
-        localStorage.setItem(
-          "usuario",
-          JSON.stringify(data.usuario)
-        );
-
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
         navigate("/home");
       } else {
         alert(data.message || "Erro ao fazer login");
@@ -63,55 +51,100 @@ function App() {
   };
 
   return (
-    <div
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{
-        backgroundImage: `url(${loginBg})`,
-      }}
+    <div 
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center p-4 antialiased"
+      style={{ backgroundImage: `url(${loginBg})` }}
     >
-      {/* Camada escura sobre a imagem */}
-      <div className="absolute inset-0 bg-black/70"></div>
+      {/* Camada escura / Overlay de contraste moderno */}
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs"></div>
 
-      {/* Card de Login */}
-      <div className="relative bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Login
-        </h2>
+      {/* Card de Login Profissional */}
+      <div className="relative bg-white border border-slate-200/80 rounded-2xl shadow-2xl w-full max-w-md p-8 md:p-10 flex flex-col gap-6 transition-all">
+        
+        {/* Identificação / Boas-vindas */}
+        <div className="text-center">
+          <h2 className="text-2xl font-black tracking-tight text-slate-900">
+            Painel Administrativo
+          </h2>
+          <p className="text-slate-400 text-sm mt-1.5 font-medium">
+            Insira suas credenciais para gerenciar os projetos e orçamentos.
+          </p>
+        </div>
 
-        <form
-          onSubmit={handleLogin}
-          className="flex flex-col gap-4"
-        >
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            required
-            className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        {/* Formulário estruturado */}
+        <form onSubmit={handleLogin} className="flex flex-col gap-5">
+          
+          {/* CAMPO: EMAIL */}
+          <div>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+              Endereço de E-mail
+            </label>
+            <div className="relative">
+              <input
+                type="email"
+                placeholder="nome@marciobassani.com"
+                value={email}
+                required
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition font-medium"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </div>
 
-          <input
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            required
-            className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            onChange={(e) => setSenha(e.target.value)}
-          />
+          {/* CAMPO: SENHA */}
+          <div>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+              Sua Senha
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={senha}
+                required
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition font-medium"
+                onChange={(e) => setSenha(e.target.value)}
+              />
+            </div>
+          </div>
 
+          {/* ESQUECEU A SENHA */}
+          <div className="flex justify-end -mt-2">
+            <button 
+              type="button"
+              className="text-xs font-semibold text-slate-400 hover:text-blue-500 transition"
+              onClick={() => alert("Entre em contato com o administrador do sistema para redefinir sua senha.")}
+            >
+              Esqueceu a senha?
+            </button>
+          </div>
+
+          {/* BOTÃO DE SUBMIT COM SPINNER DE CARREGAMENTO */}
           <button
             type="submit"
             disabled={loading}
-            className="bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-3.5 rounded-xl shadow-md shadow-blue-500/10 transition disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? (
+              <>
+                <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Autenticando...
+              </>
+            ) : (
+              "Acessar Sistema"
+            )}
           </button>
-
-          <p className="text-sm text-center text-gray-600 hover:text-orange-600 cursor-pointer">
-            Esqueceu a senha?
-          </p>
         </form>
+
+        {/* Rodapé institucional discreto */}
+        <div className="text-center pt-2 border-t border-slate-100">
+          <p className="text-[11px] text-slate-400 font-medium">
+            Marcio Bassani Móveis Planejados 
+          </p>
+        </div>
       </div>
     </div>
   );
